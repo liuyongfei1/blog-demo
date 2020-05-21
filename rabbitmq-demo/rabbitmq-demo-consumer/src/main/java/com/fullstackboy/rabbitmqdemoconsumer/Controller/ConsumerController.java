@@ -26,7 +26,13 @@ public class ConsumerController {
         MessageHeaders headers = message.getHeaders();
         Long tag = (Long) headers.get(AmqpHeaders.DELIVERY_TAG);
 
-        // 手动确认消息已消费
-        channel.basicAck(tag,false);
+        try {
+            // 手动确认消息已消费
+            channel.basicAck(tag,false);
+        } catch (IOException e) {
+            // 把消费失败的消息重新放入到队列
+            channel.basicNack(tag, false, true);
+            e.printStackTrace();
+        }
     }
 }

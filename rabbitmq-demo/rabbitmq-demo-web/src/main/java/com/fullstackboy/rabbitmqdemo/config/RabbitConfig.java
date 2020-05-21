@@ -62,6 +62,7 @@ public class RabbitConfig {
         rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
             log.info(MessageFormat.format("消息发送失败，ReturnCallback:{0},{1},{2},{3},{4},{5}", message, replyCode,
                     replyText, exchange, routingKey));
+            // TODO 做消息发送失败时的处理逻辑
         });
         return rabbitTemplate;
     }
@@ -99,16 +100,5 @@ public class RabbitConfig {
     @Bean
     Binding queueBinding() {
         return BindingBuilder.bind(myQueue()).to(myExchange()).with(QueueConstants.QUEUE_ROUTING_KEY_NAME);
-    }
-
-    /**
-     * 配置启用rabbitmq事务
-     *
-     * @param connectionFactory
-     * @return
-     */
-    @Bean("rabbitTransactionManager")
-    public RabbitTransactionManager rabbitTransactionManager(CachingConnectionFactory connectionFactory) {
-        return new RabbitTransactionManager(connectionFactory);
     }
 }

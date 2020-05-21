@@ -56,6 +56,4 @@ public class ProducerController {
                 messageObj,new CorrelationData(msgId));
         return "message send ok";
     }
-
-
 }
