@@ -13,6 +13,7 @@
     <modules>
         <module>rabbitmq-demo-web</module>
         <module>rabbitmq-demo-common</module>
+        <module>rabbitmq-demo-consumer</module>
     </modules>
 
 </project>
