@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>blogdemo</name>
-    <description>Demo project for Spring Boot</description>
+    <description>使用Spring Boot框架的多个案例</description>
 
     <modules>
         <module>rabbitmq-demo</module>
