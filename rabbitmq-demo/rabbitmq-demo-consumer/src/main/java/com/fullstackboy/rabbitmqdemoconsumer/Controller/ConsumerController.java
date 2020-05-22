@@ -30,7 +30,7 @@ public class ConsumerController {
             // 手动确认消息已消费
             channel.basicAck(tag,false);
         } catch (IOException e) {
-            // 把消费失败的消息重新放入到队列
+            // 把消费失败的消息重新放入到队列，以后可以继续消费该条消息
             channel.basicNack(tag, false, true);
             e.printStackTrace();
         }
