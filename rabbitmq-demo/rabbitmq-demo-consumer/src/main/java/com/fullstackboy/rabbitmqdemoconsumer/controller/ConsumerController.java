@@ -1,4 +1,4 @@
-package com.fullstackboy.rabbitmqdemoconsumer.Controller;
+package com.fullstackboy.rabbitmqdemoconsumer.controller;
 
 import com.fullstackboy.rabbitmqdemo.common.QueueConstants;
 import com.rabbitmq.client.Channel;
