@@ -40,7 +40,7 @@ public class ProducerController {
      * @return java.lang.String
      **/
     @GetMapping("/sendDirectMessage")
-    public String sendDirectMessage(String test,Integer test2) {
+    public String sendDirectMessage() {
         // 生成消息的唯一id
         String msgId = UUID.randomUUID().toString();
         String messageData = "hello,this is rabbitmq demo message";
