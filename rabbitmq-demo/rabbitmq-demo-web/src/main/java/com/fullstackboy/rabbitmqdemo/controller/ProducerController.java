@@ -35,8 +35,6 @@ public class ProducerController {
      *
      * @Author Liuyongfei
      * @Date 上午12:12 2020/5/20 
-     * @param test
-     * @param test2
      * @return java.lang.String
      **/
     @GetMapping("/sendDirectMessage")
