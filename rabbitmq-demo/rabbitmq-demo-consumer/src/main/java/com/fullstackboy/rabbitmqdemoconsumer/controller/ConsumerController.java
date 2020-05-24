@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * 消息消费端
+ * 消息消费端（RPC服务端）
  * @公众号 全栈在路上
  * @GitHub https://github.com/liuyongfei1
  * @author Liuyongfei
- * @date 2020-05-21 18:00
+ * @date 2020-05-24 10:30
  */
 @Component
 public class ConsumerController {
