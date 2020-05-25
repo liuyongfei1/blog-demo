@@ -17,7 +17,7 @@ import java.text.MessageFormat;
 /**
  * RabbitMQ配置
  *
- * @author lyf1
+ * @author lyf
  * @公众号 全栈在路上
  * @GitHub https://github.com/liuyongfei1
  * @date 2020-05-17 17:20
