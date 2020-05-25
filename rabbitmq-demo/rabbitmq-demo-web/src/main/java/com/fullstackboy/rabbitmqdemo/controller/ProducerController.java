@@ -22,9 +22,10 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * 消息生产端
+ *
+ * @author lyf
  * @公众号 全栈在路上
  * @GitHub https://github.com/liuyongfei1
- * @author lyf
  * @date 2020-05-17 18:30
  */
 @Slf4j
@@ -41,9 +42,9 @@ public class ProducerController {
     /**
      * 生产消息（RPC客户端）
      *
+     * @return java.lang.String
      * @Author Liuyongfei
      * @Date 上午10:00 2020/5/24
-     * @return java.lang.String
      **/
     @GetMapping("/sendMessage")
     public String sendDirectMessage() {
@@ -51,10 +52,10 @@ public class ProducerController {
         String sss = "报文的内容";
         //封装Message
         Message msg = this.con(sss);
-        log.info("客户端--------------------"+msg.toString());
+        log.info("客户端--------------------" + msg.toString());
 
         //使用sendAndReceive方法完成rpc调用
-        Message message=rabbitTemplate.sendAndReceive(QueueConstants.TOPIC_EXCHANGE, QueueConstants.TOPIC_QUEUE1, msg);
+        Message message = rabbitTemplate.sendAndReceive(QueueConstants.TOPIC_EXCHANGE, QueueConstants.TOPIC_QUEUE1, msg);
 
         //提取rpc回应内容body
         String response = new String(message.getBody());
@@ -70,13 +71,13 @@ public class ProducerController {
         //mp.setCorrelationId("2222");   系统生成，这里设置没用
         mp.setContentType("application/json");
         mp.setContentEncoding("UTF-8");
-        mp.setContentLength((long)s.length());
+        mp.setContentLength((long) s.length());
         return new Message(src, mp);
     }
 
 
     public String sendAndReceive(String request) throws TimeoutException {
-        log.info("请求报文：{}" , request);
+        log.info("请求报文：{}", request);
 
         //请求结果
         String result = null;
@@ -89,15 +90,15 @@ public class ProducerController {
         messageProperties.setExpiration("10000");
         messageProperties.setCorrelationId(correlationId.getId());
 
-        Message message = new Message(request.getBytes(),messageProperties);
+        Message message = new Message(request.getBytes(), messageProperties);
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start("direct模式下rpc请求耗时");
         Message response = rabbitTemplate.sendAndReceive(QueueConstants.QUEUE_EXCHANGE_NAME,
-                QueueConstants.QUEUE_ROUTING_KEY_NAME,message,correlationId);
+                QueueConstants.QUEUE_ROUTING_KEY_NAME, message, correlationId);
 
         stopWatch.stop();
-        log.info(stopWatch.getLastTaskName() + ":" +  stopWatch.getTotalTimeMillis());
+        log.info(stopWatch.getLastTaskName() + ":" + stopWatch.getTotalTimeMillis());
         if (response != null) {
             result = new String(response.getBody());
             log.info("请求成功，返回的结果为：{}", result);

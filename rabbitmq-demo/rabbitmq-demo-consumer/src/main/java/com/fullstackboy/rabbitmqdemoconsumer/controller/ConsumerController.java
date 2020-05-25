@@ -44,9 +44,9 @@ public class ConsumerController {
         rabbitTemplate.send(QueueConstants.TOPIC_EXCHANGE, QueueConstants.TOPIC_QUEUE2, repMsg);
     }
 
-    @RabbitListener(queues=QueueConstants.TOPIC_QUEUE2)
+    @RabbitListener(queues = QueueConstants.TOPIC_QUEUE2)
     public void receiveTopic2(Message msg) {
-        log.info("队列2:"+msg.toString());
+        log.info("队列2:" + msg.toString());
 
     }
 

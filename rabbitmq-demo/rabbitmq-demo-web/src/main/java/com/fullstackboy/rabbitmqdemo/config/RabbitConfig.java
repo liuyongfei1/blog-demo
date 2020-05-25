@@ -43,7 +43,7 @@ public class RabbitConfig {
         listenerContainer.setConnectionFactory(cachingConnectionFactory);
         listenerContainer.setQueueNames(QueueConstants.TOPIC_QUEUE2);
         listenerContainer.setMessageListener(rabbitTemplate());
-        return  listenerContainer;
+        return listenerContainer;
     }
 
     //创建队列
@@ -51,6 +51,7 @@ public class RabbitConfig {
     Queue topicQueue1() {
         return new Queue(QueueConstants.TOPIC_QUEUE1);
     }
+
     @Bean
     Queue topicQueue2() {
         return new Queue(QueueConstants.TOPIC_QUEUE2);
@@ -67,6 +68,7 @@ public class RabbitConfig {
     public Binding topicBinding1() {
         return BindingBuilder.bind(topicQueue1()).to(topicExchange()).with(QueueConstants.TOPIC_QUEUE1);
     }
+
     @Bean
     public Binding topicBinding2() {
         return BindingBuilder.bind(topicQueue2()).to(topicExchange()).with(QueueConstants.TOPIC_QUEUE2);
