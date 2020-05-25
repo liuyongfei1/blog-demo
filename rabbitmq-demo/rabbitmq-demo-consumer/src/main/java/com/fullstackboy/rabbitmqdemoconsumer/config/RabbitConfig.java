@@ -1,4 +1,4 @@
-package com.fullstackboy.rabbitmqdemo.config;
+package com.fullstackboy.rabbitmqdemoconsumer.config;
 
 import com.fullstackboy.rabbitmqdemo.common.QueueConstants;
 import lombok.extern.slf4j.Slf4j;
@@ -6,12 +6,9 @@ import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.rabbit.transaction.RabbitTransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.text.MessageFormat;
 
 /**
  * RabbitMQ配置
