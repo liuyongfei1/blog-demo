@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * 消息消费端1
+ * 消息消费端
  * @公众号 全栈在路上
  * @GitHub https://github.com/liuyongfei1
  * @author Liuyongfei
