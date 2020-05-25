@@ -32,7 +32,7 @@ public class RabbitConfig {
     RabbitTemplate rabbitTemplate() {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(cachingConnectionFactory);
         /**
-         * 消息只要被 rabbitmq broker 接收到就会执行 confirmCallback
+         * 消息只要被 rabbitmq broker 接收到就会执行 confirmCallback test
          * 如果是 cluster 模式，需要所有 broker 接收到才会调用 confirmCallback
          * 被 broker 接收到只能表示 message 已经到达服务器，并不能保证消息一定会被投递到目标 queue 里
          *
