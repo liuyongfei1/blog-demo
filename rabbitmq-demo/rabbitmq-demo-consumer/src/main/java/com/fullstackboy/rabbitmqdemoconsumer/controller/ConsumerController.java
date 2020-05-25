@@ -34,9 +34,29 @@ public class ConsumerController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @RabbitHandler
-    public String onMessage(byte[] message, @Headers Map<String, Object> headers, Channel channel) {
-        StopWatch stopWatch = new StopWatch("调用计时");
-        return "成功";
+    @RabbitListener(queues = {QueueConstants.TOPIC_QUEUE1})
+    public void handler(Message msg, Channel channel) throws IOException {
+        log.info("队列1:" + msg.toString());
+        String msgBody = new String(msg.getBody());
+        //数据处理，返回的Message
+        Message repMsg = con(msgBody + "返回了", msg.getMessageProperties().getCorrelationId());
+
+        rabbitTemplate.send(QueueConstants.TOPIC_EXCHANGE, QueueConstants.TOPIC_QUEUE2, repMsg);
+    }
+
+    @RabbitListener(queues=QueueConstants.TOPIC_QUEUE2)
+    public void receiveTopic2(Message msg) {
+        log.info("队列2:"+msg.toString());
+
+    }
+
+    public Message con(String s, String id) {
+        MessageProperties mp = new MessageProperties();
+        byte[] src = s.getBytes(Charset.forName("UTF-8"));
+        mp.setContentType("application/json");
+        mp.setContentEncoding("UTF-8");
+        mp.setCorrelationId(id);
+
+        return new Message(src, mp);
     }
 }
