@@ -50,7 +50,7 @@ public class ProducerController {
         messageObj.put("messageData",messageData);
         messageObj.put("createTime",createTime);
 
-        // 发送消息
+        // 发送消息1
         rabbitTemplate.convertAndSend(QueueConstants.QUEUE_EXCHANGE_NAME,QueueConstants.QUEUE_ROUTING_KEY_NAME,
                 messageObj,new CorrelationData(msgId));
         return "message send ok";
