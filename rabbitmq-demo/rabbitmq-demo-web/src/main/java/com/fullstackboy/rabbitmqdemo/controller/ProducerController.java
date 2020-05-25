@@ -1,6 +1,7 @@
 package com.fullstackboy.rabbitmqdemo.controller;
 
 import com.fullstackboy.rabbitmqdemo.common.QueueConstants;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +29,14 @@ public class ProducerController {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
+
     /**
-     * 发送消息（交换机类型为 Direct）
-     * @return
-     */
+     * 生产消息
+     *
+     * @Author Liuyongfei
+     * @Date 上午12:12 2020/5/20 
+     * @return java.lang.String
+     **/
     @GetMapping("/sendDirectMessage")
     public String sendDirectMessage() {
         // 生成消息的唯一id
@@ -45,8 +50,8 @@ public class ProducerController {
         messageObj.put("messageData",messageData);
         messageObj.put("createTime",createTime);
 
-        rabbitTemplate.convertAndSend(QueueConstants.QUEUE_EXCHANGE_NAME,QueueConstants.QUEUE_ROUTING_KEY_NAME, messageObj);
+        rabbitTemplate.convertAndSend(QueueConstants.QUEUE_EXCHANGE_NAME,QueueConstants.QUEUE_ROUTING_KEY_NAME,
+                messageObj,new CorrelationData(msgId));
         return "message send ok";
     }
-
 }
