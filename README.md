@@ -6,3 +6,4 @@
 #### 一. 添加RabbitMQ的消息确认机制demo
 
 #### 二. 添加RabbitMQ的RPC实现demo
+##### 1.优化RPC需要用到的队列，修改为常量 
