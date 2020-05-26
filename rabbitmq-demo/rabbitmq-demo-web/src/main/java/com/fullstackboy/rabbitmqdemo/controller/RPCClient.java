@@ -1,10 +1,13 @@
 package com.fullstackboy.rabbitmqdemo.controller;
 
 import com.fullstackboy.rabbitmqdemo.common.QueueConstants;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 /**
  * RPC客户端
@@ -23,7 +26,11 @@ public class RPCClient {
     @GetMapping("/sendMessage")
     public String send(String message) {
         System.out.println("接收到的消息为：" + message);
-        String result = (String) rabbitTemplate.convertSendAndReceive(QueueConstants.TOPIC_QUEUE1, message);
+        //设置消息唯一id
+        CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
+
+        String result = (String) rabbitTemplate.convertSendAndReceive(QueueConstants.TOPIC_EXCHANGE,
+                QueueConstants.TOPIC_ROUTING_KEY_NAME, message, correlationId);
         System.out.println("收到RPCServer返回的消息为：" + result);
         return result;
     }

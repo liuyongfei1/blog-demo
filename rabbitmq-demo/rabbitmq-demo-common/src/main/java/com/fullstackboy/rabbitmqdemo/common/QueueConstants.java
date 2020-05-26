@@ -16,4 +16,5 @@ public class QueueConstants {
     public static final String TOPIC_QUEUE1 = "topic.queue1";
     public static final String TOPIC_QUEUE2 = "topic.queue2";
     public static final String TOPIC_EXCHANGE = "topic.exchange";
+    public static final String TOPIC_ROUTING_KEY_NAME = "topic.queue1";
 }

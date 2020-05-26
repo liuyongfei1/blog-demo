@@ -2,6 +2,7 @@ package com.fullstackboy.rabbitmqdemo.config;
 
 import com.fullstackboy.rabbitmqdemo.common.QueueConstants;
 import lombok.extern.slf4j.Slf4j;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -23,8 +24,6 @@ public class RabbitConfig {
     /**
      * 同步RPC队列
      */
-//    public static final String QUEUE_SYNC_RPC = "rpc.sync";
-
     @Bean
     public Queue syncRPCQueue() {
         return new Queue(QueueConstants.TOPIC_QUEUE1);
@@ -40,6 +39,16 @@ public class RabbitConfig {
     @Bean
     public Queue replyQueue() {
         return new Queue(QueueConstants.TOPIC_QUEUE2);
+    }
+
+    @Bean
+    public TopicExchange tmpExchange() {
+        return new TopicExchange(QueueConstants.TOPIC_EXCHANGE);
+    }
+
+    @Bean
+    public Binding tmpBinding() {
+        return BindingBuilder.bind(syncRPCQueue()).to(tmpExchange()).with(QueueConstants.TOPIC_ROUTING_KEY_NAME);
     }
 
     /**
