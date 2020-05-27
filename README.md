@@ -7,3 +7,4 @@
 
 #### 二. 添加RabbitMQ的RPC实现demo
 ##### 1.优化RPC需要用到的队列，修改为常量 
+##### 2.优化RPCClient，为RPCServer返回消息添加correlationId匹配逻辑 
