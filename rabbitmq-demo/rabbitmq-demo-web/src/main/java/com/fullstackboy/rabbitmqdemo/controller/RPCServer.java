@@ -4,7 +4,6 @@ import com.fullstackboy.rabbitmqdemo.common.QueueConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -49,7 +48,7 @@ public class RPCServer {
 
     @RabbitListener(queues = QueueConstants.RPC_QUEUE2)
     public void receiveTopic2(Message msg) {
-        System.out.println("队列2:" + msg.toString());
+        System.out.println("...队列2:" + msg.toString());
     }
 
     /**
