@@ -46,7 +46,7 @@ public class RPCClient {
             // 提取RPC回应内容的header
             HashMap<String, Object> headers = (HashMap<String, Object>) result.getMessageProperties().getHeaders();
 
-            // 获取RPC回应消息的消息id
+            // 获取RPC回应消息的消息id（备注：rabbitmq的配置参数里面必须开启spring.rabbitmq.publisher-confirms=true，否则headers里没有该项）
             String msgId = (String) headers.get("spring_returned_message_correlation");
 
             // 客户端从回调队列获取消息，匹配与发送消息correlationId相同的消息为应答结果
