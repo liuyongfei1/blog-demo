@@ -31,13 +31,29 @@ public class RPCClient {
     @GetMapping("/sendMessage")
     public String send(String message) {
         //封装Message
-        Message msg = this.con(message);
-        System.out.println("客户端发送消息：" + msg.toString());
+//        Message msg = this.con(message);
 
-        //设置消息唯一id
+        // 设置消息唯一id
         CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
+
+        // 封装Message，直接发送message对象
+        MessageProperties messageProperties = new MessageProperties();
+        // 过期时间10秒,也是为了减少消息挤压的可能
+        messageProperties.setExpiration("10000");
+        messageProperties.setCorrelationId(correlationId.getId());
+        Message msg = new Message(message.getBytes(), messageProperties);
+
+
+        System.out.println("客户端发送消息：" + msg.toString());
+        System.out.println("test1：" + msg.getMessageProperties().getCorrelationId());
+
+
         System.out.println("Client发送消息的correlationId: " + correlationId);
-        Message result = rabbitTemplate.sendAndReceive(QueueConstants.TOPIC_EXCHANGE, QueueConstants.TOPIC_QUEUE1, msg);
+        Message result = rabbitTemplate.sendAndReceive(QueueConstants.TOPIC_EXCHANGE, QueueConstants.TOPIC_QUEUE1,
+                msg,correlationId);
+
+        System.out.println("test2：" + msg.getMessageProperties().getCorrelationId());
+
         // 提取rpc回应内容的header
         HashMap<String,Object> headers = (HashMap<String, Object>) result.getMessageProperties().getHeaders();
         // 获取消息id
