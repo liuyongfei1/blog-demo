@@ -1,6 +1,7 @@
 package com.fullstackboy.rabbitmqdemo.controller;
 
 import com.fullstackboy.rabbitmqdemo.common.QueueConstants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -19,6 +20,7 @@ import java.util.HashMap;
  * @GitHub https://github.com/liuyongfei1
  * @date 2020-05-25 19:30
  */
+@Slf4j
 @RestController
 public class RPCClient {
 
@@ -30,29 +32,27 @@ public class RPCClient {
         // 封装Message，直接发送message对象
         Message newMessage = convertMessage(message);
 
-        System.out.println("客户端发送消息：" + newMessage.toString());
+        log.info("客户端发送消息：" + newMessage.toString());
 
         // 备注：使用sendAndReceive 这个方法发送消息时，消息的correlationId会变成系统动编制的 1,2,3 这种格式,因此通过手动set的方式没有用
-        Message result = rabbitTemplate.sendAndReceive(QueueConstants.TOPIC_EXCHANGE, QueueConstants.TOPIC_QUEUE1,
+        Message result = rabbitTemplate.sendAndReceive(QueueConstants.RPC_EXCHANGE, QueueConstants.RPC_QUEUE1,
                 newMessage);
 
         // 获取已发送的消息的唯一消息id
         String correlationId = newMessage.getMessageProperties().getCorrelationId();
-        System.out.println("客户端发送消息的 correlationId：" + newMessage.getMessageProperties().getCorrelationId());
 
         // 提取RPC回应内容的header
         HashMap<String, Object> headers = (HashMap<String, Object>) result.getMessageProperties().getHeaders();
 
         // 获取RPC回应消息的消息id
         String msgId = (String) headers.get("spring_returned_message_correlation");
-        System.out.println("Client收到消息的msgId:" + msgId);
 
         // 客户端从回调队列获取消息，匹配与发送消息correlationId相同的消息为应答结果
         String response = "";
         if (msgId.equals(correlationId)) {
             // 提取RPC回应内容body
             response = new String(result.getBody());
-            System.out.println("收到RPCServer返回的消息为：" + response);
+            log.info("收到RPCServer返回的消息为：" + response);
         }
         return response;
     }
