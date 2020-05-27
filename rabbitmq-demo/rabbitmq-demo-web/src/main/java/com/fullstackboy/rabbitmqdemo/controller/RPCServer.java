@@ -5,6 +5,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,19 +27,26 @@ public class RPCServer {
 
     @RabbitListener(queues = QueueConstants.TOPIC_QUEUE1)
     public void process(Message msg) {
-//        int millis = (int) (Math.random() * 2 * 1000);
+        int millis = (int) (Math.random() * 2 * 1000);
         String msgBody = new String(msg.getBody());
-//        String newMessage =  msgBody + "， sleep for " + millis + " ms";
         // 模拟处理业务逻辑
-//            Thread.sleep(millis);
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Server收到发送的消息，correlationId为: " + msg.getMessageProperties().getCorrelationId());
         // 数据处理，返回Message
-        Message response = con(msgBody, msg.getMessageProperties().getCorrelationId());
-        rabbitTemplate.send(QueueConstants.TOPIC_EXCHANGE, QueueConstants.TOPIC_QUEUE2, response);
+        String newMessage = msgBody + "， sleep for " + millis + " ms";
+        Message response = con(newMessage, msg.getMessageProperties().getCorrelationId());
+        CorrelationData correlationData = new CorrelationData(msg.getMessageProperties().getCorrelationId());
+        rabbitTemplate.send(QueueConstants.TOPIC_EXCHANGE, QueueConstants.TOPIC_QUEUE2, response, correlationData);
     }
 
-    @RabbitListener(queues=QueueConstants.TOPIC_QUEUE2)
+    @RabbitListener(queues = QueueConstants.TOPIC_QUEUE2)
     public void receiveTopic2(Message msg) {
-        System.out.println("队列2:"+msg.toString());
+        System.out.println("队列2:" + msg.toString());
     }
 
     public Message con(String s, String id) {
