@@ -3,16 +3,13 @@ package com.fullstackboy.rabbitmqdemo.controller;
 import com.fullstackboy.rabbitmqdemo.common.QueueConstants;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
-import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.UUID;
 
 /**
  * RPC客户端
@@ -30,53 +27,53 @@ public class RPCClient {
 
     @GetMapping("/sendMessage")
     public String send(String message) {
-        //封装Message
-//        Message msg = this.con(message);
-
-        // 设置消息唯一id
-        CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
-
         // 封装Message，直接发送message对象
-        MessageProperties messageProperties = new MessageProperties();
-        // 过期时间10秒,也是为了减少消息挤压的可能
-        messageProperties.setExpiration("10000");
-        messageProperties.setCorrelationId(correlationId.getId());
-        Message msg = new Message(message.getBytes(), messageProperties);
+        Message newMessage = convertMessage(message);
 
+        System.out.println("客户端发送消息：" + newMessage.toString());
 
-        System.out.println("客户端发送消息：" + msg.toString());
-        System.out.println("test1：" + msg.getMessageProperties().getCorrelationId());
-
-
-        System.out.println("Client发送消息的correlationId: " + correlationId);
+        // 备注：使用sendAndReceive 这个方法发送消息时，消息的correlationId会变成系统动编制的 1,2,3 这种格式,因此通过手动set的方式没有用
         Message result = rabbitTemplate.sendAndReceive(QueueConstants.TOPIC_EXCHANGE, QueueConstants.TOPIC_QUEUE1,
-                msg,correlationId);
+                newMessage);
 
-        System.out.println("test2：" + msg.getMessageProperties().getCorrelationId());
+        // 获取已发送的消息的唯一消息id
+        String correlationId = newMessage.getMessageProperties().getCorrelationId();
+        System.out.println("客户端发送消息的 correlationId：" + newMessage.getMessageProperties().getCorrelationId());
 
-        // 提取rpc回应内容的header
-        HashMap<String,Object> headers = (HashMap<String, Object>) result.getMessageProperties().getHeaders();
-        // 获取消息id
+        // 提取RPC回应内容的header
+        HashMap<String, Object> headers = (HashMap<String, Object>) result.getMessageProperties().getHeaders();
+
+        // 获取RPC回应消息的消息id
         String msgId = (String) headers.get("spring_returned_message_correlation");
-        System.out.println("Client收到消息的msgId:" + msgId) ;
+        System.out.println("Client收到消息的msgId:" + msgId);
+
+        // 客户端从回调队列获取消息，匹配与发送消息correlationId相同的消息为应答结果
         String response = "";
         if (msgId.equals(correlationId)) {
-
-            // 提取rpc回应内容body
+            // 提取RPC回应内容body
             response = new String(result.getBody());
             System.out.println("收到RPCServer返回的消息为：" + response);
         }
         return response;
     }
 
-    public Message con(String s) {
+    /**
+     * 将发送消息封装成Message
+     *
+     * @Author Liuyongfei
+     * @Date 下午1:23 2020/5/27
+     * @param message
+     * @return org.springframework.amqp.core.Message
+     **/
+    public Message convertMessage(String message) {
         MessageProperties mp = new MessageProperties();
-        byte[] src = s.getBytes(Charset.forName("UTF-8"));
-        //mp.setCorrelationId("2222");   系统生成，这里设置没用
+        byte[] src = message.getBytes(Charset.forName("UTF-8"));
+        // 注意：由于在发送消息的时候，系统会自动生成消息唯一id，因此在这里手动设置的方式是无效的
+        // CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
+        // mp.setCorrelationId("123456");
         mp.setContentType("application/json");
         mp.setContentEncoding("UTF-8");
-
-        mp.setContentLength((long) s.length());
+        mp.setContentLength((long) message.length());
         return new Message(src, mp);
     }
 }

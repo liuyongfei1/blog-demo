@@ -37,9 +37,10 @@ public class RPCServer {
         }
 
         System.out.println("Server收到发送的消息，correlationId为: " + msg.getMessageProperties().getCorrelationId());
+
         // 数据处理，返回Message
-        String newMessage = msgBody + "， sleep for " + millis + " ms";
-        Message response = con(newMessage, msg.getMessageProperties().getCorrelationId());
+        String newMessage = msgBody + "，sleep " + millis + " ms";
+        Message response = convertMessage(newMessage, msg.getMessageProperties().getCorrelationId());
         CorrelationData correlationData = new CorrelationData(msg.getMessageProperties().getCorrelationId());
         rabbitTemplate.send(QueueConstants.TOPIC_EXCHANGE, QueueConstants.TOPIC_QUEUE2, response, correlationData);
     }
@@ -49,13 +50,21 @@ public class RPCServer {
         System.out.println("队列2:" + msg.toString());
     }
 
-    public Message con(String s, String id) {
+    /**
+     * 封装消息
+     *
+     * @Author Liuyongfei
+     * @Date 下午1:25 2020/5/27
+     * @param s 消息
+     * @param id 消息id
+     * @return org.springframework.amqp.core.Message
+     **/
+    public Message convertMessage(String s,String id) {
         MessageProperties mp = new MessageProperties();
         byte[] src = s.getBytes(Charset.forName("UTF-8"));
         mp.setContentType("application/json");
         mp.setContentEncoding("UTF-8");
         mp.setCorrelationId(id);
-
         return new Message(src, mp);
     }
 }
