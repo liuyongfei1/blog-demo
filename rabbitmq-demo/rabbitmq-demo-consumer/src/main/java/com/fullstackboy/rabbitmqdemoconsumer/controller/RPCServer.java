@@ -1,4 +1,4 @@
-package com.fullstackboy.rabbitmqdemo.controller;
+package com.fullstackboy.rabbitmqdemoconsumer.controller;
 
 import com.fullstackboy.rabbitmqdemo.common.QueueConstants;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,8 @@ public class RPCServer {
         String newMessage = msgBody + "，sleep " + millis + " ms。";
         Message response = convertMessage(newMessage, msg.getMessageProperties().getCorrelationId());
         CorrelationData correlationData = new CorrelationData(msg.getMessageProperties().getCorrelationId());
-        rabbitTemplate.send(QueueConstants.RPC_EXCHANGE, QueueConstants.RPC_QUEUE2, response, correlationData);
+//        rabbitTemplate.send(QueueConstants.RPC_EXCHANGE, QueueConstants.RPC_QUEUE2, response, correlationData);
+        rabbitTemplate.convertAndSend(QueueConstants.RPC_EXCHANGE, QueueConstants.RPC_QUEUE2, response, correlationData);
     }
 
     @RabbitListener(queues = QueueConstants.RPC_QUEUE2)
