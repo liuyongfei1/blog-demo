@@ -9,3 +9,5 @@
 ##### 1.优化RPC需要用到的队列，修改为常量 
 ##### 2.优化RPCClient，为RPCServer返回消息添加correlationId匹配逻辑 
 ##### 3.优化RPC功能，将RPCServer和RPCClient两个服务单独部署
+
+#### 三. 发布RabbitMQ系列之怎么确保消息不丢失
