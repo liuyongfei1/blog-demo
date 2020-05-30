@@ -20,16 +20,20 @@ import java.io.IOException;
 @Component
 public class ConsumerController {
 
-    @RabbitListener(queues = {QueueConstants.QUEUE_NAME})
+    @RabbitListener(queues = {QueueConstants.QUEUE_NAME},concurrency = "10")
     public void handler(Message message, Channel channel) throws IOException {
         System.out.println("收到消息：" + message.toString());
         MessageHeaders headers = message.getHeaders();
         Long tag = (Long) headers.get(AmqpHeaders.DELIVERY_TAG);
 
         try {
+            System.out.println("收到消息：" + message.toString());
+            System.out.println("------------------------------");
+
             // 手动确认消息已消费
             channel.basicAck(tag,false);
-        } catch (IOException e) {
+            Thread.sleep(5000);
+        } catch (IOException | InterruptedException e) {
             // 把消费失败的消息重新放入到队列，以后可以继续消费该条消息
             channel.basicNack(tag, false, true);
             e.printStackTrace();
