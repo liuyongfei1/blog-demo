@@ -38,7 +38,7 @@ public class ProducerController {
      * @return java.lang.String
      **/
     @GetMapping("/sendDirectMessage")
-    public String sendDirectMessage() {
+    public String sendDirectMessage() throws InterruptedException {
         // 生成消息的唯一id
         String msgId = UUID.randomUUID().toString();
         String messageData = "hello,this is rabbitmq demo message";
@@ -53,7 +53,9 @@ public class ProducerController {
         for (int i = 0; i < 100; i++) {
             // 发送消息
             rabbitTemplate.convertAndSend(QueueConstants.QUEUE_EXCHANGE_NAME,QueueConstants.QUEUE_ROUTING_KEY_NAME,
-                    "demo test",new CorrelationData(msgId));
+                    "demo test:" + Integer.toString(i)
+                    ,new CorrelationData(msgId));
+//            Thread.sleep(1000);
         }
         return "message send ok";
     }
