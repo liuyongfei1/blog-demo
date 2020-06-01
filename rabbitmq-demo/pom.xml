@@ -15,6 +15,8 @@
         <module>rabbitmq-demo-common</module>
         <module>rabbitmq-demo-consumer</module>
         <module>rabbitmq-demo-service</module>
+        <module>rabbitmq-demo-mapper</module>
+        <module>rabbitmq-demo-model</module>
     </modules>
 
 </project>

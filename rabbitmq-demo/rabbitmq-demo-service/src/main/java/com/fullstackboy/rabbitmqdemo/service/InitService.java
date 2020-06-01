@@ -1,6 +1,7 @@
 package com.fullstackboy.rabbitmqdemo.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CountDownLatch;
@@ -10,6 +11,9 @@ import java.util.concurrent.CountDownLatch;
 public class InitService {
     public static final int ThreadNum = 50000;
     private static int mobile = 0;
+
+    @Autowired
+    private CommonMqService commonMqService;
 
     public void generateMultiThread() {
         log.info("开始初始化线程数---");
@@ -28,6 +32,7 @@ public class InitService {
 
     private class RunThread implements Runnable {
         private final CountDownLatch startLatch;
+
         public RunThread(CountDownLatch startLatch) {
             this.startLatch = startLatch;
         }
@@ -38,7 +43,8 @@ public class InitService {
                 // 线程等待
                 startLatch.await();
                 mobile += 1;
-                // TODO: 发送信息进入抢单队列
+                // 发送信息进入抢单队列
+                commonMqService.sendRobbingMsg(String.valueOf(mobile));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

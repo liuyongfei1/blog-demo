@@ -17,6 +17,8 @@
 
     <modules>
         <module>rabbitmq-demo</module>
+        <module>rabbitmq-demo-mapper</module>
+        <module>rabbitmq-demo-mapper</module>
     </modules>
 
     <properties>
