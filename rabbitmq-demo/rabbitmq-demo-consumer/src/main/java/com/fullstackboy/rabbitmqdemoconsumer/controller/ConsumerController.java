@@ -20,25 +20,8 @@ import java.io.IOException;
 @Component
 public class ConsumerController {
 
-    @RabbitListener(queues = {QueueConstants.QUEUE_NAME},concurrency = "1")
+    @RabbitListener(queues = {QueueConstants.QUEUE_NAME},containerFactory = "customContainerFactory")
     public void handler(Message message, Channel channel) throws IOException {
-        System.out.println("-------------start-----------------");
-        System.out.println("收到消息：" + message.toString());
-
-        MessageHeaders headers = message.getHeaders();
-        Long tag = (Long) headers.get(AmqpHeaders.DELIVERY_TAG);
-
-        try {
-            System.out.println("~~~~~~~~~~~~~~~~处理业务逻辑中~~~~~~~~~~~~~");
-            Thread.sleep(2000);
-            // 手动确认消息已消费
-            channel.basicAck(tag,false);
-            System.out.println("业务逻辑处理完毕，该消息已经被消费：" + message.toString());
-            System.out.println("----------------end----------------------");
-        } catch (IOException | InterruptedException e) {
-            // 把消费失败的消息重新放入到队列，以后可以继续消费该条消息
-            channel.basicNack(tag, false, true);
-            e.printStackTrace();
-        }
+        System.out.println("监听到抢单手机号：" + message.toString());
     }
 }

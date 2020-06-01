@@ -1,6 +1,8 @@
 package com.fullstackboy.rabbitmqdemo.controller;
 
 import com.fullstackboy.rabbitmqdemo.common.QueueConstants;
+import com.fullstackboy.rabbitmqdemo.service.InitService;
+import com.sun.corba.se.spi.activation.InitialNameService;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,7 @@ import java.util.UUID;
 @RestController
 public class ProducerController {
 
-    /**
-     * RabbitTemplate提供了发送/接收消息的方法
-     */
-    @Autowired
-    RabbitTemplate rabbitTemplate;
+   private InitService initService;
 
 
     /**
@@ -37,26 +35,9 @@ public class ProducerController {
      * @Date 上午12:12 2020/5/20 
      * @return java.lang.String
      **/
-    @GetMapping("/sendDirectMessage")
-    public String sendDirectMessage() throws InterruptedException {
-        // 生成消息的唯一id
-        String msgId = UUID.randomUUID().toString();
-        String messageData = "hello,this is rabbitmq demo message";
-        String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-        // 定义要发送的消息对象
-        Map<String,Object> messageObj = new HashMap<>();
-        messageObj.put("msgId",msgId);
-        messageObj.put("messageData",messageData);
-        messageObj.put("createTime",createTime);
-
-        for (int i = 0; i < 100; i++) {
-            // 发送消息
-            rabbitTemplate.convertAndSend(QueueConstants.QUEUE_EXCHANGE_NAME,QueueConstants.QUEUE_ROUTING_KEY_NAME,
-                    "demo test:" + Integer.toString(i)
-                    ,new CorrelationData(msgId));
-//            Thread.sleep(1000);
-        }
+    @GetMapping("/robbing/thread")
+    public String robbingThread() throws InterruptedException {
+        initService.generateMultiThread();
         return "message send ok";
     }
 }
