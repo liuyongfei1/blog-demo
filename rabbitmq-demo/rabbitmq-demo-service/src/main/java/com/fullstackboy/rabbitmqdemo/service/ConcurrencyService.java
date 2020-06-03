@@ -31,32 +31,40 @@ public class ConcurrencyService {
     /**
      * 处理抢单逻辑
      *
-     * @Author Liuyongfei
-     * @Date 上午5:59 2020/6/2
      * @param mobile
      * @return void
+     * @Author Liuyongfei
+     * @Date 上午5:59 2020/6/2
      **/
     public void manageRobbing(String mobile) {
         try {
             Product product = productMapper.selectByProductNo(ProductNo);
+            // 1.不存在该商品或者库存小于0，则直接返回
+            if (product == null || product.getTotal() == 0) {
+                return;
+            }
+
+            // 2.判断是否已经秒杀过了
+            ProductRobbingRecord record = productRobbingRecordMapper.detail(mobile);
+            if (record != null) {
+                return;
+            }
 
             // 有库存
-            if (product != null && product.getTotal() > 0) {
-                // 更新库存
-                log.info("此时商品库存为: [{}]", product.getTotal());
-                int updateResult = productMapper.updateTotal(product);
-                if (updateResult > 0) {
-                    // 向抢单信息表里插入用户数据
-                    ProductRobbingRecord productRobbingRecord = new ProductRobbingRecord();
-                    productRobbingRecord.setMobile(mobile);
-                    productRobbingRecord.setProductId(product.getId());
-                    String timeStamp = Long.toString(System.currentTimeMillis() / 1000);
-                    productRobbingRecord.setCreateTime(Integer.parseInt(timeStamp));
-                    productRobbingRecordMapper.insertRecord(productRobbingRecord);
-                }
+            // 更新库存
+            log.info("此时商品库存为: [{}]", product.getTotal());
+            int updateResult = productMapper.updateTotal(product);
+            if (updateResult > 0) {
+                // 向抢单信息表里插入用户数据
+                ProductRobbingRecord productRobbingRecord = new ProductRobbingRecord();
+                productRobbingRecord.setMobile(mobile);
+                productRobbingRecord.setProductId(product.getId());
+                String timeStamp = Long.toString(System.currentTimeMillis() / 1000);
+                productRobbingRecord.setCreateTime(Integer.parseInt(timeStamp));
+                productRobbingRecordMapper.insertRecord(productRobbingRecord);
             }
         } catch (Exception e) {
-            log.error("处理抢单发生异常: [{}]",e);
+            log.error("处理抢单发生异常: [{}]", e);
         }
 
     }

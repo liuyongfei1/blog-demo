@@ -8,6 +8,10 @@
         <result column="create_time" property="createTime" jdbcType="INTEGER"/>
     </resultMap>
 
+    <select id="detail" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from product_robbing_record where mobile = #{mobile}
+    </select>
+
     <insert id="insertRecord" parameterType="com.fullstackboy.rabbitmqdemo.model.ProductRobbingRecord">
         insert into product_robbing_record (mobile,product_id,create_time) value (#{mobile},#{productId},#{createTime})
     </insert>

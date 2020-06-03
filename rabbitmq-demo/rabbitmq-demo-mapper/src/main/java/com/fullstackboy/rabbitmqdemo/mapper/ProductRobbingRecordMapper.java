@@ -18,4 +18,14 @@ public interface ProductRobbingRecordMapper {
      * @return int
      **/
     int insertRecord(ProductRobbingRecord productRobbingRecord);
+
+    /**
+     * 判断该用户是否已经秒杀成功了
+     *
+     * @Author Liuyongfei
+     * @Date 上午6:30 2020/6/4
+     * @param mobile
+     * @return com.fullstackboy.rabbitmqdemo.model.ProductRobbingRecord
+     **/
+    ProductRobbingRecord detail(String mobile);
 }

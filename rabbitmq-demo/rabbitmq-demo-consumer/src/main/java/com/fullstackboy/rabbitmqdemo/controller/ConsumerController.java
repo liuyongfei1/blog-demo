@@ -47,6 +47,8 @@ public class ConsumerController {
 
             // 确认消息已经消费
             channel.basicAck(tag, false);
+
+            // 异步通知用户抢单成功
         } catch (Exception e) {
             log.error("用户 : [{}] 商城抢单时发生异常", mobile, e.fillInStackTrace());
             // 确认消息已经消费（basicReject 和 basicNack 的区别在于，basicNack 一次可以拒绝多条消息，而basicReject一次只能拒绝一条消息）
