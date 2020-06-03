@@ -24,8 +24,8 @@ import java.util.UUID;
  */
 @RestController
 public class ProducerController {
-
-   private InitService initService;
+    @Autowired
+    private InitService initService;
 
 
     /**

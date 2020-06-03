@@ -9,7 +9,7 @@ import java.util.concurrent.CountDownLatch;
 @Slf4j
 @Service
 public class InitService {
-    public static final int ThreadNum = 50000;
+    public static final int ThreadNum = 100;
     private static int mobile = 0;
 
     @Autowired

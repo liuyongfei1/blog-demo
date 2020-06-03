@@ -1,11 +1,9 @@
-package com.fullstackboy.rabbitmqdemoconsumer.controller;
+package com.fullstackboy.rabbitmqdemo.controller;
 
 import com.fullstackboy.rabbitmqdemo.common.QueueConstants;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
