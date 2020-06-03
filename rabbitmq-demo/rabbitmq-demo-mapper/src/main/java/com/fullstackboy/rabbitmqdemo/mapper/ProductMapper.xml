@@ -3,9 +3,17 @@
 <mapper namespace="com.fullstackboy.rabbitmqdemo.mapper.ProductMapper">
     <resultMap id="BaseResultMap" type="com.fullstackboy.rabbitmqdemo.model.Product">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="productNo" property="productNo" jdbcType="VARCHAR"/>
+        <result column="product_no" property="productNo" jdbcType="VARCHAR"/>
         <result column="total" property="total" jdbcType="INTEGER"/>
-        <result column="updateTime" property="updateTime" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="INTEGER"/>
     </resultMap>
+
+    <select id="selectByProductNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from product where product_no = #{productNo}
+    </select>
+
+    <update id="updateTotal" parameterType="java.lang.String">
+        update product set total = total - 1 where product_no = #{productNo}
+    </update>
 
 </mapper>

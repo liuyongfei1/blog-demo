@@ -9,7 +9,7 @@ import java.util.concurrent.CountDownLatch;
 @Slf4j
 @Service
 public class InitService {
-    public static final int ThreadNum = 100;
+    public static final int ThreadNum = 1000;
     private static int mobile = 0;
 
     @Autowired
@@ -43,6 +43,7 @@ public class InitService {
                 // 线程等待
                 startLatch.await();
                 mobile += 1;
+                log.info("mobile值为：[{}]", mobile);
                 // 发送信息进入抢单队列
                 commonMqService.sendRobbingMsg(String.valueOf(mobile));
             } catch (InterruptedException e) {

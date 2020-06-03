@@ -31,4 +31,18 @@
         </dependency>
     </dependencies>
 
+<!--    如果我们的mapper.xml文件没有放置到src-main-resources下面，是不会被maven build plugin给默认扫描到的。此时需要修改启动的模块的pom文件，在build标签里面加入：-->
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
 </project>

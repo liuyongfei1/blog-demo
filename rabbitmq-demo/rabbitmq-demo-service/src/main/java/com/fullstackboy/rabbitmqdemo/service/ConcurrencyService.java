@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * 多线程处理抢单
  *
@@ -41,17 +43,20 @@ public class ConcurrencyService {
             // 有库存
             if (product != null && product.getTotal() > 0) {
                 // 更新库存
+                log.info("此时商品库存为: [{}]", product.getTotal());
                 int updateResult = productMapper.updateTotal(product);
                 if (updateResult > 0) {
                     // 向抢单信息表里插入用户数据
                     ProductRobbingRecord productRobbingRecord = new ProductRobbingRecord();
                     productRobbingRecord.setMobile(mobile);
                     productRobbingRecord.setProductId(product.getId());
+                    String timeStamp = Long.toString(System.currentTimeMillis() / 1000);
+                    productRobbingRecord.setCreateTime(Integer.parseInt(timeStamp));
                     productRobbingRecordMapper.insertRecord(productRobbingRecord);
                 }
             }
         } catch (Exception e) {
-            log.error("处理抢单发生异常: [{}]",mobile);
+            log.error("处理抢单发生异常: [{}]",e);
         }
 
     }
