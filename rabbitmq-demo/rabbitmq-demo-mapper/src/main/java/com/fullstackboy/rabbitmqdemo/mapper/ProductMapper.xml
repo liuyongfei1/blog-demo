@@ -8,12 +8,14 @@
         <result column="update_time" property="updateTime" jdbcType="INTEGER"/>
     </resultMap>
 
+    <!--该商品是否有库存-->
     <select id="selectByProductNo" resultMap="BaseResultMap" parameterType="java.lang.String">
         select * from product where product_no = #{productNo}
     </select>
 
+    <!--该商品是否可减库存-->
     <update id="updateTotal" parameterType="java.lang.String">
-        update product set total = total - 1 where product_no = #{productNo}
+        update product set total = total - 1 where product_no = #{productNo} and total > 0
     </update>
 
 </mapper>

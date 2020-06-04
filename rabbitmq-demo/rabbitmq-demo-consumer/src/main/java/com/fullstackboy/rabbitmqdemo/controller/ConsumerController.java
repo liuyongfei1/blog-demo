@@ -31,6 +31,9 @@ public class ConsumerController {
 
     @RabbitListener(queues = {QueueConstants.QUEUE_NAME}, containerFactory = "customContainerFactory")
     public void handler(Message message, Channel channel) throws IOException {
+
+        channel.basicQos(1);
+
         // 获取手机号
         String mobile = (String) message.getPayload();
         log.info("监听到抢单手机号：[{}]", mobile);
