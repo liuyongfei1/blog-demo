@@ -29,10 +29,10 @@ public class ConsumerController {
     @Autowired
     private ConcurrencyService concurrencyService;
 
-    @RabbitListener(queues = {QueueConstants.QUEUE_NAME}, containerFactory = "customContainerFactory")
+    @RabbitListener(queues = {QueueConstants.QUEUE_NAME})
     public void handler(Message message, Channel channel) throws IOException {
 
-        channel.basicQos(1);
+//        channel.basicQos(1);
 
         // 获取手机号
         String mobile = (String) message.getPayload();
@@ -45,8 +45,6 @@ public class ConsumerController {
         try {
             // 处理抢单逻辑
             concurrencyService.manageRobbing(mobile);
-
-            log.info("手机号：[{}] 的用户抢单成功", mobile);
 
             // 确认消息已经消费
             channel.basicAck(tag, false);

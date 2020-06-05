@@ -10,7 +10,6 @@ import java.util.concurrent.CountDownLatch;
 @Service
 public class InitService {
     public static final int ThreadNum = 1000;
-    private static int mobile = 0;
 
     @Autowired
     private CommonMqService commonMqService;
@@ -20,7 +19,7 @@ public class InitService {
         try {
             CountDownLatch countDownLatch = new CountDownLatch(1);
             for (int i = 0; i < ThreadNum; i++) {
-                new Thread(new RunThread(countDownLatch)).start();
+                new Thread(new RunThread(countDownLatch, i)).start();
             }
 
             // 启动多个线程
@@ -32,9 +31,11 @@ public class InitService {
 
     private class RunThread implements Runnable {
         private final CountDownLatch startLatch;
+        private int mobile = 185188;
 
-        public RunThread(CountDownLatch startLatch) {
+        public RunThread(CountDownLatch startLatch, int i) {
             this.startLatch = startLatch;
+            this.mobile += i;
         }
 
         @Override
@@ -42,9 +43,9 @@ public class InitService {
             try {
                 // 线程等待
                 startLatch.await();
-                mobile += 1;
-                log.info("mobile值为：[{}]", mobile);
+
                 // 发送信息进入抢单队列
+                log.info("用户的手机号为：[{}]", mobile);
                 commonMqService.sendRobbingMsg(String.valueOf(mobile));
             } catch (InterruptedException e) {
                 e.printStackTrace();

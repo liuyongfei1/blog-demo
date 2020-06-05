@@ -57,6 +57,8 @@ public class ConcurrencyService {
                     productRobbingRecord.setCreateTime(Integer.parseInt(timeStamp));
                     productRobbingRecordMapper.insertRecord(productRobbingRecord);
 
+                    log.info("手机号：[{}] 的用户抢单成功", mobile);
+
                     // 异步通知（发短信）用户抢单成功
                     log.info("已经给用户成功发送短信");
                 }
