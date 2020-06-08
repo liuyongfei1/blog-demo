@@ -29,7 +29,7 @@ public class ConsumerController {
     @Autowired
     private ConcurrencyService concurrencyService;
 
-    @RabbitListener(queues = {QueueConstants.QUEUE_NAME})
+    @RabbitListener(queues = {QueueConstants.QUEUE_NAME}, containerFactory = "customContainerFactory")
     public void handler(Message message, Channel channel) throws IOException {
 
 //        channel.basicQos(1);
