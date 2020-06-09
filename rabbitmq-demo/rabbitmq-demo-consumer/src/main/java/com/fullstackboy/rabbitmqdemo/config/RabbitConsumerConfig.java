@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * RabbitMQ配置
- *
+ * 开启消费者多线程，同时消费消息
  * @author lyf
  * @公众号 全栈在路上
  * @GitHub https://github.com/liuyongfei1
@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
-public class Rabbit2Config {
+public class RabbitConsumerConfig {
     @Bean("customContainerFactory")
     public SimpleRabbitListenerContainerFactory containerFactory(SimpleRabbitListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();

@@ -8,14 +8,13 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 /**
- * 消息消费端
+ * 消息消费端（使用多个消费者并发消费消息）
  *
  * @author Liuyongfei
  * @公众号 全栈在路上
@@ -31,8 +30,6 @@ public class ConsumerController {
 
     @RabbitListener(queues = {QueueConstants.QUEUE_NAME}, containerFactory = "customContainerFactory")
     public void handler(Message message, Channel channel) throws IOException {
-
-//        channel.basicQos(1);
 
         // 获取手机号
         String mobile = (String) message.getPayload();
