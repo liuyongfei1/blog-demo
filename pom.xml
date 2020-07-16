@@ -17,6 +17,7 @@
 
     <modules>
         <module>rabbitmq-demo</module>
+        <module>canal-demo</module>
     </modules>
 
     <properties>
