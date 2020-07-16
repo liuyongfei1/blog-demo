@@ -19,7 +19,7 @@ import java.util.List;
 public class CanalClient {
     public static void main(String[] args) {
         CanalConnector connector = CanalConnectors.newSingleConnector(new InetSocketAddress(AddressUtils.getHostIp(),
-                11111), "example", "", "");
+                11111), "yzcrm", "", "");
 
         int batchSize = 1000;
         int emptyCount = 0;
