@@ -21,7 +21,7 @@ public class CanalKafkaClient {
 
         try {
             connector.connect();
-            System.out.println("test");
+            System.out.println("test111");
 
             // 获取指定数量的数据
             Message message = connector.getWithoutAck(batchSize);
