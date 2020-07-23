@@ -40,3 +40,4 @@
 #### 十一. 发布移山(数据迁移平台)的数据迁移是怎么实现的
 #### 十二. 编辑阿里canal是怎么通过zookeeper实现HA机制的？
 #### 十三. 发布阿里canal是怎么通过zookeeper实现HA机制的？
+#### 十四. 本机跑通canal-kafka-client集群连接方式
