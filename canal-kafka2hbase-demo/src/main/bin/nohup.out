@@ -1,0 +1,4 @@
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=128m; support was removed in 8.0
+错误: 找不到或无法加载主类 com.alibaba.otter.canal.example.SimpleCanalClientTest
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=128m; support was removed in 8.0
+错误: 找不到或无法加载主类 com.alibaba.otter.canal.example.SimpleCanalClientTest
