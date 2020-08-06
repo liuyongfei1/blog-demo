@@ -17,8 +17,7 @@
 
     <modules>
         <module>rabbitmq-demo</module>
-        <module>canal-demo</module>
-        <module>quartz-demo</module>
+        <module>canal-kafka2hbase-demo</module>
     </modules>
 
     <properties>
@@ -43,14 +42,5 @@
             </exclusions>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
