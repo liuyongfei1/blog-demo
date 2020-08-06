@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.otter.canal.example.util.HbaseUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.slf4j.Logger;
@@ -162,6 +163,9 @@ public class BaseCanalClientTest {
                         printColumn(rowData.getBeforeColumnsList());
                     } else if (eventType == EventType.INSERT) {
                         printColumn(rowData.getAfterColumnsList());
+
+                        // 创建HBase表
+                        createHBaseTable();
                     } else {
                         printColumn(rowData.getAfterColumnsList());
                     }
@@ -270,6 +274,17 @@ public class BaseCanalClientTest {
             }
         }
         return "";
+    }
+
+    /**
+     * 创建Hbase表
+     *
+     * @Author Liuyongfei
+     * @Date 下午11:23 2020/8/6
+     * @return void
+     **/
+    private void createHBaseTable() {
+        HbaseUtil.createTable("lyf_test");
     }
 
 }
