@@ -73,27 +73,57 @@ public class HbaseUtil {
         try {
             Put put = new Put(Bytes.toBytes("row1"));
 //            put.addColumn(Bytes.toBytes("update_info"),Bytes.toBytes("exe_time"),Bytes.toBytes("1596783162000"));
-            put.addColumn(Bytes.toBytes("update_info"),Bytes.toBytes("exe_time"),Bytes.toBytes("111"));
+            put.addColumn(Bytes.toBytes("update_info"), Bytes.toBytes("exe_time"), Bytes.toBytes("111"));
 
             connection = ConnectionFactory.createConnection(configuration);
             TableName tableName = TableName.valueOf("lyf_test3");
             Table table = connection.getTable(tableName);
 
-            //  如果row,family,qualifier,value存在，则不会执行put，并返回false
-            boolean insertResult = table.checkAndPut(Bytes.toBytes("row1"),Bytes.toBytes("update_info"),Bytes.toBytes("exe_time"), null,put);
+            // 如果列update_info不存在值就插入数据，如果存在则返回false
+            boolean insertResult = table.checkAndMutate(Bytes.toBytes("row1"), Bytes.toBytes("update_info"))
+                    .qualifier(Bytes.toBytes("exe_time"))
+                    .ifNotExists()
+                    .thenPut(put);
 
             boolean updateResult = false;
 
-            // 输出结果看是否执行了put
-            System.out.println("插入列结果:" + insertResult);
-
+            // 更新
             if (!insertResult) {
+                // 如果列表相等就更新数据
                 Put put2 = new Put(Bytes.toBytes("row1"));
-                put2.addColumn(Bytes.toBytes("update_info"),Bytes.toBytes("exe_time"),Bytes.toBytes("112"));
+                put2.addColumn(Bytes.toBytes("update_info"), Bytes.toBytes("exe_time"), Bytes.toBytes("1596783162000"));
                 updateResult = table.checkAndMutate(Bytes.toBytes("row1"), Bytes.toBytes("update_info"))
-                        .qualifier(Bytes.toBytes("exe_time")).ifEquals(Bytes.toBytes("1596783162000"))
+                        .qualifier(Bytes.toBytes("exe_time")).ifEquals(Bytes.toBytes("112"))
                         .thenPut(put2);
-                System.out.println("更新列结果:" + updateResult);
+
+                // 插入列:exe_position
+                if (!updateResult) {
+                    // 如果列exe_position不存在值就插入数据，如果存在则返回false
+                    Put put3 = new Put(Bytes.toBytes("row1"));
+                    put3.addColumn(Bytes.toBytes("update_info"), Bytes.toBytes("exe_position"), Bytes.toBytes("666"));
+                    boolean res3 = table.checkAndMutate(Bytes.toBytes("row1"), Bytes.toBytes("update_info"))
+                            .qualifier(Bytes.toBytes("exe_position"))
+                            .ifNotExists()
+                            .thenPut(put3);
+
+                    // 更新列 exe_position 的值
+                    if (!res3) {
+                        Put put4 = new Put(Bytes.toBytes("row1"));
+                        put4.addColumn(Bytes.toBytes("update_info"), Bytes.toBytes("exe_position"), Bytes.toBytes("777"));
+
+                        // 如果row1 update_info exe_position 666 存在就插入新数据
+                        boolean res4 = table.checkAndMutate(Bytes.toBytes("row1"), Bytes.toBytes("update_info"))
+                                .qualifier(Bytes.toBytes("exe_position")).ifEquals(Bytes.toBytes("666"))
+                                .thenPut(put4);
+                        LOGGER.info("列exe_position更新结果:" + res4);
+                    } else {
+                        LOGGER.info("列exe_position插入值成功");
+                    }
+                } else {
+                    LOGGER.info("列exe_time更新值成功");
+                }
+            } else {
+                LOGGER.info("列exe_time插入值成功");
             }
         } catch (IOException e) {
             e.printStackTrace();
