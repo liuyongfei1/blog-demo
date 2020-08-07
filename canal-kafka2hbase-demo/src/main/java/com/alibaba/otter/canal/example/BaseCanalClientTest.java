@@ -170,7 +170,7 @@ public class BaseCanalClientTest {
 
                 // 创建HBase表
                 createHBaseTable();
-                logger.info("创建HBase表成功");
+                logger.info("执行结束");
             }
         }
     }
@@ -285,7 +285,7 @@ public class BaseCanalClientTest {
      * @return void
      **/
     private void createHBaseTable() {
-        HbaseUtil.createTable("lyf_test1");
+        HbaseUtil.createTable("lyf_test3");
     }
 
 }

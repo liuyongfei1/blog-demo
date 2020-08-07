@@ -14,10 +14,7 @@ import org.slf4j.LoggerFactory;
  */
 public class HbaseUtil {
     private static final Logger SERVICELOGGER = LoggerFactory.getLogger("serviceLogger");
-    private static final Logger LOGGER = LoggerFactory.getLogger(com.alibaba.otter.canal.example.util.HbaseUtil.class);//记载日志
-    private static final String HBASE_ZOOKEEPER_QUORUM = "10.200.23.109,10.200.23.110,10.200.23.111";
-    private static final String HBASE_ZOOKEEPER_PROPERTY_CLIENTPORT = "2181";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(com.alibaba.otter.canal.example.util.HbaseUtil.class);
 
     public static Configuration configuration;
 
