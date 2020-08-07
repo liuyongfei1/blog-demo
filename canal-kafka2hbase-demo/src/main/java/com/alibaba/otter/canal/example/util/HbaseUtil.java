@@ -6,8 +6,12 @@ import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.filter.CompareFilter;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * Desc:    Hbase客户端
@@ -61,5 +65,40 @@ public class HbaseUtil {
             }
 
         }
+    }
+
+    public static void insertData() {
+        Connection connection = null;
+
+        try {
+            Put put = new Put(Bytes.toBytes("row1"));
+//            put.addColumn(Bytes.toBytes("update_info"),Bytes.toBytes("exe_time"),Bytes.toBytes("1596783162000"));
+            put.addColumn(Bytes.toBytes("update_info"),Bytes.toBytes("exe_time"),Bytes.toBytes("111"));
+
+            connection = ConnectionFactory.createConnection(configuration);
+            TableName tableName = TableName.valueOf("lyf_test3");
+            Table table = connection.getTable(tableName);
+
+            //  如果row,family,qualifier,value存在，则不会执行put，并返回false
+            boolean insertResult = table.checkAndPut(Bytes.toBytes("row1"),Bytes.toBytes("update_info"),Bytes.toBytes("exe_time"), null,put);
+
+            boolean updateResult = false;
+
+            // 输出结果看是否执行了put
+            System.out.println("插入列结果:" + insertResult);
+
+            if (!insertResult) {
+                Put put2 = new Put(Bytes.toBytes("row1"));
+                put2.addColumn(Bytes.toBytes("update_info"),Bytes.toBytes("exe_time"),Bytes.toBytes("112"));
+                updateResult = table.checkAndMutate(Bytes.toBytes("row1"), Bytes.toBytes("update_info"))
+                        .qualifier(Bytes.toBytes("exe_time")).ifEquals(Bytes.toBytes("1596783162000"))
+                        .thenPut(put2);
+                System.out.println("更新列结果:" + updateResult);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+        }
+
     }
 }
