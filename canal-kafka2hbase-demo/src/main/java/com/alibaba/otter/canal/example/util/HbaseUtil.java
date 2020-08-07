@@ -23,8 +23,8 @@ public class HbaseUtil {
 
     static {
         configuration = HBaseConfiguration.create();
-        configuration.set(HBASE_ZOOKEEPER_QUORUM, PropertyUtil.getProp(HBASE_ZOOKEEPER_QUORUM));
-        configuration.set(HBASE_ZOOKEEPER_PROPERTY_CLIENTPORT, PropertyUtil.getProp(HBASE_ZOOKEEPER_PROPERTY_CLIENTPORT));
+        configuration.set("hbase.zookeeper.quorum", "10.200.23.109,10.200.23.110,10.200.23.111");
+        configuration.set("hbase.zookeeper.property.clientPort", "2181");
     }
 
     /**
@@ -33,7 +33,7 @@ public class HbaseUtil {
      * @param tableName 表名
      */
     public static void createTable(String tableName) {
-        SERVICELOGGER.info("HbaseUtil.createTable 创建Hbase表" + tableName + "......");
+        SERVICELOGGER.info("HbaseUtil.createTable 创建Hbase表[" + tableName + "]......");
         Connection connection = null;
         Admin admin = null;
         try {
@@ -45,12 +45,12 @@ public class HbaseUtil {
                 tableDescriptor.addFamily(new HColumnDescriptor("info"));
                 tableDescriptor.addFamily(new HColumnDescriptor("update_info"));
                 admin.createTable(tableDescriptor);
-                SERVICELOGGER.info("HbaseUtil.createTable 创建Hbase表" + tableName + "成功!");
+                SERVICELOGGER.info("HbaseUtil.createTable 创建Hbase表[" + tableName + "]成功!");
             } else {
                 SERVICELOGGER.info("HbaseUtil.createTable 表名为:" + tableName + "的数据已存在!");
             }
         } catch (Exception ex) {
-            LOGGER.error("HbaseUtil.createTable 表名为:" + tableName + "创建失败!原因:" + ex.getMessage());
+            LOGGER.error("HbaseUtil.createTable 表名为:" + tableName + " 创建失败!原因:" + ex.getMessage());
         } finally {
             try {
                 if (admin != null) {

@@ -163,13 +163,14 @@ public class BaseCanalClientTest {
                         printColumn(rowData.getBeforeColumnsList());
                     } else if (eventType == EventType.INSERT) {
                         printColumn(rowData.getAfterColumnsList());
-
-                        // 创建HBase表
-                        createHBaseTable();
                     } else {
                         printColumn(rowData.getAfterColumnsList());
                     }
                 }
+
+                // 创建HBase表
+                createHBaseTable();
+                logger.info("创建HBase表成功");
             }
         }
     }
@@ -284,7 +285,7 @@ public class BaseCanalClientTest {
      * @return void
      **/
     private void createHBaseTable() {
-        HbaseUtil.createTable("lyf_test");
+        HbaseUtil.createTable("lyf_test1");
     }
 
 }
