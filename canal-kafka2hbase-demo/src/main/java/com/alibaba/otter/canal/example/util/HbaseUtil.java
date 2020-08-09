@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Desc:    Hbase客户端
@@ -44,7 +45,7 @@ public class HbaseUtil {
             if (!admin.tableExists(TableName.valueOf(tableName))) {
                 HTableDescriptor tableDescriptor = new HTableDescriptor(TableName.valueOf(tableName));
                 tableDescriptor.addFamily(new HColumnDescriptor("info"));
-                tableDescriptor.addFamily(new HColumnDescriptor("update_info"));
+                tableDescriptor.addFamily(new HColumnDescriptor("updateInfo"));
                 admin.createTable(tableDescriptor);
                 SERVICELOGGER.info("HbaseUtil.createTable 创建Hbase表[" + tableName + "]成功!");
             } else {
@@ -67,63 +68,70 @@ public class HbaseUtil {
         }
     }
 
-    public static void insertData() {
+    public static void insertData(Map<String,String> hbaseData) {
         Connection connection = null;
 
         try {
-            Put put = new Put(Bytes.toBytes("row1"));
-//            put.addColumn(Bytes.toBytes("update_info"),Bytes.toBytes("exe_time"),Bytes.toBytes("1596783162000"));
-            put.addColumn(Bytes.toBytes("update_info"), Bytes.toBytes("exe_time"), Bytes.toBytes("111"));
+            Put put = new Put(Bytes.toBytes(hbaseData.get("id")));
+            put.addColumn(Bytes.toBytes("updateInfo"), Bytes.toBytes("executeTime"), Bytes.toBytes(hbaseData.get("executeTime")));
+            put.addColumn(Bytes.toBytes("updateInfo"), Bytes.toBytes("columnData"),
+                    Bytes.toBytes(hbaseData.get("name")));
 
             connection = ConnectionFactory.createConnection(configuration);
-            TableName tableName = TableName.valueOf("lyf_test3");
+            TableName tableName = TableName.valueOf("canal_lyf_demo1");
             Table table = connection.getTable(tableName);
 
-            // 如果列update_info不存在值就插入数据，如果存在则返回false
-            boolean insertResult = table.checkAndMutate(Bytes.toBytes("row1"), Bytes.toBytes("update_info"))
-                    .qualifier(Bytes.toBytes("exe_time"))
+            // 如果列updateInfo不存在值就插入数据，如果存在则返回false
+            boolean insertResult = table.checkAndMutate(Bytes.toBytes(hbaseData.get("executeTime")), Bytes.toBytes("updateInfo"))
+                    .qualifier(Bytes.toBytes("executeTime"))
                     .ifNotExists()
                     .thenPut(put);
+
+
+            // 插入binlog Data
+
 
             boolean updateResult = false;
 
             // 更新
             if (!insertResult) {
                 // 如果列表相等就更新数据
-                Put put2 = new Put(Bytes.toBytes("row1"));
-                put2.addColumn(Bytes.toBytes("update_info"), Bytes.toBytes("exe_time"), Bytes.toBytes("1596783162000"));
-                updateResult = table.checkAndMutate(Bytes.toBytes("row1"), Bytes.toBytes("update_info"))
-                        .qualifier(Bytes.toBytes("exe_time")).ifEquals(Bytes.toBytes("112"))
+                Put put2 = new Put(Bytes.toBytes(hbaseData.get("id")));
+                put2.addColumn(Bytes.toBytes("updateInfo"), Bytes.toBytes("executeTime"), Bytes.toBytes(hbaseData.get("executeTime")));
+                // 备注：这里要先从hbase表里取出当前列的值，然后再做判断
+                updateResult = table.checkAndMutate(Bytes.toBytes("row1"), Bytes.toBytes("updateInfo"))
+                        .qualifier(Bytes.toBytes("executeTime")).ifEquals(Bytes.toBytes("112"))
                         .thenPut(put2);
 
-                // 插入列:exe_position
+                // 插入列:exePosition
                 if (!updateResult) {
-                    // 如果列exe_position不存在值就插入数据，如果存在则返回false
-                    Put put3 = new Put(Bytes.toBytes("row1"));
-                    put3.addColumn(Bytes.toBytes("update_info"), Bytes.toBytes("exe_position"), Bytes.toBytes("666"));
-                    boolean res3 = table.checkAndMutate(Bytes.toBytes("row1"), Bytes.toBytes("update_info"))
-                            .qualifier(Bytes.toBytes("exe_position"))
+                    // 如果列exePosition不存在值就插入数据，如果存在则返回false
+                    Put put3 = new Put(Bytes.toBytes(hbaseData.get("id")));
+                    put3.addColumn(Bytes.toBytes("updateInfo"), Bytes.toBytes("exePosition"), Bytes.toBytes(hbaseData.get("logfileOffset")));
+                    boolean res3 = table.checkAndMutate(Bytes.toBytes("row1"), Bytes.toBytes("updateInfo"))
+                            .qualifier(Bytes.toBytes("exePosition"))
                             .ifNotExists()
                             .thenPut(put3);
 
-                    // 更新列 exe_position 的值
+                    // 更新列 exePosition 的值
                     if (!res3) {
-                        Put put4 = new Put(Bytes.toBytes("row1"));
-                        put4.addColumn(Bytes.toBytes("update_info"), Bytes.toBytes("exe_position"), Bytes.toBytes("777"));
+                        Put put4 = new Put(Bytes.toBytes(hbaseData.get("id")));
+                        put4.addColumn(Bytes.toBytes("updateInfo"), Bytes.toBytes("exePosition"), Bytes.toBytes(hbaseData.get("logfileOffset")));
 
-                        // 如果row1 update_info exe_position 666 存在就插入新数据
-                        boolean res4 = table.checkAndMutate(Bytes.toBytes("row1"), Bytes.toBytes("update_info"))
-                                .qualifier(Bytes.toBytes("exe_position")).ifEquals(Bytes.toBytes("666"))
+                        // 备注：这里要先从hbase表里取出当前列的值，然后再做判断
+                        // 如果row1 updateInfo exePosition 666 存在就插入新数据
+                        boolean res4 = table.checkAndMutate(Bytes.toBytes(hbaseData.get("id")), Bytes.toBytes("updateInfo"))
+                                .qualifier(Bytes.toBytes("exePosition")).ifEquals(Bytes.toBytes("666"))
                                 .thenPut(put4);
-                        LOGGER.info("列exe_position更新结果:" + res4);
+                        LOGGER.info("列exePosition更新结果:" + res4);
                     } else {
-                        LOGGER.info("列exe_position插入值成功");
+                        LOGGER.info("列exePosition插入值成功");
                     }
                 } else {
-                    LOGGER.info("列exe_time更新值成功");
+                    LOGGER.info("列executeTime更新值成功");
                 }
             } else {
-                LOGGER.info("列exe_time插入值成功");
+                LOGGER.info("列executeTime插入值成功");
             }
         } catch (IOException e) {
             e.printStackTrace();

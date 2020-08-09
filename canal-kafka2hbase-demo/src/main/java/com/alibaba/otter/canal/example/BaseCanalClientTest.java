@@ -3,7 +3,9 @@ package com.alibaba.otter.canal.example;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.otter.canal.example.util.HbaseUtil;
 import org.apache.commons.lang.StringUtils;
@@ -94,7 +96,7 @@ public class BaseCanalClientTest {
 
     protected void printEntry(List<Entry> entrys) { for (Entry entry : entrys) {
             long executeTime = entry.getHeader().getExecuteTime();
-            long delayTime = new Date().getTime() - executeTime;
+            long logfileOffset = entry.getHeader().getLogfileOffset();
             Date date = new Date(entry.getHeader().getExecuteTime());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -158,23 +160,30 @@ public class BaseCanalClientTest {
                 }
 
                 printXAInfo(rowChage.getPropsList());
+
+                // 组装插入HBase表的数据
+                Map<String, String> hbaseData = new HashMap<>();
+                hbaseData.put("executeTime",String.valueOf(executeTime));
+                hbaseData.put("logfileOffset",String.valueOf(logfileOffset));
+
                 for (RowData rowData : rowChage.getRowDatasList()) {
                     if (eventType == EventType.DELETE) {
                         printColumn(rowData.getBeforeColumnsList());
                     } else if (eventType == EventType.INSERT) {
-                        printColumn(rowData.getAfterColumnsList());
+                        printColumn(rowData.getAfterColumnsList(),hbaseData);
                     } else {
                         printColumn(rowData.getAfterColumnsList());
                     }
                 }
 
-                logger.info("-------createHBaseTable start");
-                // 创建HBase表
-                createHBaseTable();
-                logger.info("-------createHBaseTable end");
-
+//                logger.info("-------createHBaseTable start");
+//                // 创建HBase表
+//                createHBaseTable();
+//                logger.info("-------createHBaseTable end");
+//
+                // 为HBase表插入数据
                 logger.info("-------insertData start");
-                HbaseUtil.insertData();
+                HbaseUtil.insertData(hbaseData);
                 logger.info("-------insertData end");
             }
         }
@@ -189,6 +198,34 @@ public class BaseCanalClientTest {
                     // get value bytes
                     builder.append(column.getName() + " : "
                                    + new String(column.getValue().getBytes("ISO-8859-1"), "UTF-8"));
+                } else {
+                    builder.append(column.getName() + " : " + column.getValue());
+                }
+            } catch (UnsupportedEncodingException e) {
+            }
+            builder.append("    type=" + column.getMysqlType());
+            if (column.getUpdated()) {
+                builder.append("    update=" + column.getUpdated());
+            }
+            builder.append(SEP);
+            logger.info(builder.toString());
+        }
+    }
+
+    protected void printColumn(List<Column> columns,Map<String,String> hbaseData) {
+        for (Column column : columns) {
+            StringBuilder builder = new StringBuilder();
+            try {
+                if (StringUtils.containsIgnoreCase(column.getMysqlType(), "BLOB")
+                        || StringUtils.containsIgnoreCase(column.getMysqlType(), "BINARY")) {
+                    // get value bytes
+                    builder.append(column.getName() + " : "
+                            + new String(column.getValue().getBytes("ISO-8859-1"), "UTF-8"));
+
+                    // 组装插入HBase表的数据
+                    if ("id".equals(column.getName()) || "name".equals(column.getName())) {
+                        hbaseData.put(column.getName(),column.getValue());
+                    }
                 } else {
                     builder.append(column.getName() + " : " + column.getValue());
                 }
