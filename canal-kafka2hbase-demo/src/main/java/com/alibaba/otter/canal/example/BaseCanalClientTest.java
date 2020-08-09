@@ -221,13 +221,13 @@ public class BaseCanalClientTest {
                     // get value bytes
                     builder.append(column.getName() + " : "
                             + new String(column.getValue().getBytes("ISO-8859-1"), "UTF-8"));
+                } else {
+                    builder.append(column.getName() + " : " + column.getValue());
 
                     // 组装插入HBase表的数据
                     if ("id".equals(column.getName()) || "name".equals(column.getName())) {
                         hbaseData.put(column.getName(),column.getValue());
                     }
-                } else {
-                    builder.append(column.getName() + " : " + column.getValue());
                 }
             } catch (UnsupportedEncodingException e) {
             }

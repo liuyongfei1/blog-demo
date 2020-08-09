@@ -1,5 +1,6 @@
 package com.alibaba.otter.canal.example.util;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
@@ -74,15 +75,19 @@ public class HbaseUtil {
         try {
             Put put = new Put(Bytes.toBytes(hbaseData.get("id")));
             put.addColumn(Bytes.toBytes("updateInfo"), Bytes.toBytes("executeTime"), Bytes.toBytes(hbaseData.get("executeTime")));
-            put.addColumn(Bytes.toBytes("updateInfo"), Bytes.toBytes("columnData"),
-                    Bytes.toBytes(hbaseData.get("name")));
+
+            // 组装 binlog 里的 column 数据
+            JSONObject columnData = new JSONObject();
+            columnData.put("name",hbaseData.get("name"));
+            String columnDataStr = JSONObject.toJSONString(columnData);
+//            put.addColumn(Bytes.toBytes("updateInfo"), Bytes.toBytes("columnData"),  Bytes.toBytes(columnDataStr));
 
             connection = ConnectionFactory.createConnection(configuration);
             TableName tableName = TableName.valueOf("canal_lyf_demo1");
             Table table = connection.getTable(tableName);
 
             // 如果列updateInfo不存在值就插入数据，如果存在则返回false
-            boolean insertResult = table.checkAndMutate(Bytes.toBytes(hbaseData.get("executeTime")), Bytes.toBytes("updateInfo"))
+            boolean insertResult = table.checkAndMutate(Bytes.toBytes(hbaseData.get("id")), Bytes.toBytes("updateInfo"))
                     .qualifier(Bytes.toBytes("executeTime"))
                     .ifNotExists()
                     .thenPut(put);
