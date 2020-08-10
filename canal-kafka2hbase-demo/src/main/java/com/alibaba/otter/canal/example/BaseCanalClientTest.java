@@ -95,8 +95,9 @@ public class BaseCanalClientTest {
     }
 
     protected void printEntry(List<Entry> entrys) { for (Entry entry : entrys) {
+            String logfileName = entry.getHeader().getLogfileName();
             long executeTime = entry.getHeader().getExecuteTime();
-            long logfileOffset = entry.getHeader().getLogfileOffset();
+            long execute_position = entry.getHeader().getLogfileOffset();
             Date date = new Date(entry.getHeader().getExecuteTime());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -163,8 +164,9 @@ public class BaseCanalClientTest {
 
                 // 组装插入HBase表的数据
                 Map<String, String> hbaseData = new HashMap<>();
-                hbaseData.put("executeTime",String.valueOf(executeTime));
-                hbaseData.put("logfileOffset",String.valueOf(logfileOffset));
+                hbaseData.put("execute_file",logfileName);
+                hbaseData.put("execute_position",String.valueOf(execute_position));
+                hbaseData.put("execute_time",String.valueOf(executeTime));
 
                 for (RowData rowData : rowChage.getRowDatasList()) {
                     if (eventType == EventType.DELETE) {
@@ -225,9 +227,10 @@ public class BaseCanalClientTest {
                     builder.append(column.getName() + " : " + column.getValue());
 
                     // 组装插入HBase表的数据
-                    if ("id".equals(column.getName()) || "name".equals(column.getName())) {
-                        hbaseData.put(column.getName(),column.getValue());
-                    }
+//                    if ("id".equals(column.getName()) || "name".equals(column.getName())) {
+//                        hbaseData.put(column.getName(),column.getValue());
+//                    }
+                    hbaseData.put(column.getName(),column.getValue());
                 }
             } catch (UnsupportedEncodingException e) {
             }
