@@ -97,7 +97,10 @@ public class BaseCanalClientTest {
     protected void printEntry(List<Entry> entrys) { for (Entry entry : entrys) {
             String logfileName = entry.getHeader().getLogfileName();
             long executeTime = entry.getHeader().getExecuteTime();
+            long delayTime = new Date().getTime() - executeTime;
             long execute_position = entry.getHeader().getLogfileOffset();
+            logger.info("executeTime：" + executeTime + "\n");
+            logger.info("execute_position：" + execute_position + "\n");
             Date date = new Date(entry.getHeader().getExecuteTime());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -115,7 +118,7 @@ public class BaseCanalClientTest {
 //                                String.valueOf(entry.getHeader().getLogfileOffset()),
 //                                String.valueOf(entry.getHeader().getExecuteTime()), simpleDateFormat.format(date),
 //                                entry.getHeader().getGtid(), String.valueOf(delayTime) });
-                    logger.info(" BEGIN ----> Thread id: {}", begin.getThreadId());
+                    logger.info(" BEGIN ----> Thread id: {}\n", begin.getThreadId());
                     printXAInfo(begin.getPropsList());
                 } else if (entry.getEntryType() == EntryType.TRANSACTIONEND) {
                     TransactionEnd end = null;
@@ -174,7 +177,7 @@ public class BaseCanalClientTest {
                     } else if (eventType == EventType.INSERT) {
                         printColumn(rowData.getAfterColumnsList(),hbaseData);
                     } else {
-                        printColumn(rowData.getAfterColumnsList());
+                        printColumn(rowData.getAfterColumnsList(),hbaseData);
                     }
                 }
 
@@ -184,9 +187,9 @@ public class BaseCanalClientTest {
 //                logger.info("-------createHBaseTable end");
 //
                 // 为HBase表插入数据
-                logger.info("-------insertData start");
+                logger.info("-------准备将数据插入HBase表---------");
                 HbaseUtil.insertData(hbaseData);
-                logger.info("-------insertData end");
+                logger.info("-------数据插入HBase表结束---------");
             }
         }
     }
