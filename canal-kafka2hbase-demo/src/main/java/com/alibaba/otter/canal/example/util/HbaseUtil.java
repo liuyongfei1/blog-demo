@@ -106,36 +106,18 @@ public class HbaseUtil {
 
             // 如果 update_info（列族） execute_time（列） 不存在值就插入数据，如果存在则返回false
             boolean res1 = table.checkAndMutate(Bytes.toBytes(hbaseData.get("id")), Bytes.toBytes("update_info"))
-                    .qualifier(Bytes.toBytes("execute_time"))
-                    .ifNotExists()
-                    .thenPut(put);
+                    .qualifier(Bytes.toBytes("execute_time")).ifNotExists().thenPut(put);
 
-            System.out.println("res1:" + res1);
-
+            // 如果存在，则去比较执行时间
             if (!res1) {
-                // 如果 update_info（列族） execute_time（列） 不等于 val2，则插入put
-//                boolean res2 = table.checkAndMutate(Bytes.toBytes(hbaseData.get("id")), Bytes.toBytes(
-//                        "update_info"))
-//                        .qualifier(Bytes.toBytes("execute_time"))
-//                        .ifMatches(CompareOperator.NOT_EQUAL,Bytes.toBytes("val2"))
-//                        .thenPut(put);
-
                 boolean res2  = table.checkAndPut(Bytes.toBytes(hbaseData.get("id")), Bytes.toBytes("update_info"),
-                        Bytes.toBytes("execute_time"), CompareFilter.CompareOp.GREATER, Bytes.toBytes(hbaseData.get("execute_time")),
-                        put);
-                System.out.println("res2:" + res2);
-                
-                boolean res3  = table.checkAndPut(Bytes.toBytes(hbaseData.get("id")), Bytes.toBytes("update_info"),
-                        Bytes.toBytes("execute_position"), CompareFilter.CompareOp.GREATER, Bytes.toBytes(hbaseData.get(
-                                "execute_position")),
-                        put);
+                        Bytes.toBytes("execute_time"), CompareFilter.CompareOp.GREATER, Bytes.toBytes(hbaseData.get("execute_time")),put);
 
-                System.out.println("res3:" + res3);
-
-//                boolean res3 = table.checkAndMutate(Bytes.toBytes(hbaseData.get("id")), Bytes.toBytes("update_info"),CompareFilter.CompareOp.GREATER,)
-//                        .qualifier(Bytes.toBytes("execute_time"))
-//                        .ifNotExists()
-//                        .thenPut(put);
+                // 执行时间相等时，则去比较偏移量，本次传递的值大于HBase中的值则插入put
+                if (!res2) {
+                    boolean res3  = table.checkAndPut(Bytes.toBytes(hbaseData.get("id")), Bytes.toBytes("update_info"),
+                            Bytes.toBytes("execute_position"), CompareFilter.CompareOp.GREATER, Bytes.toBytes(hbaseData.get("execute_position")),put);
+                }
             }
 
             // 列：exe_position

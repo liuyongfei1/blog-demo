@@ -99,7 +99,7 @@ public class BaseCanalClientTest {
             long executeTime = entry.getHeader().getExecuteTime();
             long delayTime = new Date().getTime() - executeTime;
             long execute_position = entry.getHeader().getLogfileOffset();
-            logger.info("executeTime：" + executeTime + "\n");
+            logger.info("execute_time：" + executeTime + "\n");
             logger.info("execute_position：" + execute_position + "\n");
             Date date = new Date(entry.getHeader().getExecuteTime());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -118,7 +118,7 @@ public class BaseCanalClientTest {
 //                                String.valueOf(entry.getHeader().getLogfileOffset()),
 //                                String.valueOf(entry.getHeader().getExecuteTime()), simpleDateFormat.format(date),
 //                                entry.getHeader().getGtid(), String.valueOf(delayTime) });
-                    logger.info(" BEGIN ----> Thread id: {}\n", begin.getThreadId());
+//                    logger.info(" BEGIN ----> Thread id: {}\n", begin.getThreadId());
                     printXAInfo(begin.getPropsList());
                 } else if (entry.getEntryType() == EntryType.TRANSACTIONEND) {
                     TransactionEnd end = null;
@@ -173,7 +173,7 @@ public class BaseCanalClientTest {
 
                 for (RowData rowData : rowChage.getRowDatasList()) {
                     if (eventType == EventType.DELETE) {
-                        printColumn(rowData.getBeforeColumnsList());
+                        deleteData(rowData.getBeforeColumnsList(),hbaseData);
                     } else if (eventType == EventType.INSERT) {
                         printColumn(rowData.getAfterColumnsList(),hbaseData);
                     } else {
@@ -233,6 +233,48 @@ public class BaseCanalClientTest {
 //                    if ("id".equals(column.getName()) || "name".equals(column.getName())) {
 //                        hbaseData.put(column.getName(),column.getValue());
 //                    }
+                    hbaseData.put(column.getName(),column.getValue());
+                }
+            } catch (UnsupportedEncodingException e) {
+            }
+            builder.append("    type=" + column.getMysqlType());
+            if (column.getUpdated()) {
+                builder.append("    update=" + column.getUpdated());
+            }
+            builder.append(SEP);
+            logger.info(builder.toString());
+        }
+    }
+
+    /**
+     * 删除数据
+     *
+     * @Author Liuyongfei
+     * @Date 下午5:54 2020/8/11
+     * @param columns
+     * @param hbaseData
+     * @return void
+     **/
+    protected void deleteData(List<Column> columns,Map<String,String> hbaseData) {
+        for (Column column : columns) {
+            StringBuilder builder = new StringBuilder();
+            try {
+                if (StringUtils.containsIgnoreCase(column.getMysqlType(), "BLOB")
+                        || StringUtils.containsIgnoreCase(column.getMysqlType(), "BINARY")) {
+                    // get value bytes
+                    builder.append(column.getName() + " : "
+                            + new String(column.getValue().getBytes("ISO-8859-1"), "UTF-8"));
+                } else {
+                    builder.append(column.getName() + " : " + column.getValue());
+
+                    // 组装插入HBase表的数据
+//                    if ("id".equals(column.getName()) || "name".equals(column.getName())) {
+//                        hbaseData.put(column.getName(),column.getValue());
+//                    }
+                    if ("id".equals(column.getName())) {
+                        logger.info("删除数据，主键id：" + column.getValue() + "\n");
+                    }
+
                     hbaseData.put(column.getName(),column.getValue());
                 }
             } catch (UnsupportedEncodingException e) {
