@@ -53,4 +53,5 @@
 #### 十八. 发布：实时数据同步服务是如何保证消息的顺序性
 #### 十九. 编辑：遇到Idea External Libraries显示的jar版本与pom.xml中指定的jar版本不一致怎么解决？
 #### 二十. 编辑：Maven项目为什么会产生jar包冲突？
-#### 1. 编辑：Maven项目为什么会产生jar包冲突，画流程图
+#### 1. 编辑：Maven项目为什么会产生jar包冲突：jar包冲突：NoClassDefFoundError
+#### 2. 编辑：Maven项目为什么会产生jar包冲突：jar包冲突：NoSuchMethodError
