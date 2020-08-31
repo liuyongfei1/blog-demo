@@ -56,3 +56,5 @@
 #### 1. 编辑：Maven项目为什么会产生jar包冲突：jar包冲突：NoClassDefFoundError
 #### 2. 编辑：Maven项目为什么会产生jar包冲突：jar包冲突：NoSuchMethodError
 #### 3. 完成：Maven项目为什么会产生NoClassDefFoundError或NoSuchMethodError这样的jar包冲突？
+#### 4. 修改：Maven项目为什么会产生NoClassDefFoundError或NoSuchMethodError这样的jar包冲突？
+#### 5. 发布：Maven项目为什么会产生NoClassDefFoundError的jar包冲突？
