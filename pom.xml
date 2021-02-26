@@ -19,6 +19,7 @@
         <module>rabbitmq-demo</module>
         <module>canal-kafka2hbase-demo</module>
         <module>thread-demo</module>
+        <module>design-patterns-demo</module>
     </modules>
 
     <properties>
