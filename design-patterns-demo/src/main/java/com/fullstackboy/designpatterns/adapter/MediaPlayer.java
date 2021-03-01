@@ -1,4 +1,4 @@
-package Adapter;
+package com.fullstackboy.designpatterns.adapter;
 
 /**
  * 适配器模式Demo
@@ -9,5 +9,5 @@ package Adapter;
  * @date 2021/2/26 15:33
  */
 public interface MediaPlayer {
-    public void play(String audioType, String fileName);
+    void play(String audioType, String fileName);
 }

@@ -1,4 +1,4 @@
-package Adapter;
+package com.fullstackboy.designpatterns.adapter;
 
 /**
  * 创建了实现 MediaPlayer 接口的适配器类

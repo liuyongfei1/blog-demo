@@ -1,4 +1,4 @@
-package Adapter;
+package com.fullstackboy.designpatterns.adapter;
 
 /**
  * 定义 先进的媒体播放器接口
@@ -7,6 +7,6 @@ package Adapter;
  * @date 2021/2/26 下午3:36
  */
 public interface AdvancedMediaPlayer {
-    public void playVlc(String fileName);
-    public void playMp4(String fileName);
+    void playVlc(String fileName);
+    void playMp4(String fileName);
 }

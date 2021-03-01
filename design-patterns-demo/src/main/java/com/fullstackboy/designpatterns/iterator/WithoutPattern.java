@@ -1,4 +1,4 @@
-package iterator;
+package com.fullstackboy.designpatterns.iterator;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package Adapter;
+package com.fullstackboy.designpatterns.adapter;
 
 /**
  * 适配器模式 Demo

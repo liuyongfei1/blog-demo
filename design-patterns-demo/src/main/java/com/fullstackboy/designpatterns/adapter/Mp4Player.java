@@ -1,4 +1,4 @@
-package Adapter;
+package com.fullstackboy.designpatterns.adapter;
 
 /**
  * 创建实现 AdvancedMediaPlayer 接口的实体类
