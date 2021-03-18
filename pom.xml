@@ -20,6 +20,7 @@
         <module>canal-kafka2hbase-demo</module>
         <module>thread-demo</module>
         <module>design-patterns-demo</module>
+        <module>jvm-demo</module>
     </modules>
 
     <properties>
