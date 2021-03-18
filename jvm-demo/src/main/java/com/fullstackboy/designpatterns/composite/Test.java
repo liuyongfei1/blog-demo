@@ -12,8 +12,8 @@ public class Test {
         ConcreteCompany  root = new ConcreteCompany("总公司");
         root.add(new Department1("总公司部门1"));
         root.add(new Department2("总公司部门2"));
-
-        // 子节点
+//
+//        // 子节点
         ConcreteCompany comp = new ConcreteCompany("分公司");
         comp.add(new Department1("分公司部分1"));
         comp.add(new Department2("分公司部分2"));
