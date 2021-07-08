@@ -12,7 +12,7 @@
     <artifactId>rabbitmq-demo-web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>rabbitmq-demo-web</name>
-    <description>RabbitMQ Demo Web for Spring Boot</description>
+    <description>RabbitMQ 消息生产端</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -20,20 +20,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
@@ -44,6 +37,17 @@
         <dependency>
             <groupId>com.fullstackboy</groupId>
             <artifactId>rabbitmq-demo-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.10</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fullstackboy</groupId>
+            <artifactId>rabbitmq-demo-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
@@ -58,6 +62,7 @@
                 <directory>src/main/java</directory>
                 <includes>
                     <include>**/*.xml</include>
+                    <include>**/*.properties</include>
                 </includes>
             </resource>
         </resources>

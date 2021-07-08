@@ -29,6 +29,8 @@
 ##### 10. 解决生产端高并发时消息发送重复的bug
 ##### 11. 补全注释
 ##### 12. 确保每个消费者在同一个时间点最多只处理一个Message
+<<<<<<< HEAD
+=======
 
 #### 五. 消息轮询分发和公平分发demo
 ##### 1. 添加轮询分发
@@ -64,3 +66,4 @@
 #### 5. 发布：Maven项目为什么会产生NoClassDefFoundError的jar包冲突？
 #### 二十一. 编辑：使用easyexcel时遇到jar包冲突：NoClassDefFoundError
 #### 1. 使用easyexcel时遇到Could not initialize class cglib.beans.BeanMap怎么解决
+>>>>>>> master
