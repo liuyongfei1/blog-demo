@@ -22,6 +22,7 @@
         <module>thread-demo</module>
         <module>design-patterns-demo</module>
         <module>jvm-demo</module>
+        <module>spring-demo</module>
     </modules>
 
     <properties>
