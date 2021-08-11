@@ -23,6 +23,7 @@
         <module>design-patterns-demo</module>
         <module>jvm-demo</module>
         <module>spring-demo</module>
+        <module>distributed-lock-demo</module>
     </modules>
 
     <properties>

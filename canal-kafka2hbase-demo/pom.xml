@@ -19,7 +19,7 @@
 		<java_target_version>1.8</java_target_version>
 		<file_encoding>UTF-8</file_encoding>
 		<javadoc_skip>true</javadoc_skip>
-		<spring_version>4.3.20</spring_version>
+		<spring_version>4.3.20.RELEASE</spring_version>
 		<maven-jacoco-plugin.version>0.8.3</maven-jacoco-plugin.version>
 		<maven-surefire.version>2.22.1</maven-surefire.version>
 		<argline>-server -Xms512m -Xmx1024m -Dfile.encoding=UTF-8
@@ -139,7 +139,7 @@
 			<dependency>
 				<groupId>io.netty</groupId>
 				<artifactId>netty-all</artifactId>
-				<version>4.1.42</version>
+				<version>4.1.42.Final</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.protobuf</groupId>
