@@ -5,9 +5,11 @@ import org.redisson.Redisson;
 import org.redisson.RedissonMultiLock;
 import org.redisson.RedissonRedLock;
 import org.redisson.api.RLock;
+import org.redisson.api.RSemaphore;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -57,5 +59,28 @@ public class TestRedisLock {
 
         rwlock.writeLock().lock();
         rwlock.writeLock().unlock();
+
+        final RSemaphore semaphore = redisson.getSemaphore("semaphore");
+        semaphore.trySetPermits(3);
+
+        for (int i = 0; i < 10; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        System.out.println(new Date() + ": 线程[" + Thread.currentThread().getName() + "]尝试获取semaphore锁");
+                        semaphore.acquire();
+                        System.out.println(new Date() + ": 线程[" + Thread.currentThread().getName() + "]成功获取到了semaphore"
+                                + "锁");
+                        Thread.sleep(3000);
+                        semaphore.release();
+                        System.out.println(new Date() + ": 线程[" + Thread.currentThread().getName() + "]释放了semaphore锁");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+
     }
 }
