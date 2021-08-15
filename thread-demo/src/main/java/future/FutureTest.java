@@ -7,7 +7,7 @@ import java.util.concurrent.FutureTask;
 /**
  * 使用Future模式测试
  * Future表示一个可能还没有完成的异步任务的结果，针对这个结果可以添加Callback以便在任务执行成功或失败后作出相应的操作。
- *
+ * https://blog.csdn.net/u014209205/article/details/80598209
  * 输出结果：
  * 凉菜准备完毕
  * 包子完毕

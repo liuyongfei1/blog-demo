@@ -1,9 +1,10 @@
-package com.fullstackboy;
+package com.fullstackboy.redis;
 
 
 import org.redisson.Redisson;
 import org.redisson.RedissonMultiLock;
 import org.redisson.RedissonRedLock;
+import org.redisson.api.RCountDownLatch;
 import org.redisson.api.RLock;
 import org.redisson.api.RSemaphore;
 import org.redisson.api.RedissonClient;
@@ -22,16 +23,13 @@ import java.util.concurrent.locks.ReadWriteLock;
  */
 public class TestRedisLock {
 
-    public static UUID id;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         Config config = new Config();
-
-        System.out.println(UUID.randomUUID().toString());
 
         // 这里本地没有搭建redis集群
         config.useClusterServers().addNodeAddress("localhost:6379");
 
-        RedissonClient redisson = Redisson.create(config);
+        final RedissonClient redisson = Redisson.create(config);
 
 //        RLock lock = redisson.getFairLock("testLock");
 //
@@ -81,6 +79,31 @@ public class TestRedisLock {
                 }
             }).start();
         }
+
+        // CountDownLatch用法
+        RCountDownLatch latch = redisson.getCountDownLatch("anyCountDownLatch");
+        latch.trySetCount(3);
+        System.out.println(new Date() + ": 线程[" + Thread.currentThread().getName() + "]设置了必须有3个线程进行countDown，进入等待中");
+        for (int i = 0; i < 3; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        System.out.println(new Date() + ": 线程[" + Thread.currentThread().getName() + "]在做一些操作，请耐心等待");
+                        Thread.sleep(3000);
+                        RCountDownLatch localLatch = redisson.getCountDownLatch("anyCountDownLatch");
+                        localLatch.countDown();
+                        System.out.println(new Date() + ": 线程[" + Thread.currentThread().getName() + "]执行countDown操作");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+        latch.await();
+        System.out.println(new Date() + ": 线程[" + Thread.currentThread().getName() + "]收到通知，有3个线程都执行了countDown"
+                + "操作，可以继续向下执行");
 
     }
 }

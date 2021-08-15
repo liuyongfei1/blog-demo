@@ -6,7 +6,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>com.alibaba.otter</groupId>
-	<artifactId>canal.example</artifactId>
+	<artifactId>canal-kafka2hbase-demo</artifactId>
 	<packaging>jar</packaging>
 	<name>canalkafka2HBase</name>
 

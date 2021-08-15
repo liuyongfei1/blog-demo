@@ -24,6 +24,10 @@
         <module>jvm-demo</module>
         <module>spring-demo</module>
         <module>distributed-lock-demo</module>
+        <module>register-server</module>
+        <module>register-client</module>
+        <module>register-client-demo</module>
+        <module>regisster-client-demo</module>
     </modules>
 
     <properties>
