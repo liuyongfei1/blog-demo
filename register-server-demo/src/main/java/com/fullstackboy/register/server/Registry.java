@@ -11,10 +11,16 @@ import java.util.Map;
  */
 public class Registry {
 
+    private static final Registry instance = new Registry();
+
+    private Registry() {
+
+    }
+
     /**
      * 注册表
      */
-    private static final Map<String, Map<String, ServiceInstance>> registry = new HashMap<>();
+    private final Map<String, Map<String, ServiceInstance>> registry = new HashMap<>();
 
     /**
      * 服务注册
@@ -41,6 +47,18 @@ public class Registry {
     }
 
     /**
+     * 获取实例信息
+     * @param serviceName
+     * @param serverInstanceId
+     * @return ServiceInstance
+     */
+    public ServiceInstance getServiceInstance(String serviceName,
+                                                                   String serverInstanceId) {
+        Map<String, ServiceInstance> serviceInstanceMap = registry.get(serviceName);
+        return serviceInstanceMap.get(serverInstanceId);
+    }
+
+    /**
      * 服务摘除
      * @param serviceName 服务名称
      * @param serverInstanceId 服务实例id
@@ -51,5 +69,13 @@ public class Registry {
         // 获取注册表
         Map<String,ServiceInstance> serverInstanceMap = registry.get(serviceName);
         serverInstanceMap.remove(serverInstanceId);
+    }
+
+    public static Registry getInstance() {
+        return instance;
+    }
+
+    public Map<String, Map<String, ServiceInstance>> getRegistry() {
+        return registry;
     }
 }

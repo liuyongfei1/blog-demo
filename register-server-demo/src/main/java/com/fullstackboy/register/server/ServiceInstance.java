@@ -40,12 +40,23 @@ public class ServiceInstance {
      */
     private Lease lease;
 
+    public ServiceInstance() {
+        this.lease = new Lease();
+    }
+
     /**
      * 判断服务实例是否存活
      * @return true 存活
      */
     public Boolean isAlive() {
-        return new Lease().isAlive();
+        return lease.isAlive();
+    }
+
+    /**
+     * 服务续约
+     */
+    public void renew() {
+        lease.renew();
     }
 
     /**
