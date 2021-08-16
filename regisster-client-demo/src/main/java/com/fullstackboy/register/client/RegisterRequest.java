@@ -31,7 +31,7 @@ public class RegisterRequest {
     /**
      * 服务监听着的那个端口号
      */
-    private String port;
+    private int port;
 
 
     public String getServerInstanceId() {
@@ -66,11 +66,11 @@ public class RegisterRequest {
         this.ip = ip;
     }
 
-    public String getPort() {
+    public int getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public void setPort(int port) {
         this.port = port;
     }
 }
