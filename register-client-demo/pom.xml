@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.fullstackboy</groupId>
-  <artifactId>regisster-client-demo</artifactId>
+  <artifactId>register-client-demo</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-  <name>regisster-client-demo</name>
+  <name>register-client-demo</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
