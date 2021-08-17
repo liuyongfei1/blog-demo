@@ -2,7 +2,7 @@ package com.fullstackboy.register.server;
 
 /**
  * 这里接收register-client发送过来的http请求
- * 在Spring Cloud Eureka中，使用的是 jerry，spring mvc， restful框架，在国外用的比较多
+ * 在Spring Cloud Eureka中，使用的是 jersey，spring mvc， restful框架，在国外用的比较多
  * @author Liuyongfei
  * @date 2021/8/16 22:48
  */
