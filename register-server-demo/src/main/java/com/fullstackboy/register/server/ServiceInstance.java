@@ -72,6 +72,7 @@ public class ServiceInstance {
          */
         public void renew() {
             latestHeartbeatTime = System.currentTimeMillis();
+            System.out.println("服务实例【" + serviceInstanceId + "】，进行续约：" +latestHeartbeatTime);
         }
 
         /**

@@ -11,7 +11,7 @@ import java.util.UUID;
  * @date 2021/8/16 23:23
  */
 public class RegistryServer {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
 
         RegisterServerController controller = new RegisterServerController();
 
@@ -29,12 +29,16 @@ public class RegistryServer {
 
         // 模拟一次心跳，完成续约
         HeartbeatRequest heartbeatRequest = new HeartbeatRequest();
-        registerRequest.setServiceName("inventory-service");
-        registerRequest.setServerInstanceId(serverInstanceId);
+        heartbeatRequest.setServiceName("inventory-service");
+        heartbeatRequest.setServerInstanceId(serverInstanceId);
         HeartbeatResponse heartbeatResponse = controller.heartbeat(heartbeatRequest);
 
         // 开启一个后台线程，检测服务实例的存活状态
         new ServiceAliveMonitor().start();
+
+        while(true) {
+            Thread.sleep(30 * 1000);
+        }
 
     }
 }

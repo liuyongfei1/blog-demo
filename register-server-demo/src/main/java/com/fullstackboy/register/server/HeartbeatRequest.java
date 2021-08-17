@@ -10,7 +10,7 @@ public class HeartbeatRequest {
     /**
      * 服务名称
      */
-    private String serverName;
+    private String serviceName;
 
     /**
      * 服务实例id
@@ -25,11 +25,11 @@ public class HeartbeatRequest {
         this.serverInstanceId = serverInstanceId;
     }
 
-    public String getServerName() {
-        return serverName;
+    public String getServiceName() {
+        return serviceName;
     }
 
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 }

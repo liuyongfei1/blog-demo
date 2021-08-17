@@ -48,7 +48,7 @@ public class RegisterServerController {
 
         try {
             // 获取服务的实例信息
-            ServiceInstance serviceInstance = registry.getServiceInstance(heartbeatRequest.getServerName(),
+            ServiceInstance serviceInstance = registry.getServiceInstance(heartbeatRequest.getServiceName(),
                     heartbeatRequest.getServerInstanceId());
 
             // 服务续约

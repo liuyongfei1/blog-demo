@@ -20,7 +20,7 @@ public class Registry {
     /**
      * 注册表
      */
-    private final Map<String, Map<String, ServiceInstance>> registry = new HashMap<>();
+    private Map<String, Map<String, ServiceInstance>> registry = new HashMap<>();
 
     /**
      * 服务注册
@@ -33,6 +33,9 @@ public class Registry {
         }
 
         instanceMap.put(instance.getServiceInstanceId(),instance);
+
+        System.out.println("服务实例【" + instance + "】，完成注册");
+        System.out.println("注册表：" + registry);
 
         // ???
 //        ServiceInstance instance = new ServiceInstance();
@@ -52,8 +55,7 @@ public class Registry {
      * @param serverInstanceId
      * @return ServiceInstance
      */
-    public ServiceInstance getServiceInstance(String serviceName,
-                                                                   String serverInstanceId) {
+    public ServiceInstance getServiceInstance(String serviceName, String serverInstanceId) {
         Map<String, ServiceInstance> serviceInstanceMap = registry.get(serviceName);
         return serviceInstanceMap.get(serverInstanceId);
     }
@@ -69,6 +71,8 @@ public class Registry {
         // 获取注册表
         Map<String,ServiceInstance> serverInstanceMap = registry.get(serviceName);
         serverInstanceMap.remove(serverInstanceId);
+
+        System.out.println("服务实例【" + serverInstanceId + "】被摘除");
     }
 
     public static Registry getInstance() {

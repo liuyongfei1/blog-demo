@@ -21,7 +21,7 @@ public class ServiceAliveMonitor {
 
     public ServiceAliveMonitor() {
         this.daemon = new Daemon();
-        daemon.setDaemon(true);
+//        daemon.setDaemon(true);
         daemon.setName("ServiceAliveMonitor");
     }
 
