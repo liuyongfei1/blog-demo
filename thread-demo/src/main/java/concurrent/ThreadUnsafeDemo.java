@@ -17,8 +17,8 @@ public class ThreadUnsafeDemo {
                 for (int i = 0; i < 10; i++) {
                     synchronized (ThreadUnsafeDemo.class) {
                         ThreadUnsafeDemo.data++;
+                        System.out.println(data);
                     }
-                    System.out.println(data);
                 }
             }
         };
@@ -30,8 +30,8 @@ public class ThreadUnsafeDemo {
                 for (int i = 0; i < 10; i++) {
                     synchronized (ThreadUnsafeDemo.class) {
                         ThreadUnsafeDemo.data++;
+                        System.out.println(data);
                     }
-                    System.out.println(data);
                 }
             }
         };
