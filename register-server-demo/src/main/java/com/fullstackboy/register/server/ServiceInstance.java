@@ -65,7 +65,7 @@ public class ServiceInstance {
      * 保罗心跳时间，注册时间等
      */
     private class Lease {
-        private Long latestHeartbeatTime = System.currentTimeMillis();
+        private volatile Long latestHeartbeatTime = System.currentTimeMillis();
 
         /**
          * 续约
