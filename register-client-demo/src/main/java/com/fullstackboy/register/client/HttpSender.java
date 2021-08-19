@@ -1,5 +1,8 @@
 package com.fullstackboy.register.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 发送各种请求
  *
@@ -30,5 +33,29 @@ public class HttpSender {
         HeartbeatResponse response = new HeartbeatResponse();
         response.setStatus(HeartbeatResponse.SUCCESS);
         return response;
+    }
+
+    /**
+     * 拉取注册表
+     * 没有学习到网路请求，所以这里暂时模拟数据
+     * @return
+     */
+    public Map<String, Map<String, ServiceInstance>> fetchServiceRegistry() {
+        Map<String, Map<String, ServiceInstance>> registry = new HashMap<>();
+
+        ServiceInstance serviceInstance = new ServiceInstance();
+        serviceInstance.setHostName("finance-service-01");
+        serviceInstance.setIp("192.168.10.111");
+        serviceInstance.setPort(9000);
+        serviceInstance.setServiceInstanceId("FINANCE-SERVICE-asdaadfasjjljjl");
+        serviceInstance.setServiceName("FINANCE-SERVICE");
+
+        Map<String,ServiceInstance> serviceInstances = new HashMap<>();
+        serviceInstances.put("FINANCE-SERVICE-asdaadfasjjljjl", serviceInstance);
+
+        registry.put("FINANCE-SERVICE", serviceInstances);
+
+        System.out.println("拉取注册表：" +registry);
+        return registry;
     }
 }
