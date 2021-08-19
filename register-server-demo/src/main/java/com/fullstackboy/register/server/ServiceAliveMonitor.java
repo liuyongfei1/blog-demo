@@ -36,7 +36,7 @@ public class ServiceAliveMonitor {
      * 监控服务是否存活线程
      */
     private class Daemon extends Thread {
-        private Registry registry = Registry.getInstance();
+        private ServiceRegistry serviceRegistry = ServiceRegistry.getInstance();
 
 
         @Override
@@ -45,13 +45,13 @@ public class ServiceAliveMonitor {
             while (true) {
                 try {
                     // 遍历注册表
-                    registryMap = registry.getRegistry();
+                    registryMap = serviceRegistry.getRegistry();
                     for (String serviceName : registryMap.keySet()) {
                         Map<String, ServiceInstance> serviceInstanceMap = registryMap.get(serviceName);
 
                         for (ServiceInstance serviceInstance : serviceInstanceMap.values()) {
                             if (!serviceInstance.isAlive()) {
-                                registry.remove(serviceName, serviceInstance.getServiceInstanceId());
+                                serviceRegistry.remove(serviceName, serviceInstance.getServiceInstanceId());
                             }
                         }
                     }

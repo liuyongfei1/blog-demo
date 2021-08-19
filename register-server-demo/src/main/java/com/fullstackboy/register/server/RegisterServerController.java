@@ -11,7 +11,7 @@ public class RegisterServerController {
     /**
      * 注册表
      */
-    private Registry registry = Registry.getInstance();
+    private ServiceRegistry serviceRegistry = ServiceRegistry.getInstance();
 
     /**
      * 接收服务注册请求
@@ -28,7 +28,7 @@ public class RegisterServerController {
             instance.setHostName(registerRequest.getHostName());
             instance.setIp(registerRequest.getIp());
             instance.setPort(registerRequest.getPort());
-            registry.register(instance);
+            serviceRegistry.register(instance);
 
             response.setStatus(RegisterResponse.SUCCESS);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class RegisterServerController {
 
         try {
             // 获取服务的实例信息
-            ServiceInstance serviceInstance = registry.getServiceInstance(heartbeatRequest.getServiceName(),
+            ServiceInstance serviceInstance = serviceRegistry.getServiceInstance(heartbeatRequest.getServiceName(),
                     heartbeatRequest.getServerInstanceId());
 
             // 服务续约

@@ -9,11 +9,11 @@ import java.util.Map;
  * @author Liuyongfei
  * @date 2021/8/16 22:10
  */
-public class Registry {
+public class ServiceRegistry {
 
-    private static final Registry instance = new Registry();
+    private static final ServiceRegistry instance = new ServiceRegistry();
 
-    private Registry() {
+    private ServiceRegistry() {
 
     }
 
@@ -25,7 +25,7 @@ public class Registry {
     /**
      * 服务注册
      */
-    public void register(ServiceInstance instance) {
+    public synchronized void register(ServiceInstance instance) {
         Map<String, ServiceInstance> instanceMap = registry.get(instance.getServiceName());
         if (instanceMap == null) {
             instanceMap = new HashMap<>();
@@ -36,17 +36,6 @@ public class Registry {
 
         System.out.println("服务实例【" + instance + "】，完成注册");
         System.out.println("注册表：" + registry);
-
-        // ???
-//        ServiceInstance instance = new ServiceInstance();
-//        instance.setHostName(registerRequest.getHostName());
-//        instance.setIp(registerRequest.getIp());
-//        instance.setServiceName(registerRequest.getServiceName());
-//        // Lease???
-//        instance.setLease();
-//        instanceMap.put(registerRequest.getServerInstanceId(),instance);
-//
-//        registry.put(registerRequest.getServiceName(), instanceMap);
     }
 
     /**
@@ -55,7 +44,7 @@ public class Registry {
      * @param serverInstanceId
      * @return ServiceInstance
      */
-    public ServiceInstance getServiceInstance(String serviceName, String serverInstanceId) {
+    public synchronized ServiceInstance getServiceInstance(String serviceName, String serverInstanceId) {
         Map<String, ServiceInstance> serviceInstanceMap = registry.get(serviceName);
         return serviceInstanceMap.get(serverInstanceId);
     }
@@ -67,7 +56,7 @@ public class Registry {
      * @author Liuyongfei
      * @date 2021/8/16 下午10:40
      */
-    public void remove(String serviceName, String serverInstanceId) {
+    public synchronized void remove(String serviceName, String serverInstanceId) {
         // 获取注册表
         Map<String,ServiceInstance> serverInstanceMap = registry.get(serviceName);
         serverInstanceMap.remove(serverInstanceId);
@@ -75,7 +64,11 @@ public class Registry {
         System.out.println("服务实例【" + serverInstanceId + "】被摘除");
     }
 
-    public static Registry getInstance() {
+    /**
+     * 获取注册表的单例实例
+     * @return
+     */
+    public static ServiceRegistry getInstance() {
         return instance;
     }
 
