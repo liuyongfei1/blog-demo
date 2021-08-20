@@ -54,6 +54,10 @@ public class RegisterServerController {
             // 服务续约
             serviceInstance.renew();
 
+            // 记录每分钟的心跳次数
+            HeartbeatMessuredRate rate = new HeartbeatMessuredRate();
+            rate.increment();
+
             response.setStatus(HeartbeatResponse.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
