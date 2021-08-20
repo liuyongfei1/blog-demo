@@ -5,6 +5,8 @@ import java.util.Map;
 /**
  * 服务实例存活监控线程
  *
+ * 优化：加入自我保护机制
+ *
  * @author Liuyongfei
  * @date 2021/8/16 23:31
  */
