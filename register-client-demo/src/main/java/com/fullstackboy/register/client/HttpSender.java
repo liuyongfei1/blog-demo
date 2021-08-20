@@ -58,4 +58,13 @@ public class HttpSender {
         System.out.println("拉取注册表：" +registry);
         return registry;
     }
+
+    /**
+     * 服务下线
+     * @param serviceName 服务名称
+     * @param serviceInstanceId 服务实例id
+     */
+    public void cancel(String serviceName,String serviceInstanceId) {
+        System.out.println("服务实例下线：【" + serviceName + "," + serviceInstanceId + "】");
+    }
 }

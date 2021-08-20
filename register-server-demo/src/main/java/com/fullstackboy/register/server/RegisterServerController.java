@@ -65,4 +65,13 @@ public class RegisterServerController {
         }
         return response;
     }
+
+    /**
+     * 服务下线
+     * @param serviceName 服务名称
+     * @param serviceInstanceId 服务实例id
+     */
+    public void cancel(String serviceName, String serviceInstanceId) {
+        serviceRegistry.remove(serviceName, serviceInstanceId);
+    }
 }
