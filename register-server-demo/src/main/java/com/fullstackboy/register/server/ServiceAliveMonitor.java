@@ -46,6 +46,14 @@ public class ServiceAliveMonitor {
             Map<String, Map<String, ServiceInstance>> registryMap = null;
             while (true) {
                 try {
+                    // 判断一下是否需要开启自我保护机制
+                    SelfProtectionPolicy  policy = SelfProtectionPolicy.getInstance();
+                    // 开启自我保护机制
+                    if (policy.enabled()) {
+                        Thread.sleep(CHECK_ALIVE_INTERVAL);
+                        continue;
+                    }
+
                     // 遍历注册表
                     registryMap = serviceRegistry.getRegistry();
                     for (String serviceName : registryMap.keySet()) {
@@ -57,7 +65,6 @@ public class ServiceAliveMonitor {
 
                                 // 更新自我保护机制的阈值
                                 synchronized (SelfProtectionPolicy.class) {
-                                    SelfProtectionPolicy policy = SelfProtectionPolicy.getInstance();
                                     policy.setExpectedHeartbeatRate(policy.getExpectedHeartbeatRate() + 2);
                                     policy.setExpectedHeartbeatThreshold((long) (policy.getExpectedHeartbeatRate() * 0.85));
                                 }

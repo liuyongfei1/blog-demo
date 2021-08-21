@@ -43,4 +43,12 @@ public class HeartbeatMessuredRate {
     public static HeartbeatMessuredRate getInstance() {
         return instance;
     }
+
+    public long getLatestMinuteHeartbeatRate() {
+        return latestMinuteHeartbeatRate;
+    }
+
+    public void setLatestMinuteHeartbeatRate(long latestMinuteHeartbeatRate) {
+        this.latestMinuteHeartbeatRate = latestMinuteHeartbeatRate;
+    }
 }

@@ -15,6 +15,7 @@ public class SelfProtectionPolicy {
 
     private SelfProtectionPolicy() {}
 
+
     /**
      * 期望的心跳次数：
      * 比如有10个实例，这个数值就是 10 * 2 = 20次
@@ -26,6 +27,26 @@ public class SelfProtectionPolicy {
      * 比如有10个实例，这个数值就是 10 * 2 * 0.85 = 17
      */
     private long expectedHeartbeatThreshold;
+
+    /**
+     * 是否需要开启自我保护机制
+     * @return true：开启自我保护机制
+     */
+    public Boolean enabled() {
+        HeartbeatMessuredRate rate = HeartbeatMessuredRate.getInstance();
+        // 获取最近1分钟的心跳次数
+        long latestMinuteHeartbeatRate = rate.getLatestMinuteHeartbeatRate();
+
+        // 如果最近1分钟的心跳次数 < 期望的心跳次数阈值
+        if (latestMinuteHeartbeatRate < expectedHeartbeatThreshold) {
+            // 需要开启自我保护机制
+            System.out.println("自我保护机制开启，最近1分钟心跳次数：【" + latestMinuteHeartbeatRate + "】，期望心跳次数：【" + expectedHeartbeatThreshold + "】");
+            return true;
+        }
+
+        System.out.println("自我保护机制未开启，最近1分钟心跳次数：【" + latestMinuteHeartbeatRate + "】，期望心跳次数：【" + expectedHeartbeatThreshold + "】");
+        return false;
+    }
 
     public long getExpectedHeartbeatRate() {
         return expectedHeartbeatRate;
