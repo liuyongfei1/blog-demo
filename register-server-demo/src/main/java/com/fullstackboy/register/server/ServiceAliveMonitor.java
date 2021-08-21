@@ -54,6 +54,13 @@ public class ServiceAliveMonitor {
                         for (ServiceInstance serviceInstance : serviceInstanceMap.values()) {
                             if (!serviceInstance.isAlive()) {
                                 serviceRegistry.remove(serviceName, serviceInstance.getServiceInstanceId());
+
+                                // 更新自我保护机制的阈值
+                                synchronized (SelfProtectionPolicy.class) {
+                                    SelfProtectionPolicy policy = SelfProtectionPolicy.getInstance();
+                                    policy.setExpectedHeartbeatRate(policy.getExpectedHeartbeatRate() + 2);
+                                    policy.setExpectedHeartbeatThreshold((long) (policy.getExpectedHeartbeatRate() * 0.85));
+                                }
                             }
                         }
                     }

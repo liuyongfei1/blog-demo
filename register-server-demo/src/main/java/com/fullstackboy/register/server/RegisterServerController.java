@@ -28,7 +28,15 @@ public class RegisterServerController {
             instance.setHostName(registerRequest.getHostName());
             instance.setIp(registerRequest.getIp());
             instance.setPort(registerRequest.getPort());
+
             serviceRegistry.register(instance);
+
+            // 更新自我保护机制的阈值
+            synchronized (SelfProtectionPolicy.class) {
+                SelfProtectionPolicy policy = SelfProtectionPolicy.getInstance();
+                policy.setExpectedHeartbeatRate(policy.getExpectedHeartbeatRate() + 2);
+                policy.setExpectedHeartbeatThreshold((long) (policy.getExpectedHeartbeatRate() * 0.85));
+            }
 
             response.setStatus(RegisterResponse.SUCCESS);
         } catch (Exception e) {
@@ -73,5 +81,12 @@ public class RegisterServerController {
      */
     public void cancel(String serviceName, String serviceInstanceId) {
         serviceRegistry.remove(serviceName, serviceInstanceId);
+
+        // 更新自我保护机制的阈值
+        synchronized (SelfProtectionPolicy.class) {
+            SelfProtectionPolicy policy = SelfProtectionPolicy.getInstance();
+            policy.setExpectedHeartbeatRate(policy.getExpectedHeartbeatRate() + 2);
+            policy.setExpectedHeartbeatThreshold((long) (policy.getExpectedHeartbeatRate() * 0.85));
+        }
     }
 }
