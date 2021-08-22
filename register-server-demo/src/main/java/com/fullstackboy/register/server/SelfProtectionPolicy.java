@@ -33,7 +33,7 @@ public class SelfProtectionPolicy {
      * @return true：开启自我保护机制
      */
     public Boolean enabled() {
-        HeartbeatMessuredRate rate = HeartbeatMessuredRate.getInstance();
+        HeartbeatCounter rate = HeartbeatCounter.getInstance();
         // 获取最近1分钟的心跳次数
         long latestMinuteHeartbeatRate = rate.getLatestMinuteHeartbeatRate();
 
