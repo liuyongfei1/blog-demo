@@ -97,8 +97,28 @@ public class ServiceRegistry {
         return instance;
     }
 
+    /**
+     * 获取全量注册表
+     * @return 全量注册表
+     */
     public Map<String, Map<String, ServiceInstance>> getRegistry() {
         return registry;
+    }
+
+    /**
+     * 获取有变更的服务实例队列
+     * @return 有变更的服务实例队列
+     */
+    public LinkedList<RecentlyChangedServiceInstance> getRecentlyChangedQueue() {
+        return recentlyChangedQueue;
+    }
+
+    /**
+     * 获取最近变更的注册表
+     * @return 最近变更的注册表
+     */
+    public LinkedList<RecentlyChangedServiceInstance> getRecentlyChangeQueue() {
+        return recentlyChangedQueue;
     }
 
     /**
@@ -150,7 +170,7 @@ public class ServiceRegistry {
                     synchronized (instance) {
                         long currentTimeStamp = System.currentTimeMillis();
                         RecentlyChangedServiceInstance recentlyChangedServiceInstance = null;
-                        // 如果队列中最早的一个元素的变更时间超过3分钟，则从队列中移除
+                        // 如果队列中最早的一个元素的变更信息在队列中已经超过3分钟了，则从队列中移除
                         if ((recentlyChangedServiceInstance = recentlyChangedQueue.peek()) != null) {
                             if (currentTimeStamp - recentlyChangedServiceInstance.changedTimestamp > RECENTLY_CHANGE_ITEM_EXPIRED) {
                                 recentlyChangedQueue.pop();

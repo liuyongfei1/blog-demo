@@ -1,5 +1,8 @@
 package com.fullstackboy.register.server;
 
+import java.util.LinkedList;
+import java.util.Map;
+
 /**
  * 这里接收register-client发送过来的http请求
  * 在Spring Cloud Eureka中，使用的是 jersey，spring mvc， restful框架，在国外用的比较多
@@ -88,5 +91,21 @@ public class RegisterServerController {
             policy.setExpectedHeartbeatRate(policy.getExpectedHeartbeatRate() + 2);
             policy.setExpectedHeartbeatThreshold((long) (policy.getExpectedHeartbeatRate() * 0.85));
         }
+    }
+
+    /**
+     * 拉取全量注册表
+     * @return 全量注册表
+     */
+    public Map<String, Map<String, ServiceInstance>> fetchFullRegistry() {
+        return serviceRegistry.getRegistry();
+    }
+
+    /**
+     * 拉取增量注册表
+     * @return 增量注册表
+     */
+    public LinkedList<ServiceRegistry.RecentlyChangedServiceInstance> fetchRecentlyChangedQueue() {
+        return serviceRegistry.getRecentlyChangedQueue();
     }
 }
