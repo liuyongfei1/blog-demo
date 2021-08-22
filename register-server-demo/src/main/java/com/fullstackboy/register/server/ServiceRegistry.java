@@ -1,6 +1,7 @@
 package com.fullstackboy.register.server;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -11,16 +12,27 @@ import java.util.Map;
  */
 public class ServiceRegistry {
 
+    public static final long RECENTLY_CHANGE_ITEM_CHECK_INTERVAL = 3000L;
+    public static final long RECENTLY_CHANGE_ITEM_EXPIRED = 3 * 60 * 1000L;
+
     private static final ServiceRegistry instance = new ServiceRegistry();
 
     private ServiceRegistry() {
-
+        // 启动后台线程监控最近变更的队列
+        RecentlyChangedQueueMonitor monitor = new RecentlyChangedQueueMonitor();
+        monitor.setDaemon(true);
+        monitor.start();
     }
 
     /**
      * 注册表
      */
     private Map<String, Map<String, ServiceInstance>> registry = new HashMap<>();
+
+    /**
+     * 最近变更的服务实例队列
+     */
+    private LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue = new LinkedList<>();
 
     /**
      * 服务注册
@@ -33,6 +45,12 @@ public class ServiceRegistry {
         }
 
         instanceMap.put(instance.getServiceInstanceId(),instance);
+
+        // 将新注册的服务实例加入最近变更队列
+        RecentlyChangedServiceInstance recentlyChangedServiceInstance = new RecentlyChangedServiceInstance(
+                instance, ServiceInstanceOperation.REGISTER, System.currentTimeMillis()
+        );
+        recentlyChangedQueue.add(recentlyChangedServiceInstance);
 
         System.out.println("服务实例【" + instance + "】，完成注册");
         System.out.println("注册表：" + registry);
@@ -62,6 +80,13 @@ public class ServiceRegistry {
         serverInstanceMap.remove(serverInstanceId);
 
         System.out.println("服务实例【" + serverInstanceId + "】被摘除");
+
+
+        // 将新注册的服务实例加入最近变更队列
+        RecentlyChangedServiceInstance recentlyChangedServiceInstance = new RecentlyChangedServiceInstance(
+                serverInstanceMap.get(serverInstanceId), ServiceInstanceOperation.REGISTER, System.currentTimeMillis()
+        );
+        recentlyChangedQueue.add(recentlyChangedServiceInstance);
     }
 
     /**
@@ -74,5 +99,69 @@ public class ServiceRegistry {
 
     public Map<String, Map<String, ServiceInstance>> getRegistry() {
         return registry;
+    }
+
+    /**
+     * 最近变化的服务实例
+     */
+    class RecentlyChangedServiceInstance {
+
+        /**
+         * 服务实例
+         */
+        ServiceInstance serviceInstance;
+
+        /**
+         * 变更操作
+         */
+        String serviceInstanceOperation;
+
+        /**
+         * 发生变更时的时间戳
+         */
+        long changedTimestamp;
+
+        public RecentlyChangedServiceInstance(ServiceInstance serviceInstance,
+                                              String serviceInstanceOperation,
+                                              long changedTimestamp) {
+            this.serviceInstance = serviceInstance;
+            this.serviceInstanceOperation = serviceInstanceOperation;
+            this.changedTimestamp = changedTimestamp;
+        }
+    }
+
+    /**
+     * 服务实例变更操作
+     */
+    class ServiceInstanceOperation {
+        private static final String REGISTER = "REGISTER";
+        private static final String REMOVE = "REMOVE";
+    }
+
+    /**
+     * 监控最近变化的服务实例后台线程
+     */
+    class RecentlyChangedQueueMonitor extends Thread {
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    synchronized (instance) {
+                        long currentTimeStamp = System.currentTimeMillis();
+                        RecentlyChangedServiceInstance recentlyChangedServiceInstance = null;
+                        // 如果队列中最早的一个元素的变更时间超过3分钟，则从队列中移除
+                        if ((recentlyChangedServiceInstance = recentlyChangedQueue.peek()) != null) {
+                            if (currentTimeStamp - recentlyChangedServiceInstance.changedTimestamp > RECENTLY_CHANGE_ITEM_EXPIRED) {
+                                recentlyChangedQueue.pop();
+                            }
+                        }
+                    }
+                    Thread.sleep(RECENTLY_CHANGE_ITEM_CHECK_INTERVAL);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
