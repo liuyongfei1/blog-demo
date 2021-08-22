@@ -21,7 +21,7 @@ public class DoubleCheckSingleton {
                     DoubleCheckSingleton.instance = new DoubleCheckSingleton();
                 }
             }
-            // 第一个线程执行完毕，退出synchronized代码块，会是否synchronized锁
+            // 第一个线程执行完毕，退出synchronized代码块，会释放synchronized锁
         }
         return instance;
     }
