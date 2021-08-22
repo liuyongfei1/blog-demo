@@ -1,6 +1,7 @@
 package com.fullstackboy.register.server;
 
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.LongAdder;
 
 /**
  * 心跳测量计数器
@@ -14,7 +15,12 @@ public class HeartbeatCounter {
      * 最近1分钟的心跳次数
      */
 //    private long latestMinuteHeartbeatRate;
-    private AtomicLong latestMinuteHeartbeatRate = new AtomicLong(0L);
+
+    /**
+     * 由于AtomicLong会存在的三大问题，JDK1.8中提供了更好解决办法的LongAdder
+     */
+//    private AtomicLong latestMinuteHeartbeatRate = new AtomicLong(0L);
+    private LongAdder latestMinuteHeartbeatRate = new LongAdder();
 
     /**
      * 最近1分钟的时间戳
@@ -39,11 +45,13 @@ public class HeartbeatCounter {
         long currentTimestamp = System.currentTimeMillis();
         if (currentTimestamp - latestMinuteTimeStamp >  60 * 1000) {
 //            latestMinuteHeartbeatRate = 0L;
-            latestMinuteHeartbeatRate = new AtomicLong(0L);
+//            latestMinuteHeartbeatRate = new AtomicLong(0L);
+            latestMinuteHeartbeatRate = new LongAdder();
             latestMinuteTimeStamp = System.currentTimeMillis();
         }
 //        latestMinuteHeartbeatRate++;
-        latestMinuteHeartbeatRate.incrementAndGet();
+//        latestMinuteHeartbeatRate.incrementAndGet();
+        latestMinuteHeartbeatRate.increment();
     }
 
     /**
@@ -55,7 +63,8 @@ public class HeartbeatCounter {
     }
 
     public /**synchronized*/ long getLatestMinuteHeartbeatRate() {
-        return latestMinuteHeartbeatRate.get();
+//        return latestMinuteHeartbeatRate.get();
+        return latestMinuteHeartbeatRate.longValue();
     }
 
 }
