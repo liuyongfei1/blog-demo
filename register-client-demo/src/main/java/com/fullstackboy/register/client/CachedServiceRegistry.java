@@ -1,7 +1,6 @@
 package com.fullstackboy.register.client;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -26,7 +25,7 @@ public class CachedServiceRegistry {
 	 */
 	private FetchDeltaRegistryWorker fetchDeltaRegistryWorker;
 	/**
-	 * com.fullstackboy.register.client.RegisterClient
+	 * RegisterClient
 	 */
 	private RegisterClient registerClient;
 	/**
@@ -91,7 +90,6 @@ public class CachedServiceRegistry {
 		public void run() {
 			while(registerClient.isRunning()) {  
 				try {
-//					registry = httpSender.fetchServiceRegistry();
 					Thread.sleep(SERVICE_REGISTRY_FETCH_INTERVAL);
 
 					// 拉取最近3分钟有变化的服务实例
@@ -105,17 +103,7 @@ public class CachedServiceRegistry {
 
 					// 再检查一下服务端的注册表数量与客户端的是否一致
 					// 封装一下增量注册表对象，也就是增量拉取注册表的时候，同时返回服务端的注册表数量
-					long serviceInstanceTotalCount = deltaRegistry.getServiceInstanceTotalCount();
-					long clientSideTotalCount = 0L;
-
-					for(Map<String,ServiceInstance> serviceInstanceMap : registry.values()) {
-						clientSideTotalCount += serviceInstanceMap.size();
-					}
-
-					if (serviceInstanceTotalCount != clientSideTotalCount) {
-						// 重新拉取全量注册表进行纠正
-						registry = httpSender.fetchServiceRegistry();
-					}
+					reconcileRegistry(deltaRegistry);
 				} catch (Exception e) {
 					e.printStackTrace();  
 				}
@@ -126,7 +114,7 @@ public class CachedServiceRegistry {
 
 	/**
 	 * 合并增量注册表到本地缓存注册表中去
-	 * @param deltaRegistry
+	 * @param deltaRegistry 拉取到的有变动的注册表
 	 */
 	private void mergeDeltaRegistry(DeltaRegistry deltaRegistry) {
 
@@ -157,6 +145,24 @@ public class CachedServiceRegistry {
 			}
 		}
 
+	}
+
+	/**
+	 * 校对调整注册表
+	 * @param deltaRegistry 拉取到的有变动的注册表
+	 */
+	private void reconcileRegistry(DeltaRegistry deltaRegistry) {
+		long serviceInstanceTotalCount = deltaRegistry.getServiceInstanceTotalCount();
+		long clientSideTotalCount = 0L;
+
+		for(Map<String,ServiceInstance> serviceInstanceMap : registry.values()) {
+			clientSideTotalCount += serviceInstanceMap.size();
+		}
+
+		if (serviceInstanceTotalCount != clientSideTotalCount) {
+			// 重新拉取全量注册表进行纠正
+			registry = httpSender.fetchServiceRegistry();
+		}
 	}
 	
 	/**
