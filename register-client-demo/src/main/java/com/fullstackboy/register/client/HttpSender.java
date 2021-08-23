@@ -47,7 +47,7 @@ public class HttpSender {
 	 * 全量拉取服务注册表
 	 * @return
 	 */
-	public Map<String, Map<String, ServiceInstance>> fetchServiceRegistry() {
+	public Applications fetchFullRegistry() {
 		Map<String, Map<String, ServiceInstance>> registry = 
 				new HashMap<String, Map<String, ServiceInstance>>();
 		
@@ -65,7 +65,7 @@ public class HttpSender {
 		
 		System.out.println("拉取注册表：" + registry);  
 		
-		return registry;
+		return new Applications(registry);
 	}
 	
 	/**

@@ -1,7 +1,10 @@
 package com.fullstackboy.register.client;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicStampedReference;
 
 /**
  * 服务注册中心的客户端缓存的一个服务注册表
@@ -18,8 +21,8 @@ public class CachedServiceRegistry {
 	/**
 	 * 客户端缓存的服务注册表
 	 */
-	private Map<String, Map<String, ServiceInstance>> registry = 
-			new HashMap<String, Map<String, ServiceInstance>>();
+//	private Map<String, Map<String, ServiceInstance>> registry =
+//			new HashMap<String, Map<String, ServiceInstance>>();
 	/**
 	 * 负责定时拉取注册表到客户端进行缓存的后台线程
 	 */
@@ -32,6 +35,11 @@ public class CachedServiceRegistry {
 	 * http通信组件
 	 */
 	private HttpSender httpSender;
+
+	/**
+	 * 客户端缓存的所有的实例信息
+	 */
+	private AtomicStampedReference<Applications> applications;
 	
 	/**
 	 * 构造函数
@@ -44,6 +52,7 @@ public class CachedServiceRegistry {
 		this.fetchDeltaRegistryWorker = new FetchDeltaRegistryWorker();
 		this.registerClient = registerClient;
 		this.httpSender = httpSender;
+		this.applications = new AtomicStampedReference<>(new Applications(), 0);
 	}
 	
 	/**
@@ -74,7 +83,17 @@ public class CachedServiceRegistry {
 		
 		@Override
 		public void run() {
-			registry = httpSender.fetchServiceRegistry();
+			Applications fetchedApplications = httpSender.fetchFullRegistry();
+
+			while (true) {
+				Applications expectedApplications = applications.getReference();
+				int expectedStamp = applications.getStamp();
+				if (applications.compareAndSet(expectedApplications, fetchedApplications, expectedStamp,
+						expectedStamp + 1)) {
+					break;
+				}
+			}
+
 		}
 		
 	}
@@ -97,9 +116,9 @@ public class CachedServiceRegistry {
 
 					// 一类是注册，一类是删除
 					// 这里其实是要大量的修改本地缓存的注册表，所以这里使用了synchronized加锁。
-					synchronized (registry) {
+//					synchronized (registry) {
 						mergeDeltaRegistry(deltaRegistry);
-					}
+//					}
 
 					// 再检查一下服务端的注册表数量与客户端的是否一致
 					// 封装一下增量注册表对象，也就是增量拉取注册表的时候，同时返回服务端的注册表数量
@@ -117,34 +136,39 @@ public class CachedServiceRegistry {
 	 * @param deltaRegistry 拉取到的有变动的注册表
 	 */
 	private void mergeDeltaRegistry(DeltaRegistry deltaRegistry) {
+		synchronized (applications) {
+			Map<String,Map<String, ServiceInstance>> registry = applications.getReference().getRegistry();
+			LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue = deltaRegistry.getRecentlyChangedQueue();
 
-		for (RecentlyChangedServiceInstance changeItem : deltaRegistry.getRecentlyChangedQueue()) {
-			Map<String, ServiceInstance> serviceInstanceMap = registry.get(changeItem.serviceInstance.getServiceName());
-			// 如果是注册操作
-			if (changeItem.serviceInstanceOperation.equals(ServiceInstanceOperation.REGISTER)) {
-				if (serviceInstanceMap == null) {
-					serviceInstanceMap = new HashMap<>();
-					registry.put(changeItem.serviceInstance.getServiceName(), serviceInstanceMap);
+			for (RecentlyChangedServiceInstance changeItem : recentlyChangedQueue) {
+				String serviceName = changeItem.serviceInstance.getServiceName();
+				String serviceInstanceId = changeItem.serviceInstance.getServiceInstanceId();
+
+				Map<String, ServiceInstance> serviceInstanceMap = registry.get(serviceName);
+				// 如果是注册操作
+				if (changeItem.serviceInstanceOperation.equals(ServiceInstanceOperation.REGISTER)) {
+					if (serviceInstanceMap == null) {
+						serviceInstanceMap = new HashMap<>();
+						registry.put(changeItem.serviceInstance.getServiceName(), serviceInstanceMap);
+					}
+
+					ServiceInstance serviceInstance =
+							serviceInstanceMap.get(changeItem.serviceInstance.getServiceInstanceId());
+
+					if (serviceInstance == null) {
+						serviceInstanceMap.put(
+								changeItem.serviceInstance.getServiceInstanceId(),
+								changeItem.serviceInstance);
+					}
 				}
-
-				ServiceInstance serviceInstance =
-						serviceInstanceMap.get(changeItem.serviceInstance.getServiceInstanceId());
-
-				if (serviceInstance == null) {
-					serviceInstanceMap.put(
-							changeItem.serviceInstance.getServiceInstanceId(),
-							changeItem.serviceInstance);
-				}
-
-			}
-			// 如果是删除操作
-			else if (changeItem.serviceInstanceOperation.equals(ServiceInstanceOperation.REMOVE)) {
-				if (serviceInstanceMap != null) {
-					serviceInstanceMap.remove(changeItem.serviceInstance.getServiceInstanceId());
+				// 如果是删除操作
+				else if (changeItem.serviceInstanceOperation.equals(ServiceInstanceOperation.REMOVE)) {
+					if (serviceInstanceMap != null) {
+						serviceInstanceMap.remove(changeItem.serviceInstance.getServiceInstanceId());
+					}
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -152,17 +176,29 @@ public class CachedServiceRegistry {
 	 * @param deltaRegistry 拉取到的有变动的注册表
 	 */
 	private void reconcileRegistry(DeltaRegistry deltaRegistry) {
-		long serviceInstanceTotalCount = deltaRegistry.getServiceInstanceTotalCount();
-		long clientSideTotalCount = 0L;
+//		synchronized (applications) {
+			Map<String, Map<String,ServiceInstance>> registry = applications.getReference().getRegistry();
 
-		for(Map<String,ServiceInstance> serviceInstanceMap : registry.values()) {
-			clientSideTotalCount += serviceInstanceMap.size();
-		}
+			long serviceInstanceTotalCount = deltaRegistry.getServiceInstanceTotalCount();
+			long clientSideTotalCount = 0L;
 
-		if (serviceInstanceTotalCount != clientSideTotalCount) {
-			// 重新拉取全量注册表进行纠正
-			registry = httpSender.fetchServiceRegistry();
-		}
+			for(Map<String,ServiceInstance> serviceInstanceMap : registry.values()) {
+				clientSideTotalCount += serviceInstanceMap.size();
+			}
+
+			if (serviceInstanceTotalCount != clientSideTotalCount) {
+				// 重新拉取全量注册表进行纠正
+				Applications fetchedApplications = httpSender.fetchFullRegistry();
+				while (true) {
+					Applications expectedApplications = applications.getReference();
+					int expectedStamp = applications.getStamp();
+					if (applications.compareAndSet(expectedApplications, fetchedApplications, expectedStamp,
+							expectedStamp + 1)) {
+						break;
+					}
+				}
+			}
+//		}
 	}
 	
 	/**
@@ -170,7 +206,7 @@ public class CachedServiceRegistry {
 	 * @return
 	 */
 	public Map<String, Map<String, ServiceInstance>> getRegistry() {
-		return registry;
+		return applications.getReference().getRegistry();
 	}
 
 	/**
