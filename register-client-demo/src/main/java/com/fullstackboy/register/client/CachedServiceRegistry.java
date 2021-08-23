@@ -95,7 +95,7 @@ public class CachedServiceRegistry {
 					Thread.sleep(SERVICE_REGISTRY_FETCH_INTERVAL);
 
 					// 拉取最近3分钟有变化的服务实例
-					LinkedList<RecentlyChangedServiceInstance> deltaRegistry = httpSender.fetchDeltaServiceRegistry();
+					DeltaRegistry deltaRegistry = httpSender.fetchDeltaServiceRegistry();
 
 					// 一类是注册，一类是删除
 					// 这里其实是要大量的修改本地缓存的注册表，所以这里使用了synchronized加锁。
@@ -103,6 +103,19 @@ public class CachedServiceRegistry {
 						mergeDeltaRegistry(deltaRegistry);
 					}
 
+					// 再检查一下服务端的注册表数量与客户端的是否一致
+					// 封装一下增量注册表对象，也就是增量拉取注册表的时候，同时返回服务端的注册表数量
+					long serviceInstanceTotalCount = deltaRegistry.getServiceInstanceTotalCount();
+					long clientSideTotalCount = 0L;
+
+					for(Map<String,ServiceInstance> serviceInstanceMap : registry.values()) {
+						clientSideTotalCount += serviceInstanceMap.size();
+					}
+
+					if (serviceInstanceTotalCount != clientSideTotalCount) {
+						// 重新拉取全量注册表进行纠正
+						registry = httpSender.fetchServiceRegistry();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();  
 				}
@@ -115,9 +128,9 @@ public class CachedServiceRegistry {
 	 * 合并增量注册表到本地缓存注册表中去
 	 * @param deltaRegistry
 	 */
-	private void mergeDeltaRegistry(LinkedList<RecentlyChangedServiceInstance> deltaRegistry) {
+	private void mergeDeltaRegistry(DeltaRegistry deltaRegistry) {
 
-		for (RecentlyChangedServiceInstance changeItem : deltaRegistry) {
+		for (RecentlyChangedServiceInstance changeItem : deltaRegistry.getRecentlyChangedQueue()) {
 			Map<String, ServiceInstance> serviceInstanceMap = registry.get(changeItem.serviceInstance.getServiceName());
 			// 如果是注册操作
 			if (changeItem.serviceInstanceOperation.equals(ServiceInstanceOperation.REGISTER)) {

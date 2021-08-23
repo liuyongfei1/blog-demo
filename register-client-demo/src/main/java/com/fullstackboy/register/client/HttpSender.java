@@ -72,7 +72,7 @@ public class HttpSender {
 	 * 增量拉取服务注册表
 	 * @return
 	 */
-	public LinkedList<RecentlyChangedServiceInstance> fetchDeltaServiceRegistry() {
+	public DeltaRegistry fetchDeltaServiceRegistry() {
 		LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue = 
 				new LinkedList<RecentlyChangedServiceInstance>();
 		
@@ -90,9 +90,10 @@ public class HttpSender {
 		
 		recentlyChangedQueue.add(recentlyChangedItem);
 		
-		System.out.println("拉取增量注册表：" + recentlyChangedQueue);  
-		
-		return recentlyChangedQueue;
+		System.out.println("拉取增量注册表：" + recentlyChangedQueue);
+		DeltaRegistry deltaRegistry = new DeltaRegistry(recentlyChangedQueue, 2L);
+
+		return deltaRegistry;
 	}
 	
 	/**
