@@ -1,23 +1,37 @@
 package com.fullstackboy.register.client;
 
 /**
- * 发送心跳的请求
- *
+ * 心跳请求
  * @author Liuyongfei
- * @date 2021/8/15 17:56
+ *
  */
 public class HeartbeatRequest {
 
-    /**
-     * 服务实例id
-     */
-    private String serverInstanceId;
+	/**
+	 * 服务名称
+	 */
+	private String serviceName;
+	/**
+	 * 服务实例id
+	 */
+	private String serviceInstanceId;
 
-    public String getServerInstanceId() {
-        return serverInstanceId;
-    }
-
-    public void setServerInstanceId(String serverInstanceId) {
-        this.serverInstanceId = serverInstanceId;
-    }
+	public String getServiceName() {
+		return serviceName;
+	}
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+	public String getServiceInstanceId() {
+		return serviceInstanceId;
+	}
+	public void setServiceInstanceId(String serviceInstanceId) {
+		this.serviceInstanceId = serviceInstanceId;
+	}
+	
+	@Override
+	public String toString() {
+		return "com.fullstackboy.register.client.HeartbeatRequest [serviceName=" + serviceName + ", serviceInstanceId=" + serviceInstanceId + "]";
+	}
+	
 }

@@ -1,4 +1,4 @@
-package com.fullstackboy.client;
+package com.fullstackboy.register.client;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class CachedServiceRegistry {
 	 */
 	private FetchDeltaRegistryWorker fetchDeltaRegistryWorker;
 	/**
-	 * RegisterClient
+	 * com.fullstackboy.register.client.RegisterClient
 	 */
 	private RegisterClient registerClient;
 	/**

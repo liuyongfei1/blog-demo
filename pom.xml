@@ -26,6 +26,7 @@
         <module>distributed-lock-demo</module>
         <module>register-client-demo</module>
         <module>register-server-demo</module>
+        <module>register-client-demo</module>
     </modules>
 
     <properties>
