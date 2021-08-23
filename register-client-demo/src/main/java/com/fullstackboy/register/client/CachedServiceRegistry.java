@@ -1,6 +1,7 @@
 package com.fullstackboy.register.client;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -91,13 +92,58 @@ public class CachedServiceRegistry {
 			while(registerClient.isRunning()) {  
 				try {
 //					registry = httpSender.fetchServiceRegistry();
-					Thread.sleep(SERVICE_REGISTRY_FETCH_INTERVAL);  
+					Thread.sleep(SERVICE_REGISTRY_FETCH_INTERVAL);
+
+					// 拉取最近3分钟有变化的服务实例
+					LinkedList<RecentlyChangedServiceInstance> deltaRegistry = httpSender.fetchDeltaServiceRegistry();
+
+					// 一类是注册，一类是删除
+					// 这里其实是要大量的修改本地缓存的注册表，所以这里使用了synchronized加锁。
+					synchronized (registry) {
+						mergeDeltaRegistry(deltaRegistry);
+					}
+
 				} catch (Exception e) {
 					e.printStackTrace();  
 				}
 			}
 		}
 		
+	}
+
+	/**
+	 * 合并增量注册表到本地缓存注册表中去
+	 * @param deltaRegistry
+	 */
+	private void mergeDeltaRegistry(LinkedList<RecentlyChangedServiceInstance> deltaRegistry) {
+
+		for (RecentlyChangedServiceInstance changeItem : deltaRegistry) {
+			Map<String, ServiceInstance> serviceInstanceMap = registry.get(changeItem.serviceInstance.getServiceName());
+			// 如果是注册操作
+			if (changeItem.serviceInstanceOperation.equals(ServiceInstanceOperation.REGISTER)) {
+				if (serviceInstanceMap == null) {
+					serviceInstanceMap = new HashMap<>();
+					registry.put(changeItem.serviceInstance.getServiceName(), serviceInstanceMap);
+				}
+
+				ServiceInstance serviceInstance =
+						serviceInstanceMap.get(changeItem.serviceInstance.getServiceInstanceId());
+
+				if (serviceInstance == null) {
+					serviceInstanceMap.put(
+							changeItem.serviceInstance.getServiceInstanceId(),
+							changeItem.serviceInstance);
+				}
+
+			}
+			// 如果是删除操作
+			else if (changeItem.serviceInstanceOperation.equals(ServiceInstanceOperation.REMOVE)) {
+				if (serviceInstanceMap != null) {
+					serviceInstanceMap.remove(changeItem.serviceInstance.getServiceInstanceId());
+				}
+			}
+		}
+
 	}
 	
 	/**
@@ -106,6 +152,14 @@ public class CachedServiceRegistry {
 	 */
 	public Map<String, Map<String, ServiceInstance>> getRegistry() {
 		return registry;
+	}
+
+	/**
+	 * 服务实例操作类型
+	 */
+	class ServiceInstanceOperation {
+		private static final String REGISTER = "REGISTER";
+		private static final String REMOVE = "REMOVE";
 	}
 	
 	/**
