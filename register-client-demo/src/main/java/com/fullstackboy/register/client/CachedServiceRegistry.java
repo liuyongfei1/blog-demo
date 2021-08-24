@@ -3,6 +3,7 @@ package com.fullstackboy.register.client;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicStampedReference;
 
@@ -40,6 +41,11 @@ public class CachedServiceRegistry {
 	 * 客户端缓存的所有的实例信息
 	 */
 	private AtomicStampedReference<Applications> applications;
+
+	/**
+	 * 注册表版本号
+	 */
+	private AtomicLong applicationVersion = new AtomicLong(0L);
 	
 	/**
 	 * 构造函数
@@ -83,8 +89,24 @@ public class CachedServiceRegistry {
 		
 		@Override
 		public void run() {
-			Applications fetchedApplications = httpSender.fetchFullRegistry();
+			fetchFullRegistry();
+		}
+	}
 
+	/**
+	 * 拉取全量注册表到本地
+	 *
+	 * 一定要在发起网络请求之前拿到这个版本号
+	 * 接着在这里发起网络请求，此时可能会有别的线程来修改这个注册表，更新版本
+	 * 如果在这个期间，有人修改过注册表，版本不一样了，此时if就直接不成立了。这样就不会把你拉取到的旧版本的注册表给设置进去。
+	 *
+	 * 必须得是你发起网络请求之后，这个注册表的版本没有被修改过，你才能将新拉取到的注册表给设置进去。
+	 */
+	private void fetchFullRegistry() {
+		Long expectedVersion = applicationVersion.get();
+		Applications fetchedApplications = httpSender.fetchFullRegistry();
+
+		if (applicationVersion.compareAndSet(expectedVersion, expectedVersion + 1)) {
 			while (true) {
 				Applications expectedApplications = applications.getReference();
 				int expectedStamp = applications.getStamp();
@@ -93,9 +115,7 @@ public class CachedServiceRegistry {
 					break;
 				}
 			}
-
 		}
-		
 	}
 	
 	/**
@@ -188,15 +208,7 @@ public class CachedServiceRegistry {
 
 			if (serviceInstanceTotalCount != clientSideTotalCount) {
 				// 重新拉取全量注册表进行纠正
-				Applications fetchedApplications = httpSender.fetchFullRegistry();
-				while (true) {
-					Applications expectedApplications = applications.getReference();
-					int expectedStamp = applications.getStamp();
-					if (applications.compareAndSet(expectedApplications, fetchedApplications, expectedStamp,
-							expectedStamp + 1)) {
-						break;
-					}
-				}
+				fetchFullRegistry();
 			}
 //		}
 	}
@@ -253,5 +265,4 @@ public class CachedServiceRegistry {
 		}
 		
 	}
-	
 }
