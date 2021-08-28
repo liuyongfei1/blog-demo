@@ -56,6 +56,7 @@ public class RedisLockOptimizeDemo {
             }
         }
 
+        // 该分段库存大于购买数量，则直接更新库存，并释放锁
         if (stock >= purchaseCount) {
             inventoryDAO.updateInventory(goodsSkuId, goodsSkuSegmentSeq, stock - purchaseCount);
             lock.unlock();
