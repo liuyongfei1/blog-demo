@@ -72,25 +72,29 @@ public class ServiceRegistryCache {
      * @return 注册表数据
      */
     public Object get(String key) {
+        Object cacheValue = null;
 
-        readLock.lock();
-        // 先从只读缓存Map里取
-        Object cacheValue = readOnlyCacheMap.get(key);
-        if (cacheValue == null) {
-            synchronized (lock) {
-                if (readOnlyCacheMap.get(key) == null) {
-                    // 从读写缓存里取数据
-                    cacheValue = readWriteCacheMap.get(key);
-                    // 如果读写缓存里的数据也为空，则从实际的注册表里去读数据
-                    if (cacheValue == null) {
-                        cacheValue = getCacheValue(key);
-                        readWriteCacheMap.put(key, cacheValue);
+        try {
+            readLock.lock();
+            // 先从只读缓存Map里取
+            cacheValue = readOnlyCacheMap.get(key);
+            if (cacheValue == null) {
+                synchronized (lock) {
+                    if (readOnlyCacheMap.get(key) == null) {
+                        // 从读写缓存里取数据
+                        cacheValue = readWriteCacheMap.get(key);
+                        // 如果读写缓存里的数据也为空，则从实际的注册表里去读数据
+                        if (cacheValue == null) {
+                            cacheValue = getCacheValue(key);
+                            readWriteCacheMap.put(key, cacheValue);
+                        }
+                        readOnlyCacheMap.put(key, cacheValue);
                     }
-                    readOnlyCacheMap.put(key, cacheValue);
                 }
             }
+        } finally {
+            readLock.unlock();
         }
-        readLock.unlock();
         return cacheValue;
     }
 
@@ -110,10 +114,10 @@ public class ServiceRegistryCache {
      */
     public Object getCacheValue(String key) {
         if (CacheKey.FULL_SERVICE_REGISTRY.equals(key)) {
-            return registry.getRegistry();
+            return new Applications(registry.getRegistry());
         }
         else if (CacheKey.DELTA_SERVICE_REGISTRY.equals(key)) {
-            return registry.getRecentlyChangedQueue();
+            return registry.getDeltaRegistry();
         }
         return null;
     }

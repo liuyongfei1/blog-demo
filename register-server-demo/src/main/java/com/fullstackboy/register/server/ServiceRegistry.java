@@ -138,19 +138,15 @@ public class ServiceRegistry {
     }
 
     /**
-     * 获取有变更的服务实例队列
-     * @return 有变更的服务实例队列
+     * 获取最近有变化的注册表
+     * @return 最近有变化的注册表
      */
-    public LinkedList<RecentlyChangedServiceInstance> getRecentlyChangedQueue() {
-        return recentlyChangedQueue;
-    }
-
-    /**
-     * 获取最近变更的注册表
-     * @return 最近变更的注册表
-     */
-    public LinkedList<RecentlyChangedServiceInstance> getRecentlyChangeQueue() {
-        return recentlyChangedQueue;
+    public DeltaRegistry getDeltaRegistry() {
+        long totalServiceInstanceCount = 0;
+        for (Map<String,ServiceInstance> serviceInstanceMap : registry.values()) {
+            totalServiceInstanceCount += serviceInstanceMap.size();
+        }
+        return new DeltaRegistry(recentlyChangedQueue, totalServiceInstanceCount);
     }
 
     /**

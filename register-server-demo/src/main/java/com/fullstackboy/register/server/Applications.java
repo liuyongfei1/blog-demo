@@ -16,6 +16,10 @@ public class Applications {
     public Applications() {
     }
 
+    public Applications(Map<String, Map<String, ServiceInstance>> registry) {
+        this.registry = registry;
+    }
+
     public Map<String, Map<String, ServiceInstance>> getRegistry() {
         return registry;
     }
