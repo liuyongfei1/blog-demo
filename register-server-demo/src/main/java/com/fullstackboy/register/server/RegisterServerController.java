@@ -47,6 +47,8 @@ public class RegisterServerController {
                 policy.setExpectedHeartbeatThreshold((long) (policy.getExpectedHeartbeatRate() * 0.85));
             }
 
+            // 过期掉服务注册表中的缓存
+            serviceRegistryCache.invalidate();
             response.setStatus(RegisterResponse.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,6 +99,9 @@ public class RegisterServerController {
             policy.setExpectedHeartbeatRate(policy.getExpectedHeartbeatRate() + 2);
             policy.setExpectedHeartbeatThreshold((long) (policy.getExpectedHeartbeatRate() * 0.85));
         }
+
+        // 过期掉服务注册表中的缓存
+        serviceRegistryCache.invalidate();
     }
 
     /**
