@@ -21,7 +21,7 @@ public class ServiceRegistryCache {
     /**
      * 服务注册表的缓存的单例
      */
-    private static final ServiceRegistryCache getInstance = new ServiceRegistryCache();
+    private static final ServiceRegistryCache instance = new ServiceRegistryCache();
 
 
     /**
@@ -59,6 +59,14 @@ public class ServiceRegistryCache {
     }
 
     /**
+     * 获取注册表缓存单例
+     * @return 注册表缓存单例
+     */
+    public static ServiceRegistryCache getInstance() {
+        return instance;
+    }
+
+    /**
      * 获取注册表的数据
      * @param key key
      * @return 注册表数据
@@ -89,7 +97,7 @@ public class ServiceRegistryCache {
     /**
      * 缓存的key
      */
-    class CacheKey {
+    public class CacheKey {
         public static final String FULL_SERVICE_REGISTRY = "full_service_key";
 
         public static final String DELTA_SERVICE_REGISTRY = "delta_service_registry";

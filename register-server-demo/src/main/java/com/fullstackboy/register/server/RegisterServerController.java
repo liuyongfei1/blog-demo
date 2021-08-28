@@ -17,6 +17,12 @@ public class RegisterServerController {
     private ServiceRegistry serviceRegistry = ServiceRegistry.getInstance();
 
     /**
+     * 注册表缓存
+     */
+    private ServiceRegistryCache serviceRegistryCache = ServiceRegistryCache.getInstance();
+
+
+    /**
      * 接收服务注册请求
      * @param registerRequest 服务注册请求
      * @return 响应
@@ -95,17 +101,26 @@ public class RegisterServerController {
 
     /**
      * 拉取全量注册表
+     * 优化为：优先从缓存中读取全量注册表
      * @return 全量注册表
      */
-    public Map<String, Map<String, ServiceInstance>> fetchFullRegistry() {
-        return serviceRegistry.getRegistry();
+//    public Map<String, Map<String, ServiceInstance>> fetchFullRegistry() {
+////        return serviceRegistry.getRegistry();
+//        return serviceRegistryCache.get(ServiceRegistryCache.CacheKey.FULL_SERVICE_REGISTRY);
+//    }
+    public Applications fetchFullRegistry() {
+        return (Applications) serviceRegistryCache.get(ServiceRegistryCache.CacheKey.FULL_SERVICE_REGISTRY);
     }
 
     /**
      * 拉取增量注册表
+     * 优化为：优先从缓存中读取增量注册表
      * @return 增量注册表
      */
-    public LinkedList<ServiceRegistry.RecentlyChangedServiceInstance> fetchRecentlyChangedQueue() {
-        return serviceRegistry.getRecentlyChangedQueue();
+//    public LinkedList<ServiceRegistry.RecentlyChangedServiceInstance> fetchRecentlyChangedQueue() {
+//        return serviceRegistry.getRecentlyChangedQueue();
+//    }
+    public DeltaRegistry fetchRecentlyChangedQueue() {
+        return (DeltaRegistry) serviceRegistryCache.get(ServiceRegistryCache.CacheKey.DELTA_SERVICE_REGISTRY);
     }
 }
