@@ -46,6 +46,35 @@ public class ServiceRegistry {
     private LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue = new LinkedList<>();
 
     /**
+     * 加读锁
+     */
+    public void readLock() {
+        this.readLock.lock();
+    }
+
+    /**
+     * 释放读锁
+     */
+    public void readUnLock() {
+        this.readLock.unlock();
+    }
+
+    /**
+     * 加写锁
+     */
+    public void writeLock() {
+        this.writeLock.lock();
+    }
+
+
+    /**
+     * 释放写锁
+     */
+    public void writeUnLock() {
+        this.writeLock.unlock();
+    }
+
+    /**
      * 服务注册
      */
     public /**synchronized**/ void register(ServiceInstance instance) {
