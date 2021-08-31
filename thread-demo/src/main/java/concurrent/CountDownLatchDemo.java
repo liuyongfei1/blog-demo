@@ -10,16 +10,17 @@ import java.util.concurrent.CountDownLatch;
  * @date 2021/8/31 19:41
  */
 public class CountDownLatchDemo {
-    static CountDownLatch cdt = new CountDownLatch(3);
 
     public static void main(String[] args){
+        CountDownLatch cdt = new CountDownLatch(3);
+
         new Thread() {
             @Override
             public void run() {
                 try {
                     Thread.sleep(2 * 1000);
                     System.out.println("线程一执行完毕");
-                    CountDownLatchDemo.cdt.countDown();
+                    cdt.countDown();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -32,7 +33,7 @@ public class CountDownLatchDemo {
                 try {
                     Thread.sleep(2 * 1000);
                     System.out.println("线程二执行完毕");
-                    CountDownLatchDemo.cdt.countDown();
+                    cdt.countDown();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -45,7 +46,7 @@ public class CountDownLatchDemo {
                 try {
                     Thread.sleep(2 * 1000);
                     System.out.println("线程三执行完毕");
-                    CountDownLatchDemo.cdt.countDown();
+                    cdt.countDown();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -57,7 +58,7 @@ public class CountDownLatchDemo {
             public void run() {
                 try {
                     System.out.println("main线程被阻塞");
-                    CountDownLatchDemo.cdt.await();
+                    cdt.await();
                     System.out.println("main线程被唤醒，可继续向下执行");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
