@@ -27,6 +27,7 @@
         <module>register-client-demo</module>
         <module>register-server-demo</module>
         <module>register-client-demo</module>
+        <module>nio-demo</module>
     </modules>
 
     <properties>
