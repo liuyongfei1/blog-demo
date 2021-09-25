@@ -1,5 +1,6 @@
 package com.fullstackboy.register.server.web;
 
+import com.fullstackboy.register.server.cluster.PeersReplicator;
 import com.fullstackboy.register.server.core.*;
 
 /**
@@ -20,6 +21,10 @@ public class RegisterServerController {
      */
     private ServiceRegistryCache serviceRegistryCache = ServiceRegistryCache.getInstance();
 
+    /**
+     * 集群同步组件
+     */
+    private PeersReplicator peersReplicator = PeersReplicator.getInstance();
 
     /**
      * 接收服务注册请求
@@ -48,6 +53,9 @@ public class RegisterServerController {
 
             // 过期掉服务注册表中的缓存
             serviceRegistryCache.invalidate();
+
+            // 进行集群同步
+            peersReplicator.replicateRegister(registerRequest);
             response.setStatus(RegisterResponse.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,6 +84,9 @@ public class RegisterServerController {
             HeartbeatCounter rate = new HeartbeatCounter();
             rate.increment();
 
+            // 进行集群同步
+            peersReplicator.replicateHeartbeat(heartbeatRequest);
+
             response.setStatus(HeartbeatResponse.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,11 +97,10 @@ public class RegisterServerController {
 
     /**
      * 服务下线
-     * @param serviceName 服务名称
-     * @param serviceInstanceId 服务实例id
+     * @param request 服务下线请求
      */
-    public void cancel(String serviceName, String serviceInstanceId) {
-        serviceRegistry.remove(serviceName, serviceInstanceId);
+    public void cancel(CancelRequest request) {
+        serviceRegistry.remove(request.getServiceName(), request.getServerInstanceId());
 
         // 更新自我保护机制的阈值
         synchronized (SelfProtectionPolicy.class) {
@@ -101,6 +111,9 @@ public class RegisterServerController {
 
         // 过期掉服务注册表中的缓存
         serviceRegistryCache.invalidate();
+
+        // 集群同步
+        peersReplicator.replicateCancel(request);
     }
 
     /**
