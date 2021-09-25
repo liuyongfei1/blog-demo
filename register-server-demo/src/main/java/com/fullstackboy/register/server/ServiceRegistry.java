@@ -3,7 +3,9 @@ package com.fullstackboy.register.server;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
@@ -47,7 +49,8 @@ public class ServiceRegistry {
     /**
      * 最近变更的服务实例队列
      */
-    private LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue = new LinkedList<>();
+//    private LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue = new LinkedList<>();
+    private Queue<RecentlyChangedServiceInstance> recentlyChangedQueue = new ConcurrentLinkedQueue<>();
 
     /**
      * 加读锁
@@ -230,15 +233,23 @@ public class ServiceRegistry {
         public void run() {
             while (true) {
                 try {
-                    synchronized (instance) {
-                        long currentTimeStamp = System.currentTimeMillis();
-                        RecentlyChangedServiceInstance recentlyChangedServiceInstance = null;
-                        // 如果队列中最早的一个元素的变更信息在队列中已经超过3分钟了，则从队列中移除
-                        if ((recentlyChangedServiceInstance = recentlyChangedQueue.peek()) != null) {
-                            if (currentTimeStamp - recentlyChangedServiceInstance.changedTimestamp > RECENTLY_CHANGE_ITEM_EXPIRED) {
-                                recentlyChangedQueue.pop();
+                    try {
+//                        synchronized (instance) {
+                            // 由于这里存在 读，又存在写这个内存数据结构，所以光简简单单的用基于ConcurrentLinkedQueue本身的读写并发保障机制
+                            // 还需要加写锁（写锁互斥，register,remove 也都加了写锁），这个过程中是不允许队列的元素有任何变化的。
+                            writeLock();
+                            long currentTimeStamp = System.currentTimeMillis();
+                            RecentlyChangedServiceInstance recentlyChangedServiceInstance = null;
+                            // 队列头不为null
+                            while ((recentlyChangedServiceInstance = recentlyChangedQueue.peek()) != null) {
+                                // 如果队列中最早的一个元素的变更信息在队列中已经超过3分钟了，则从队列中移除
+                                if (currentTimeStamp - recentlyChangedServiceInstance.changedTimestamp > RECENTLY_CHANGE_ITEM_EXPIRED) {
+                                    recentlyChangedQueue.poll();
+                                }
                             }
-                        }
+//                        }
+                    } finally {
+                        writeUnLock();
                     }
                     Thread.sleep(RECENTLY_CHANGE_ITEM_CHECK_INTERVAL);
                 } catch (InterruptedException e) {

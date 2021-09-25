@@ -1,6 +1,8 @@
 package com.fullstackboy.register.server;
 
 import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * 包装增量注册表
@@ -9,21 +11,22 @@ import java.util.LinkedList;
  * @date 2021/8/28 18:43
  */
 public class DeltaRegistry {
-    LinkedList<ServiceRegistry.RecentlyChangedServiceInstance> recentlyChangedQueue = new LinkedList<>();
+//    LinkedList<ServiceRegistry.RecentlyChangedServiceInstance> recentlyChangedQueue = new LinkedList<>();
+    Queue<ServiceRegistry.RecentlyChangedServiceInstance> recentlyChangedQueue;
 
     private Long serviceInstanceTotalCount;
 
-    public DeltaRegistry(LinkedList<ServiceRegistry.RecentlyChangedServiceInstance> recentlyChangedQueue,
+    public DeltaRegistry(Queue<ServiceRegistry.RecentlyChangedServiceInstance> recentlyChangedQueue,
                          Long serviceInstanceTotalCount) {
         this.recentlyChangedQueue = recentlyChangedQueue;
         this.serviceInstanceTotalCount = serviceInstanceTotalCount;
     }
 
-    public LinkedList<ServiceRegistry.RecentlyChangedServiceInstance> getRecentlyChangedQueue() {
+    public Queue<ServiceRegistry.RecentlyChangedServiceInstance> getRecentlyChangedQueue() {
         return recentlyChangedQueue;
     }
 
-    public void setRecentlyChangedQueue(LinkedList<ServiceRegistry.RecentlyChangedServiceInstance> recentlyChangedQueue) {
+    public void setRecentlyChangedQueue(Queue<ServiceRegistry.RecentlyChangedServiceInstance> recentlyChangedQueue) {
         this.recentlyChangedQueue = recentlyChangedQueue;
     }
 

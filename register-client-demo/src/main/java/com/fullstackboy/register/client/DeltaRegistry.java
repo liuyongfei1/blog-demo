@@ -1,6 +1,7 @@
 package com.fullstackboy.register.client;
 
 import java.util.LinkedList;
+import java.util.Queue;
 
 import com.fullstackboy.register.client.CachedServiceRegistry.RecentlyChangedServiceInstance;
 /**
@@ -14,23 +15,23 @@ public class DeltaRegistry {
     /**
      * 最近3分钟有变更实例的队列
      */
-    public LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue;
+    public Queue<RecentlyChangedServiceInstance> recentlyChangedQueue;
 
     /**
      * 服务实例的总数量
      */
     public long serviceInstanceTotalCount;
 
-    public DeltaRegistry(LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue, long serviceInstanceTotalCount) {
+    public DeltaRegistry(Queue<RecentlyChangedServiceInstance> recentlyChangedQueue, long serviceInstanceTotalCount) {
         this.recentlyChangedQueue = recentlyChangedQueue;
         this.serviceInstanceTotalCount = serviceInstanceTotalCount;
     }
 
-    public LinkedList<RecentlyChangedServiceInstance> getRecentlyChangedQueue() {
+    public Queue<RecentlyChangedServiceInstance> getRecentlyChangedQueue() {
         return recentlyChangedQueue;
     }
 
-    public void setRecentlyChangedQueue(LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue) {
+    public void setRecentlyChangedQueue(Queue<RecentlyChangedServiceInstance> recentlyChangedQueue) {
         this.recentlyChangedQueue = recentlyChangedQueue;
     }
 

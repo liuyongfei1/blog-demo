@@ -3,6 +3,8 @@ package com.fullstackboy.register.client;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import com.fullstackboy.register.client.CachedServiceRegistry.RecentlyChangedServiceInstance;
 /**
  * 负责发送各种http请求的组件
@@ -73,8 +75,8 @@ public class HttpSender {
 	 * @return
 	 */
 	public DeltaRegistry fetchDeltaServiceRegistry() {
-		LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue = 
-				new LinkedList<RecentlyChangedServiceInstance>();
+		ConcurrentLinkedQueue<RecentlyChangedServiceInstance> recentlyChangedQueue =
+				new ConcurrentLinkedQueue<RecentlyChangedServiceInstance>();
 		
 		ServiceInstance serviceInstance = new ServiceInstance();
 		serviceInstance.setHostname("order-service-01");  

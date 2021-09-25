@@ -3,6 +3,8 @@ package com.fullstackboy.register.client;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicStampedReference;
@@ -170,7 +172,7 @@ public class CachedServiceRegistry {
 		try {
 			applicationWriteLock.lock();
 			Map<String,Map<String, ServiceInstance>> registry = applications.getReference().getRegistry();
-			LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue = deltaRegistry.getRecentlyChangedQueue();
+			Queue<RecentlyChangedServiceInstance> recentlyChangedQueue = deltaRegistry.getRecentlyChangedQueue();
 
 			for (RecentlyChangedServiceInstance changeItem : recentlyChangedQueue) {
 				String serviceName = changeItem.serviceInstance.getServiceName();
