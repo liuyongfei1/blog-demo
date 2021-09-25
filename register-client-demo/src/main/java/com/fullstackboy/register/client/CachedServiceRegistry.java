@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicStampedReference;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 服务注册中心的客户端缓存的一个服务注册表
@@ -46,6 +48,14 @@ public class CachedServiceRegistry {
 	 * 注册表版本号
 	 */
 	private AtomicLong applicationVersion = new AtomicLong(0L);
+
+	/**
+	 * 本地缓存注册表的读写锁
+	 */
+	private ReentrantReadWriteLock applicationsLock = new ReentrantReadWriteLock();
+	private ReentrantReadWriteLock.ReadLock applicationReadLock = applicationsLock.readLock();
+	private ReentrantReadWriteLock.WriteLock applicationWriteLock = applicationsLock.writeLock();
+
 	
 	/**
 	 * 构造函数
@@ -95,7 +105,7 @@ public class CachedServiceRegistry {
 
 	/**
 	 * 拉取全量注册表到本地
-	 *
+	 * 保证线程安全写入
 	 * 一定要在发起网络请求之前拿到这个版本号
 	 * 接着在这里发起网络请求，此时可能会有别的线程来修改这个注册表，更新版本
 	 * 如果在这个期间，有人修改过注册表，版本不一样了，此时if就直接不成立了。这样就不会把你拉取到的旧版本的注册表给设置进去。
@@ -156,7 +166,9 @@ public class CachedServiceRegistry {
 	 * @param deltaRegistry 拉取到的有变动的注册表
 	 */
 	private void mergeDeltaRegistry(DeltaRegistry deltaRegistry) {
-		synchronized (applications) {
+//		synchronized (applications) {
+		try {
+			applicationWriteLock.lock();
 			Map<String,Map<String, ServiceInstance>> registry = applications.getReference().getRegistry();
 			LinkedList<RecentlyChangedServiceInstance> recentlyChangedQueue = deltaRegistry.getRecentlyChangedQueue();
 
@@ -188,6 +200,8 @@ public class CachedServiceRegistry {
 					}
 				}
 			}
+		} finally {
+			applicationWriteLock.unlock();
 		}
 	}
 
@@ -215,10 +229,18 @@ public class CachedServiceRegistry {
 	
 	/**
 	 * 获取服务注册表
+	 *
+	 * 读锁是可以并发执行的
 	 * @return
 	 */
 	public Map<String, Map<String, ServiceInstance>> getRegistry() {
-		return applications.getReference().getRegistry();
+		try {
+			applicationReadLock.lock();
+			// 只要执行CAS操作后，通过getReference()方法都可以获取到最新的值
+			return applications.getReference().getRegistry();
+		} finally {
+			applicationReadLock.unlock();
+		}
 	}
 
 	/**

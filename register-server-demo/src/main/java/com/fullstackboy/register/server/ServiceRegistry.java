@@ -3,6 +3,7 @@ package com.fullstackboy.register.server;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
@@ -37,8 +38,11 @@ public class ServiceRegistry {
 
     /**
      * 注册表
+     * Map： key是服务名称，value是这个服务的所有的服务实例；
+     * Map<String,ServiceInstance>: key是服务实例id，value是服务实例的信息
      */
-    private Map<String, Map<String, ServiceInstance>> registry = new HashMap<>();
+//    private Map<String, Map<String, ServiceInstance>> registry = new HashMap<String,Map<String, ServiceInstance>>();
+    private Map<String, Map<String, ServiceInstance>> registry = new ConcurrentHashMap<>();
 
     /**
      * 最近变更的服务实例队列
@@ -83,7 +87,8 @@ public class ServiceRegistry {
             writeLock.lock();
             Map<String, ServiceInstance> instanceMap = registry.get(instance.getServiceName());
             if (instanceMap == null) {
-                instanceMap = new HashMap<>();
+//                instanceMap = new HashMap<>();
+                instanceMap = new ConcurrentHashMap<>();
                 registry.put(instance.getServiceName(), instanceMap);
             }
 
@@ -168,6 +173,7 @@ public class ServiceRegistry {
 
     /**
      * 获取最近有变化的注册表
+     * 像 registry.values(),serviceInstanceMap.size() 这种操作就没必要加锁了，因为本身就是基于volatile可以保证读到最新的
      * @return 最近有变化的注册表
      */
     public DeltaRegistry getDeltaRegistry() {
