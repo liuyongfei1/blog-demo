@@ -1,4 +1,4 @@
-package com.fullstackboy.register.server;
+package com.fullstackboy.register.server.web;
 
 /**
  * 注册请求
@@ -6,17 +6,8 @@ package com.fullstackboy.register.server;
  * @author Liuyongfei
  * @date 2021/8/15 17:55
  */
-public class RegisterRequest {
+public class RegisterRequest extends AbstractRequest{
 
-    /**
-     * 服务实例id
-     */
-    private String serverInstanceId;
-
-    /**
-     * 服务名称
-     */
-    private String serviceName;
 
     /**
      * 服务所在机器的主机名
@@ -32,23 +23,6 @@ public class RegisterRequest {
      * 服务监听着的那个端口号
      */
     private int port;
-
-
-    public String getServerInstanceId() {
-        return serverInstanceId;
-    }
-
-    public void setServerInstanceId(String serverInstanceId) {
-        this.serverInstanceId = serverInstanceId;
-    }
-
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
 
     public String getHostName() {
         return hostName;

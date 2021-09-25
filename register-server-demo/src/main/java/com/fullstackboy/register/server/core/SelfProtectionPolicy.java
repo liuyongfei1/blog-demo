@@ -1,4 +1,4 @@
-package com.fullstackboy.register.server;
+package com.fullstackboy.register.server.core;
 
 /**
  * 自我保护机制

@@ -1,4 +1,6 @@
-package com.fullstackboy.register.server;
+package com.fullstackboy.register.server.core;
+
+import com.fullstackboy.register.server.web.Applications;
 
 import java.util.HashMap;
 import java.util.Map;

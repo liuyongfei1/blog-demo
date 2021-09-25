@@ -1,6 +1,5 @@
-package com.fullstackboy.register.server;
+package com.fullstackboy.register.server.core;
 
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
 
 /**

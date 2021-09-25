@@ -1,7 +1,6 @@
-package com.fullstackboy.register.server;
+package com.fullstackboy.register.server.web;
 
-import java.util.LinkedList;
-import java.util.Map;
+import com.fullstackboy.register.server.core.*;
 
 /**
  * 这里接收register-client发送过来的http请求

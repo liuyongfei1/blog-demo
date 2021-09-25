@@ -1,4 +1,4 @@
-package com.fullstackboy.register.server;
+package com.fullstackboy.register.server.core;
 
 import java.util.ArrayList;
 import java.util.List;

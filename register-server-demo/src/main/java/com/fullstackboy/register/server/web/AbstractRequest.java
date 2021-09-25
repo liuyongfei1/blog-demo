@@ -1,12 +1,12 @@
-package com.fullstackboy.register.server;
+package com.fullstackboy.register.server.web;
 
 /**
- * 发送心跳的请求
+ * 请求接口
  *
  * @author Liuyongfei
- * @date 2021/8/15 17:56
+ * @date 2021/9/26 06:59
  */
-public class HeartbeatRequest {
+public class AbstractRequest {
     /**
      * 服务名称
      */
@@ -31,5 +31,13 @@ public class HeartbeatRequest {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractRequest{" +
+                "serviceName='" + serviceName + '\'' +
+                ", serverInstanceId='" + serverInstanceId + '\'' +
+                '}';
     }
 }

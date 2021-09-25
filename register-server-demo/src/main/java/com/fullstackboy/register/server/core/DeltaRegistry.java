@@ -1,8 +1,6 @@
-package com.fullstackboy.register.server;
+package com.fullstackboy.register.server.core;
 
-import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * 包装增量注册表

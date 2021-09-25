@@ -1,18 +1,18 @@
-package com.fullstackboy.register.server;
+package com.fullstackboy.register.server.web;
 
 /**
- * 发送心跳请求的响应
+ * 注册请求的响应
  *
  * @author Liuyongfei
- * @date 2021/8/15 17:56
+ * @date 2021/8/15 17:55
  */
-public class HeartbeatResponse {
+public class RegisterResponse {
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
 
     /**
-     * 心跳响应状态
+     * 注册响应状态
      */
     private String status;
 

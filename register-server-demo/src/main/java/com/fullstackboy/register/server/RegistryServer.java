@@ -1,5 +1,8 @@
 package com.fullstackboy.register.server;
 
+import com.fullstackboy.register.server.core.ServiceAliveMonitor;
+import com.fullstackboy.register.server.web.*;
+
 import java.util.UUID;
 
 /**

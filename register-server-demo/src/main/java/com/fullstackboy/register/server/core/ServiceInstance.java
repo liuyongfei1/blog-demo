@@ -1,4 +1,4 @@
-package com.fullstackboy.register.server;
+package com.fullstackboy.register.server.core;
 
 /**
  * 服务实例信息
