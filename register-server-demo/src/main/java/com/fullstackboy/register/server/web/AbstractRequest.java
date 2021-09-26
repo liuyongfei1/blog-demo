@@ -6,7 +6,12 @@ package com.fullstackboy.register.server.web;
  * @author Liuyongfei
  * @date 2021/9/26 06:59
  */
-public class AbstractRequest {
+public abstract class AbstractRequest {
+
+    public static final Integer REGISTER_REQUEST = 1;
+    public static final Integer CANCEL_REQUEST = 2;
+    public static final Integer HEARTBEAT_REQUEST = 3;
+
     /**
      * 服务名称
      */
@@ -16,6 +21,11 @@ public class AbstractRequest {
      * 服务实例id
      */
     private String serverInstanceId;
+
+    /**
+     * 请求类型
+     */
+    private Integer type;
 
     public String getServerInstanceId() {
         return serverInstanceId;
@@ -33,11 +43,20 @@ public class AbstractRequest {
         this.serviceName = serviceName;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "AbstractRequest{" +
                 "serviceName='" + serviceName + '\'' +
                 ", serverInstanceId='" + serverInstanceId + '\'' +
+                ", type=" + type +
                 '}';
     }
 }

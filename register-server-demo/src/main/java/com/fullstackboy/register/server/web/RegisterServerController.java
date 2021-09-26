@@ -1,5 +1,6 @@
 package com.fullstackboy.register.server.web;
 
+import com.fullstackboy.register.server.cluster.PeersReplicateBatch;
 import com.fullstackboy.register.server.cluster.PeersReplicator;
 import com.fullstackboy.register.server.core.*;
 
@@ -114,6 +115,22 @@ public class RegisterServerController {
 
         // 集群同步
         peersReplicator.replicateCancel(request);
+    }
+
+    /**
+     * 集群batch同步
+     * @param batch 集群同步batch
+     */
+    public void replicateBatch(PeersReplicateBatch batch) {
+        for (AbstractRequest request : batch.getRequests()) {
+            if (request.getType().equals(AbstractRequest.REGISTER_REQUEST)) {
+                register((RegisterRequest) request);
+            } else if (request.getType().equals(AbstractRequest.HEARTBEAT_REQUEST)) {
+                heartbeat((HeartbeatRequest) request);
+            } else if (request.getType().equals(AbstractRequest.CANCEL_REQUEST)) {
+                cancel((CancelRequest) request);
+            }
+        }
     }
 
     /**
