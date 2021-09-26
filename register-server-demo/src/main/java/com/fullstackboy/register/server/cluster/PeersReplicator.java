@@ -25,7 +25,15 @@ public class PeersReplicator {
     private static final PeersReplicator instance = new PeersReplicator();
 
     private PeersReplicator() {
+        // 启动接收请求和打包batch的线程
+        AcceptorBatchThread batchThread = new AcceptorBatchThread();
+        batchThread.setDaemon(true);
+        batchThread.start();
 
+        // 启动同步batch的线程
+        PeersReplicateThread replicateThread = new PeersReplicateThread();
+        replicateThread.setDaemon(true);
+        replicateThread.start();
     }
 
     public static PeersReplicator getInstance() {
@@ -37,12 +45,17 @@ public class PeersReplicator {
      *
      * ConcurrentLinkedQueue 的CAS操作会保证多线程高并发的线程安全
      */
-    private ConcurrentLinkedQueue<AbstractRequest> acceptorQueue = new ConcurrentLinkedQueue<AbstractRequest>();
+    private ConcurrentLinkedQueue<AbstractRequest> acceptorQueue = new ConcurrentLinkedQueue<>();
 
     /**
      * 第二层队列：有界队列，用于batch生成
      */
     private LinkedBlockingQueue<AbstractRequest> batchQueue = new LinkedBlockingQueue<>();
+
+    /**
+     * 第三层队列：有界队列，用于batch的同步发送
+     */
+    private LinkedBlockingQueue<PeersReplicateBatch> replicateQueue = new LinkedBlockingQueue<>();
 
     /**
      * 同步服务注册请求
@@ -78,19 +91,25 @@ public class PeersReplicator {
         @Override
         public void run() {
             while (true) {
-                // 接收第一层队列的数据，并将数据放入第二层队列
-                AbstractRequest request = acceptorQueue.poll();
-                if (request != null) {
-                    batchQueue.offer(request);
-                }
-
-                // 采取一定的策略，将数据打包为batch
-                long now = System.currentTimeMillis();
-                if (now - latestBatchGenerationTime >= PEERS_REPLICATE_BATCH_INTERVAL) {
-                    // 此时如果第二层队列里有数据，则生成一个batch
-                    if (batchQueue.size() > 0) {
-                        PeersReplicateBatch batch = createBatch();
+                try {
+                    // 接收第一层队列的数据，并将数据放入第二层队列
+                    AbstractRequest request = acceptorQueue.poll();
+                    if (request != null) {
+                        batchQueue.offer(request);
                     }
+
+                    // 采取一定的策略，将数据打包为batch
+                    long now = System.currentTimeMillis();
+                    if (now - latestBatchGenerationTime >= PEERS_REPLICATE_BATCH_INTERVAL) {
+                        // 此时如果第二层队列里有数据，则生成一个batch
+                        if (batchQueue.size() > 0) {
+                            PeersReplicateBatch batch = createBatch();
+                            replicateQueue.offer(batch);
+                        }
+                        this.latestBatchGenerationTime = now;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -108,6 +127,27 @@ public class PeersReplicator {
             }
             batchQueue.clear();
             return batch;
+        }
+    }
+
+    /**
+     * 集群同步线程
+     */
+    class PeersReplicateThread extends Thread {
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    PeersReplicateBatch batch = replicateQueue.take();
+                    if (batch != null) {
+                        // 遍历所有的其他的register-server地址
+                        // 给每个register-server都发送一个http请求
+                        System.out.println("给所有其它的register-server发送请求，同步batch过去......");
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
