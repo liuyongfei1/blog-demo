@@ -118,7 +118,7 @@ public class RegisterServerController {
     }
 
     /**
-     * 集群batch同步
+     * 同步batch数据
      * @param batch 集群同步batch
      */
     public void replicateBatch(PeersReplicateBatch batch) {

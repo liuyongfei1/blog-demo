@@ -6,8 +6,7 @@ import com.fullstackboy.register.server.web.HeartbeatRequest;
 import com.fullstackboy.register.server.web.RegisterRequest;
 
 import java.util.Iterator;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 /**
  * 集群同步组件
@@ -134,15 +133,26 @@ public class PeersReplicator {
      * 集群同步线程
      */
     class PeersReplicateThread extends Thread {
+
+        // 线程数量跟部署的register-server数量一致即可
+        ExecutorService threadPoor = Executors.newFixedThreadPool(RegisterServerCluster.getPeers().size());
+
         @Override
         public void run() {
             while (true) {
                 try {
                     PeersReplicateBatch batch = replicateQueue.take();
                     if (batch != null) {
-                        // 遍历所有的其他的register-server地址
-                        // 给每个register-server都发送一个http请求
-                        System.out.println("给所有其它的register-server发送请求，同步batch过去......");
+                        threadPoor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (String peer : RegisterServerCluster.getPeers()) {
+                                    // 遍历所有的其他的register-server地址
+                                    // 给每个register-server都发送一个http请求
+                                    System.out.println("给register-server【" + peer + "】发送请求，同步batch过去......");
+                                }
+                            }
+                        });
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
