@@ -19,16 +19,22 @@ import java.util.concurrent.Executors;
 public class KafkaConsumerDemo {
 
     private static ExecutorService threadPool = Executors.newFixedThreadPool(20);
+
     public static void main(String[] args) {
         KafkaConsumer<String, String> consumer = createConsumer();
-        consumer.subscribe(Arrays.asList("order-topic"));
+        consumer.subscribe(Arrays.asList("create-order-topic2"));
 
-        while (true) {
-            ConsumerRecords<String, String> records = consumer.poll(Integer.MAX_VALUE);
-            for (ConsumerRecord<String, String> record : records) {
-                JSONObject order = JSONObject.parseObject(record.value());
-                threadPool.submit(new CreditManageTask(order));
+        try {
+            while (true) {
+                ConsumerRecords<String, String> records = consumer.poll(Integer.MAX_VALUE);
+                for (ConsumerRecord<String, String> record : records) {
+                    JSONObject order = JSONObject.parseObject(record.value());
+                    threadPool.submit(new CreditManageTask(order));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            consumer.close();
         }
     }
 
@@ -39,7 +45,7 @@ public class KafkaConsumerDemo {
     private static KafkaConsumer<String, String> createConsumer() {
         Properties props = new Properties();
 
-        props.put("bootstrap.servers", "hadoop03:9092,hadoop04:9092,hadoop05:9092");
+        props.put("bootstrap.servers", "10.200.47.37:9092,10.200.47.38:9092");
         props.put("group.id", "test-group");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");

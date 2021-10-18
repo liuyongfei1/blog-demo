@@ -21,29 +21,36 @@ public class KafkaProducerDemo {
     public static void main(String[] args) {
         KafkaProducer<String, String> producer = createKafkaProducer();
 
-        JSONObject order = new JSONObject();
+        JSONObject order = createOrder();
 
-        ProducerRecord<String,String> record = new ProducerRecord<String,String>("create-order-topic",
+        ProducerRecord<String,String> record = new ProducerRecord<String,String>("create-order-topic2",
                 order.getString("orderId"), order.toString());
 
         long startTime = System.currentTimeMillis();
 
-        // 异步发送模式
-        producer.send(record, new Callback() {
-            @Override
-            public void onCompletion(RecordMetadata recordMetadata, Exception e) {
-                if (e == null) {
-                    System.out.println("消息发送成功");
-                } else {
-                    System.out.println("消息发送失败");
+        try {
+            // 异步发送模式
+            producer.send(record, new Callback() {
+                @Override
+                public void onCompletion(RecordMetadata recordMetadata, Exception e) {
+                    if (e == null) {
+                        System.out.println("消息发送成功了");
+                    } else {
+                        System.out.println("消息发送失败");
+                    }
                 }
-            }
-        });
+            });
 
-        long endTime = System.currentTimeMillis();
-        if (endTime - startTime > 10) {
-            System.out.println("消息发送成功耗时超过10毫秒，报警。。。。");
+            long endTime = System.currentTimeMillis();
+            if (endTime - startTime > 10) {
+                System.out.println("---消息发送成功耗时超过10毫秒，报警。。。。");
+            }
+
+            Thread.sleep(10 * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        producer.close();
 
     }
 
@@ -72,7 +79,7 @@ public class KafkaProducerDemo {
         Properties props = new Properties();
 
         // 配置broker
-        props.put("bootstrap.servers", "10.200.23.108:9092,10.200.23.109:9092,10.200.23.111:9092");
+        props.put("bootstrap.servers", "10.200.47.37:9092,10.200.47.38:9092");
 
         // 将发送的key字符串系列化为字节数组
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
