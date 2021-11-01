@@ -1,4 +1,4 @@
-package com.fullstackboy.springdemo.ioc.factorybean;
+package com.fullstackboy.springdemo.ioc.bean;
 
 /**
  * TODO Liuyongfei

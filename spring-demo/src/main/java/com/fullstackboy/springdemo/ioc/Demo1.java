@@ -1,6 +1,7 @@
 package com.fullstackboy.springdemo.ioc;
 
-import com.fullstackboy.springdemo.ioc.factorybean.Course;
+import com.fullstackboy.springdemo.ioc.bean.Course;
+import com.fullstackboy.springdemo.ioc.bean.Order;
 import com.fullstackboy.springdemo.ioc.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
@@ -87,5 +88,23 @@ public class Demo1 {
         Course course = context.getBean("myfactorybean", Course.class);
 
         System.out.println(course);
+    }
+
+    /**
+     * 演示bean的生命周期的过程
+     */
+    @Test
+    public void testBeanPeriod() {
+//        ApplicationContext context = new ClassPathXmlApplicationContext("bean2.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("bean2.xml");
+
+        Order order = context.getBean("order", Order.class);
+
+        System.out.println("第四步：bean可以使用了，获取创建的bean对象。。。。。。");
+
+        System.out.println(order);
+
+        // 手动销毁bean实例
+        context.close();
     }
 }

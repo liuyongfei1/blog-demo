@@ -10,5 +10,10 @@
     </bean>
     <bean id="userDAOImpl" class="com.fullstackboy.springdemo.ioc.dao.UserDAOImpl"></bean>
 
-    <bean id="myfactorybean" class="com.fullstackboy.springdemo.ioc.factorybean.MyBean" scope="prototype"></bean>
+    <bean id="myfactorybean" class="com.fullstackboy.springdemo.ioc.bean.MyBean" scope="prototype"></bean>
+
+
+    <bean id="order" class="com.fullstackboy.springdemo.ioc.bean.Order" init-method="initMethod" destroy-method="destoryMethod">
+        <property name="name" value="手机"></property>
+    </bean>
 </beans>
