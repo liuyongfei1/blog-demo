@@ -1,5 +1,6 @@
 package com.fullstackboy.springdemo.ioc;
 
+import com.fullstackboy.springdemo.ioc.factorybean.Course;
 import com.fullstackboy.springdemo.ioc.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
@@ -64,7 +65,7 @@ public class Demo1 {
 
 
     /**
-     * 测试注入属性：外部bean
+     * 测试注入属性：外部bean（service调用dao对象）
      */
     @Test
     public void testBean() {
@@ -74,5 +75,17 @@ public class Demo1 {
 
         System.out.println(userService);
         userService.add();
+    }
+
+    /**
+     * ioc容器：bean管理（工厂bean）
+     */
+    @Test
+    public void testFactoryBean() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("bean2.xml");
+
+        Course course = context.getBean("myfactorybean", Course.class);
+
+        System.out.println(course);
     }
 }

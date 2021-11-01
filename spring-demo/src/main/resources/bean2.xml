@@ -10,4 +10,5 @@
     </bean>
     <bean id="userDAOImpl" class="com.fullstackboy.springdemo.ioc.dao.UserDAOImpl"></bean>
 
+    <bean id="myfactorybean" class="com.fullstackboy.springdemo.ioc.factorybean.MyBean"></bean>
 </beans>
