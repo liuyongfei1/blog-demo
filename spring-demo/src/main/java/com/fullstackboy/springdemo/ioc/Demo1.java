@@ -1,5 +1,6 @@
 package com.fullstackboy.springdemo.ioc;
 
+import com.fullstackboy.springdemo.ioc.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -59,5 +60,19 @@ public class Demo1 {
 
         orders.printOrders();
 
+    }
+
+
+    /**
+     * 测试注入属性：外部bean
+     */
+    @Test
+    public void testBean() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("bean2.xml");
+
+        UserService userService = context.getBean("userService", UserService.class);
+
+        System.out.println(userService);
+        userService.add();
     }
 }
