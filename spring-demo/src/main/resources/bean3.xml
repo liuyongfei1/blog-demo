@@ -3,16 +3,6 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
-
-    <bean id="userService" class="com.fullstackboy.springdemo.ioc.service.UserService">
-        <property name="userDAO" ref="userDAOImpl"></property>
-    </bean>
-    <bean id="userDAOImpl" class="com.fullstackboy.springdemo.ioc.dao.UserDAOImpl"></bean>
-
-    <bean id="myfactorybean" class="com.fullstackboy.springdemo.ioc.bean.MyBean" scope="prototype"></bean>
-
-
     <bean id="order" class="com.fullstackboy.springdemo.ioc.bean.Order" init-method="initMethod" destroy-method="destoryMethod">
         <property name="name" value="手机"></property>
     </bean>

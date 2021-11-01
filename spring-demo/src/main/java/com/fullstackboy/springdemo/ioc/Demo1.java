@@ -96,11 +96,11 @@ public class Demo1 {
     @Test
     public void testBeanPeriod() {
 //        ApplicationContext context = new ClassPathXmlApplicationContext("bean2.xml");
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("bean2.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("bean3.xml");
 
         Order order = context.getBean("order", Order.class);
 
-        System.out.println("第四步：bean可以使用了，获取创建的bean对象。。。。。。");
+        System.out.println("第六步：bean可以使用了，获取创建的bean对象。。。。。。");
 
         System.out.println(order);
 

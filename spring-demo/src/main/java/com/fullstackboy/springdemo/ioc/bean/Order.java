@@ -20,10 +20,10 @@ public class Order {
     }
 
     public void initMethod() {
-        System.out.println("第三步：调用初始化方法");
+        System.out.println("第四步：调用初始化方法");
     }
 
     public void destoryMethod() {
-        System.out.println("第五步：调用销毁方法");
+        System.out.println("第七步：调用销毁方法");
     }
 }
