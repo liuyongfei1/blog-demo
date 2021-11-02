@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--  手动装配  -->
+<!--    <bean id="employee" class="com.fullstackboy.springdemo.ioc.bean.Employee">-->
+<!--        <property name="dept" ref="department"></property>-->
+<!--    </bean>-->
+<!--    -->
+<!--    <bean id="department" class="com.fullstackboy.springdemo.ioc.bean.Department"></bean>-->
+
+<!--    实现自动装配，通过autowire的byName或byType属性-->
+    <bean id="employee" class="com.fullstackboy.springdemo.ioc.bean.Employee" autowire="byName">
+<!--        <property name="dept" ref="department"></property>-->
+    </bean>
+
+    <bean id="dept" class="com.fullstackboy.springdemo.ioc.bean.Department"></bean>
+</beans>

@@ -1,6 +1,7 @@
 package com.fullstackboy.springdemo.ioc;
 
 import com.fullstackboy.springdemo.ioc.bean.Course;
+import com.fullstackboy.springdemo.ioc.bean.Employee;
 import com.fullstackboy.springdemo.ioc.bean.Order;
 import com.fullstackboy.springdemo.ioc.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -106,5 +107,13 @@ public class Demo1 {
 
         // 手动销毁bean实例
         context.close();
+    }
+
+    @Test
+    public void testBean1() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("bean4.xml");
+        Employee employee = context.getBean("employee", Employee.class);
+
+        System.out.println(employee);
     }
 }
