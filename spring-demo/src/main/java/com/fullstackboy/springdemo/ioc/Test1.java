@@ -1,5 +1,6 @@
 package com.fullstackboy.springdemo.ioc;
 
+import com.fullstackboy.springdemo.User1;
 import com.fullstackboy.springdemo.ioc.bean.Course;
 import com.fullstackboy.springdemo.ioc.bean.Employee;
 import com.fullstackboy.springdemo.ioc.bean.Order;
@@ -8,6 +9,7 @@ import com.fullstackboy.springdemo.ioc.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
 
 /**
  * 测试 使用Spring IOC
@@ -15,7 +17,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author Liuyongfei
  * @date 2021/10/31 17:12
  */
-public class Demo1 {
+public class Test1 {
 
 
     @Test
@@ -124,5 +126,23 @@ public class Demo1 {
         DeptService deptService = context.getBean("deptService", DeptService.class);
 
         System.out.println(deptService);
+    }
+
+    /**
+     * 测试使用函数风格创建对象，并交给Spring管理
+     */
+    @Test
+    public void testGenericApplicationContext() {
+        GenericApplicationContext context = new GenericApplicationContext();
+
+        // 调用GenericApplicationContext的方法注册bean
+        context.refresh();;
+//        context.registerBean(User1.class, () -> new User1());
+        context.registerBean("user1", User1.class, () -> new User1());
+
+        // 获取在spring中注册的bean对象
+//        User1 user1 = (User1) context.getBean("com.fullstackboy.springdemo.User1");
+        User1 user1 = (User1) context.getBean("user1");
+        System.out.println(user1);
     }
 }
