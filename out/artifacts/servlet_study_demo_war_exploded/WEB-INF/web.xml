@@ -27,6 +27,10 @@
         <servlet-name>FiveServlet</servlet-name>
         <servlet-class>com.fullstackboy.servlet.controller.FiveServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SixServlet</servlet-name>
+        <servlet-class>com.fullstackboy.servlet.controller.SixServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>OneServlet</servlet-name>
@@ -47,5 +51,9 @@
     <servlet-mapping>
         <servlet-name>FiveServlet</servlet-name>
         <url-pattern>/five</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SixServlet</servlet-name>
+        <url-pattern>/six</url-pattern>
     </servlet-mapping>
 </web-app>
