@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
     <servlet>
         <servlet-name>OneServlet</servlet-name>
         <servlet-class>com.fullstackboy.servlet.controller.OneServlet</servlet-class>
@@ -36,6 +37,32 @@
         <servlet-name>SeventhServlet</servlet-name>
         <servlet-class>com.fullstackboy.servlet.controller.SeventhServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EightServlet</servlet-name>
+        <servlet-class>com.fullstackboy.servlet.controller.redirect.EightServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NineServlet</servlet-name>
+        <servlet-class>com.fullstackboy.servlet.controller.redirect.NineServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TenServlet</servlet-name>
+        <servlet-class>com.fullstackboy.servlet.controller.forwardrequests.TenServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ElevenServlet</servlet-name>
+        <servlet-class>com.fullstackboy.servlet.controller.forwardrequests.ElevenServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OpenCardServlet</servlet-name>
+        <servlet-class>com.fullstackboy.servlet.controller.orderingfood.OpenCardServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>FoodServlet</servlet-name>
+        <servlet-class>com.fullstackboy.servlet.controller.orderingfood.FoodServlet</servlet-class>
+    </servlet>
+
 
     <servlet-mapping>
         <servlet-name>OneServlet</servlet-name>
@@ -64,5 +91,29 @@
     <servlet-mapping>
         <servlet-name>SeventhServlet</servlet-name>
         <url-pattern>/seventh</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EightServlet</servlet-name>
+        <url-pattern>/eight</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NineServlet</servlet-name>
+        <url-pattern>/nine</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TenServlet</servlet-name>
+        <url-pattern>/ten</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ElevenServlet</servlet-name>
+        <url-pattern>/eleven</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OpenCardServlet</servlet-name>
+        <url-pattern>/openCard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FoodServlet</servlet-name>
+        <url-pattern>/food</url-pattern>
     </servlet-mapping>
 </web-app>
