@@ -57,12 +57,14 @@
         <servlet-name>OpenCardServlet</servlet-name>
         <servlet-class>com.fullstackboy.servlet.controller.orderingfood.OpenCardServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>FoodServlet</servlet-name>
         <servlet-class>com.fullstackboy.servlet.controller.orderingfood.FoodServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>TwelveServlet</servlet-name>
+        <servlet-class>com.fullstackboy.servlet.controller.TwelveServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>OneServlet</servlet-name>
@@ -116,4 +118,14 @@
         <servlet-name>FoodServlet</servlet-name>
         <url-pattern>/food</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TwelveServlet</servlet-name>
+        <url-pattern>/twelve</url-pattern>
+    </servlet-mapping>
+
+    <!--注册监听器-->
+    <listener>
+        <listener-class>com.fullstackboy.servlet.listener.OneListener</listener-class>
+        <listener-class>com.fullstackboy.servlet.listener.TwoListener</listener-class>
+    </listener>
 </web-app>
