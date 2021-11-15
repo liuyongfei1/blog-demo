@@ -128,4 +128,16 @@
         <listener-class>com.fullstackboy.servlet.listener.OneListener</listener-class>
         <listener-class>com.fullstackboy.servlet.listener.TwoListener</listener-class>
     </listener>
+
+<!--    声明filter类-->
+    <filter>
+        <filter-name>OneFilter</filter-name>
+        <filter-class>com.fullstackboy.servlet.filter.OneFilter</filter-class>
+    </filter>
+
+<!--    通知Tomcat在调用何种资源文件时需要被当前过滤器拦截-->
+    <filter-mapping>
+        <filter-name>OneFilter</filter-name>
+        <url-pattern>/mm.jpg</url-pattern>
+    </filter-mapping>
 </web-app>
