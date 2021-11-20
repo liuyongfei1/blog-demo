@@ -33,7 +33,6 @@ public class Demo1 {
 //        ExecutorService threadPool = Executors.newFixedThreadPool(5);
 //
 //        ExecutorService threadPool = Executors.newCachedThreadPool();
-
         // 手动创建一个线程池
         ExecutorService threadPool = new ThreadPoolExecutor(
                 2,
