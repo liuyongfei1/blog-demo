@@ -1,7 +1,7 @@
 package single;
 
 /**
- * 单例模式：饿汉模式
+ * 单例之：饿汉模式
  *
  * @author Liuyongfei
  * @date 2021/11/21 17:32

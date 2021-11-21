@@ -1,5 +1,7 @@
 package single;
 
+import java.lang.reflect.Constructor;
+
 /**
  * 单例之 双重检测的锁模式的懒汉式单例 DCL单例模式 + volatile防止指令重排
  *
@@ -9,7 +11,12 @@ package single;
 public class LazyMan2 {
 
     private LazyMan2() {
-        System.out.println(Thread.currentThread().getName() + " 创建实例ok");
+
+        synchronized (LazyMan2.class) {
+            if (lazyMan != null) {
+                throw new RuntimeException("不要试图用反射破坏单例");
+            }
+        }
     }
 
     private volatile static LazyMan2 lazyMan;
@@ -44,7 +51,7 @@ public class LazyMan2 {
      * 测试在多线程并发时，是不是这个实例就被创建了一次
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 //        for (int i = 0; i < 10; i++) {
 //            new Thread(() -> {
 //                LazyMan2.getInstance();
@@ -54,7 +61,16 @@ public class LazyMan2 {
         LazyMan2 instance = LazyMan2.getInstance();
 
         // 利用反射来得到单例
+        // 获取空参构造器
+        Constructor<LazyMan2> declaredConstructor = LazyMan2.class.getDeclaredConstructor(null);
 
+        declaredConstructor.setAccessible(true); // 这一步操作可以无视私有构造器
+
+        // 利用反射来得到单例
+        LazyMan2 instance2 = declaredConstructor.newInstance();
+
+        System.out.println(instance);
+        System.out.println(instance2);
     }
 
 }

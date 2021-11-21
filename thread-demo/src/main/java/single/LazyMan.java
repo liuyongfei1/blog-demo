@@ -1,7 +1,7 @@
 package single;
 
 /**
- * 单例之 懒汉式模式
+ * 单例之：懒汉式模式
  *
  * @author Liuyongfei
  * @date 2021/11/21 17:36
