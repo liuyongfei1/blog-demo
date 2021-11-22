@@ -69,7 +69,7 @@ class MyCache {
 class MyCacheLock {
     private volatile HashMap<String, Object> cacheMap = new HashMap<>();
 
-    // private Lock lock = new ReentrantLock();
+     private Lock lock = new ReentrantLock();
     // 声明一个读写锁：更加细粒度的控制
     private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
