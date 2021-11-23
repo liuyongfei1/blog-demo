@@ -1,7 +1,7 @@
 package producerconsumer;
 
 /**
- * 这里写业务逻辑，
+ * 这里写业务逻辑，使用 Synchronized
  *
  * 一个执行加操作的方法： 0 -》1
  * 一个执行减操作的方法： 1 -》0
@@ -14,7 +14,7 @@ package producerconsumer;
  * @author Liuyongfei
  * @date 2021/11/23 08:57
  */
-public class MyData {
+public class MyDataUseSynchronized {
 
     private int number = 0;
 

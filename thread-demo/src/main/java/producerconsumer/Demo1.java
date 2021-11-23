@@ -9,7 +9,8 @@ package producerconsumer;
 public class Demo1 {
 
     public static void main(String[] args) {
-        MyData myData = new MyData();
+//        MyDataUseSynchronized myData = new MyDataUseSynchronized();
+        MyDataUseLock myData = new MyDataUseLock();
 
         // 这个线程会调用10次 加的方法
         new Thread(() -> {
