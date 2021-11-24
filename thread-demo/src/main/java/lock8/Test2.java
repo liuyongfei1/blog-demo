@@ -3,7 +3,7 @@ package lock8;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 8锁现象，就是关于锁的8个问题- 第一个问题
+ * 8锁现象，就是关于锁的8个问题- 第二个问题
  * sendSms方法延迟了4秒，该代码是 先执行 发短信，还是先执行 打电话呢？
  * synchronized，锁的对象是方法的调用者。因此两个方法锁的都是同一个对象。
  * 则谁先拿到锁谁先执行。

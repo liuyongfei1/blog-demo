@@ -3,7 +3,7 @@ package lock8;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 8锁现象，就是关于锁的8个问题- 第五个问题
+ * 8锁现象，就是关于锁的8个问题- 第六个问题
  * sendSms方法延迟了4秒
  * synchronized，锁的对象是方法的调用者。
  * 增加两个静态的同步方法，只有一个对象,先输出发短信，还是打电话呢？

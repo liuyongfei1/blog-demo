@@ -3,7 +3,7 @@ package lock8;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 8锁现象，就是关于锁的8个问题- 第二个问题
+ * 8锁现象，就是关于锁的8个问题- 第三个问题
  * sendSms方法延迟了4秒
  * synchronized，锁的对象是方法的调用者。
  * 但是B线程调用的是同一个方法，这时是先输出发短信，还是先输出hello呢？
