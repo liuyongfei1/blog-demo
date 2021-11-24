@@ -1,9 +1,7 @@
 package unsafe;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 集合类不安全：
@@ -29,7 +27,16 @@ public class ListTest {
 //        System.out.println(list);
 
         // 3. 改为多线程情况下 则会有报错
-        List<String> list = new ArrayList<>();
+//        List<String> list = new ArrayList<>();
+
+        // 解决办法一: 将ArrayList改成 Vector
+//        List<String> list = new Vector<>();
+
+        // 解决办法二: 将ArrayList转成安全的
+//        List<String> list = Collections.synchronizedList(new ArrayList<>());
+
+        // 解决办法三: 使用juc下的CopyOnWriteArrayList（写入时复制）
+        List<String> list = new CopyOnWriteArrayList<>();
 
         for (int i = 1; i <= 20; i++) {
             new Thread(() -> {
