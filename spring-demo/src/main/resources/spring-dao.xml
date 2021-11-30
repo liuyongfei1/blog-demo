@@ -24,8 +24,4 @@
         <!--因为没有set方法，这里只能使用构造器注入-->
         <constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
     </bean>
-    
-    <bean id="userMapper" class="com.fullstackboy.springdemo.transaction.dao.UserMapperImpl">
-        <property name="sqlSession" ref="sqlSession"></property>
-    </bean>
 </beans>
