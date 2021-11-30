@@ -29,6 +29,7 @@
         <module>register-client-demo</module>
         <module>nio-demo</module>
         <module>test-demo</module>
+        <module>mybatis-demo</module>
     </modules>
 
     <properties>

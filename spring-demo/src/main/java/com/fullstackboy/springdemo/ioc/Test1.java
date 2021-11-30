@@ -1,9 +1,9 @@
 package com.fullstackboy.springdemo.ioc;
 
-import com.fullstackboy.springdemo.User1;
-import com.fullstackboy.springdemo.ioc.bean.Course;
 import com.fullstackboy.springdemo.ioc.bean.Employee;
 import com.fullstackboy.springdemo.ioc.bean.Order;
+import com.fullstackboy.springdemo.User1;
+import com.fullstackboy.springdemo.ioc.bean.Course;
 import com.fullstackboy.springdemo.ioc.service.DeptService;
 import com.fullstackboy.springdemo.ioc.service.UserService;
 import org.junit.jupiter.api.Test;

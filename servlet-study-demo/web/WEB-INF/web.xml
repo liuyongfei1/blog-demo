@@ -6,64 +6,64 @@
 
     <servlet>
         <servlet-name>OneServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.OneServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.OneServlet</servlet-class>
         <!--如未配置load-on-startup，容器一般在第一次响应web请求时，会先检测该servlet是否初始化，
         如未初始化，则调用servlet的init()先初始化，初始化成功后，再响应请求-->
     </servlet>
     <servlet>
         <servlet-name>TwoServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.TwoServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.TwoServlet</servlet-class>
         <!--配置load-on-startup后，servlet在startup后立即加载，正数的值越小，启动该servlet的优先级越高-->
         <load-on-startup>9</load-on-startup>
     </servlet>
     <servlet>
         <servlet-name>ThreeServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.ThreeServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.ThreeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>FourServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.FourServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.FourServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>FiveServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.FiveServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.FiveServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SixServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.SixServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.SixServlet</servlet-class>
     </servlet>
 
     <servlet>
         <servlet-name>SeventhServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.SeventhServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.SeventhServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EightServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.redirect.EightServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.redirect.EightServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>NineServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.redirect.NineServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.redirect.NineServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>TenServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.forwardrequests.TenServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.forwardrequests.TenServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ElevenServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.forwardrequests.ElevenServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.forwardrequests.ElevenServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>OpenCardServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.orderingfood.OpenCardServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.orderingfood.OpenCardServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>FoodServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.orderingfood.FoodServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.orderingfood.FoodServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>TwelveServlet</servlet-name>
-        <servlet-class>com.fullstackboy.servlet.controller.TwelveServlet</servlet-class>
+        <servlet-class>com.fullstackboy.mybatis.servlet.controller.TwelveServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -125,14 +125,14 @@
 
     <!--注册监听器-->
     <listener>
-        <listener-class>com.fullstackboy.servlet.listener.OneListener</listener-class>
-        <listener-class>com.fullstackboy.servlet.listener.TwoListener</listener-class>
+        <listener-class>com.fullstackboy.mybatis.servlet.listener.OneListener</listener-class>
+        <listener-class>com.fullstackboy.mybatis.servlet.listener.TwoListener</listener-class>
     </listener>
 
 <!--    声明filter类-->
     <filter>
         <filter-name>OneFilter</filter-name>
-        <filter-class>com.fullstackboy.servlet.filter.OneFilter</filter-class>
+        <filter-class>com.fullstackboy.mybatis.servlet.filter.OneFilter</filter-class>
     </filter>
 
 <!--    通知Tomcat在调用何种资源文件时需要被当前过滤器拦截-->
