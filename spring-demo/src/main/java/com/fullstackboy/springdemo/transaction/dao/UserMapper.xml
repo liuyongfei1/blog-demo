@@ -18,4 +18,12 @@
     <select id="getUserById" resultType="com.fullstackboy.springdemo.transaction.pojo.User">
     select * from mybatis.user where id = #{id}
   </select>
+
+    <select id="addUser" parameterType="com.fullstackboy.springdemo.transaction.pojo.User">
+        insert into mybatis.user (id,name,pwd) values (#{id}, #{name}, #{pwd});
+    </select>
+
+    <delete id="deleteUser" parameterType="int">
+        delete from mybatis.user where id = #{id}
+    </delete>
 </mapper>

@@ -21,4 +21,14 @@ public class User2MapperImpl extends SqlSessionDaoSupport implements UserMapper{
     public User getUserById(int id) {
         return getSqlSession().getMapper(UserMapper.class).getUserById(id);
     }
+
+    @Override
+    public void addUser(User user) {
+
+    }
+
+    @Override
+    public int deleteUser(int id) {
+        return 0;
+    }
 }

@@ -12,4 +12,8 @@
     <bean id="userMapper2" class="com.fullstackboy.springdemo.transaction.dao.User2MapperImpl">
         <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
     </bean>
+
+    <bean id="userMapper3" class="com.fullstackboy.springdemo.transaction.dao.User3MapperImpl">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
 </beans>
