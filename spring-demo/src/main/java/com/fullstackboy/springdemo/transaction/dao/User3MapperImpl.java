@@ -17,10 +17,10 @@ public class User3MapperImpl extends SqlSessionDaoSupport implements UserMapper{
         UserMapper mapper = getSqlSession().getMapper(UserMapper.class);
 
         // 先添加一个用户
-        User newUser = new User(4,"test1","678");
+        User newUser = new User(4,"test1","666");
         mapper.addUser(newUser);
 
-        int a = 2 / 0;
+//        int a = 2 / 0;
 
         // 再删除一个用户:李四
         mapper.deleteUser(2);
