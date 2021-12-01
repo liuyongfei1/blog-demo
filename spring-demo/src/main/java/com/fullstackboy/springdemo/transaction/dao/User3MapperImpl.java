@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * 使用spring的声明式事务管理
- *
+ * 模拟程序发生异常，事务管理保持数据一致性
  * @author Liuyongfei
  * @date 2021/11/30 22:16
  */
@@ -17,7 +17,7 @@ public class User3MapperImpl extends SqlSessionDaoSupport implements UserMapper{
         UserMapper mapper = getSqlSession().getMapper(UserMapper.class);
 
         // 先添加一个用户
-        User newUser = new User(4,"test1","666");
+        User newUser = new User(4,"test2","666");
         mapper.addUser(newUser);
 
 //        int a = 2 / 0;

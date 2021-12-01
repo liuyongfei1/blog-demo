@@ -35,7 +35,7 @@
         <property name="dataSource" ref="dataSource"></property>
     </bean>
 
-    <!--集合AOP实现事务的植入-->
+    <!--结合AOP实现事务的植入-->
     <!--配置事务通知-->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <!--给哪些方法配置事务-->
