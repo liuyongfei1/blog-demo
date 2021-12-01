@@ -1,4 +1,4 @@
-package com.fullstackboy.mybatis.servlet.filter;
+package com.fullstackboy.servlet.filter;
 
 import javax.servlet.*;
 import java.io.IOException;

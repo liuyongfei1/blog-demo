@@ -1,4 +1,4 @@
-package com.fullstackboy.mybatis.servlet.controller;
+package com.fullstackboy.servlet.controller;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

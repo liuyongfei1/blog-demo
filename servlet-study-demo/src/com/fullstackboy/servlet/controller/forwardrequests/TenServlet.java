@@ -1,4 +1,4 @@
-package com.fullstackboy.mybatis.servlet.controller.forwardrequests;
+package com.fullstackboy.servlet.controller.forwardrequests;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

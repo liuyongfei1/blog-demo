@@ -1,4 +1,4 @@
-package com.fullstackboy.mybatis.servlet.controller;
+package com.fullstackboy.servlet.controller.redirect;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -6,14 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class TwoServlet extends HttpServlet {
-
-    public TwoServlet() {
-        System.out.println("TwoServlet 被初始化......");
+public class NineServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("TwoServlet doGet is run......");
+        System.out.println("韭菜炒鸡蛋");
     }
 }

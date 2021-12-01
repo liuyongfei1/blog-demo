@@ -1,4 +1,4 @@
-package com.fullstackboy.mybatis.servlet.controller.redirect;
+package com.fullstackboy.servlet.controller.redirect;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

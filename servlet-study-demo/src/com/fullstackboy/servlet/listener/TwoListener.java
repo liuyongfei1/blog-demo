@@ -1,4 +1,4 @@
-package com.fullstackboy.mybatis.servlet.listener;
+package com.fullstackboy.servlet.listener;
 
 import javax.servlet.ServletContextAttributeEvent;
 import javax.servlet.ServletContextAttributeListener;

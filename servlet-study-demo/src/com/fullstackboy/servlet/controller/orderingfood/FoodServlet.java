@@ -1,4 +1,4 @@
-package com.fullstackboy.mybatis.servlet.controller.orderingfood;
+package com.fullstackboy.servlet.controller.orderingfood;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
