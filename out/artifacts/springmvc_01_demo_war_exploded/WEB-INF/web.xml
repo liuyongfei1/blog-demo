@@ -5,12 +5,10 @@
          version="4.0">
 
     <display-name>springMVC</display-name>
-
-    <!-- 部署 DispatcherServlet -->
+    <!--部署servlet-->
     <servlet>
         <servlet-name>springmvc</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <!-- 表示容器再启动时立即加载servlet -->
         <load-on-startup>1</load-on-startup>
     </servlet>
 
