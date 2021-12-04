@@ -14,13 +14,10 @@ import javax.validation.constraints.NotNull;
  * @author Liuyongfei
  * @date 2021/12/3 18:15
  */
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
-
-    public User() {
-    }
 
     @NotNull(message = "用户id不能为空")
     private Integer id;
@@ -31,28 +28,4 @@ public class User {
 
     @Email(regexp = "[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]", message = "邮箱格式不正确")
     private String email;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }
