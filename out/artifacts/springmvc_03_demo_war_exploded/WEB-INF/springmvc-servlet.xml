@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--配置要扫描的包-->
+    <context:component-scan
+            base-package="com.fullstackboy.springmvcdemo.controller" />
+
+
+    <!--配置视图解析器-->
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--前缀 -->
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <!--后缀 -->
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+
+    <!--配置Spring MVC注解驱动，使用的BeanValidator为HibernateValidator-->
+    <mvc:annotation-driven validator="hibernateValidator"></mvc:annotation-driven>
+
+    <!--实例化HibernateValidator-->
+    <bean id="hibernateValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass">
+            <value>org.hibernate.validator.HibernateValidator</value>
+        </property>
+    </bean>
+</beans>
