@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>springmvc-03-demo</artifactId>
-    <description>Spring MVC程序：数据校验(利用 JSR 303 实现)</description>
+    <description>Spring MVC程序：数据校验(利用 JSR 303 实现)、文件上传</description>
 
     <dependencies>
         <dependency>
@@ -46,6 +46,19 @@
             <version>6.0.16.Final</version>
         </dependency>
         <!--数据校验 end-->
+
+        <!--文件上传需要的依赖-->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
 
     </dependencies>
 </project>

@@ -40,7 +40,7 @@
     <!--托管MyExceptionHandler-->
 <!--    <bean class="com.fullstackboy.springmvcdemo.exception.MyExceptionHandler"></bean>-->
 
-    <!--配置全局异常-->
+    <!--配置全局异常（只需在这里配置一处，其它地方不用加代码）-->
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <!-- 定义默认的异常处理页面，当该异常类型注册时使用 -->
         <property name="defaultErrorView" value="error"></property>
@@ -53,5 +53,11 @@
                 <!-- 在这里还可以继续扩展对不同异常类型的处理 -->
             </props>
         </property>
+    </bean>
+
+    <!--配置MultipartResolver，用于上传文件，使用Spring的CommonsMultipartResolver-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="5000000" />
+        <property name="defaultEncoding" value="UTF-8" />
     </bean>
 </beans>

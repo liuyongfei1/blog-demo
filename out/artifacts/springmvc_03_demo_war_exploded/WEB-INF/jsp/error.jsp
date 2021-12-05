@@ -7,6 +7,6 @@
     <title>错误页面</title>
 </head>
 <body>
-发生算术运算异常test，请重新输出数据！
+发生算术运算异常，请重新输出数据！
 </body>
 </html>
