@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -53,4 +55,23 @@ public class UserController {
 
         return "addUser";
     }
+
+
+    @RequestMapping("/testExceptionHandle")
+    public String testExceptionHandle(@RequestParam("i") Integer i) {
+        // 发生ArithmeticException，会被自定义异常类MyExceptionHandler捕捉，自动跳转到error.jsp页面
+        System.out.println( 10 / i);
+        return "success";
+    }
+// ********** Spring MVC 异常处理 start ************
+//    局部异常处理仅能处理指定 Controller 中的异常
+//    @ExceptionHandler({ ArithmeticException.class })
+//    public String testArithmeticException(Exception e) {
+//        System.out.println("打印错误信息1 ===》 ArithmeticException：" + e);
+//
+//        // 跳转到指定页面
+//        return "error";
+//    }
+    // ********** Spring MVC 异常处理 end ************
+
 }
