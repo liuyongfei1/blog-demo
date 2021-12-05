@@ -33,6 +33,7 @@
         <module>springmvc-01-demo</module>
         <module>springmvc-02-demo</module>
         <module>springmvc-03-demo</module>
+        <module>ssmbuild-demo</module>
     </modules>
 
     <properties>
