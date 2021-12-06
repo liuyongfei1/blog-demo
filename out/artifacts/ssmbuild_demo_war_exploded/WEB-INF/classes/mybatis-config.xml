@@ -7,7 +7,7 @@
         <package name="com.fullstackboy.ssmbuild.dao"/>
     </typeAliases>
     <mappers>
-        <!--两种方式都可以-->
+<!--        <mapper class="com.fullstackboy.ssmbuild.dao.BookMapper.xml" />-->
 <!--        <mapper resource="com/fullstackboy/ssmbuild/dao/BookMapper.xml" />-->
         <mapper class="com.fullstackboy.ssmbuild.dao.BookMapper"></mapper>
     </mappers>
