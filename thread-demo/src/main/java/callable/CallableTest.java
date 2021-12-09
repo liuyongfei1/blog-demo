@@ -7,6 +7,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 /**
+ * 创建线程的三种方式：
+ * 1、继承Thread类，重写run方法
+ * 2、实现Runnable接口，重写run方法
+ * 3、实现Callable接口，重写call方法
+ *
  * 使用Callable
  *
  * @author Liuyongfei

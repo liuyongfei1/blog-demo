@@ -50,6 +50,6 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public List<Books> queryAllBook() {
-        return null;
+        return bookMapper.queryAllBook();
     }
 }
