@@ -6,7 +6,6 @@ import com.fullstackboy.springdemo.User1;
 import com.fullstackboy.springdemo.ioc.bean.Course;
 import com.fullstackboy.springdemo.ioc.service.DeptService;
 import com.fullstackboy.springdemo.ioc.service.UserService;
-import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;

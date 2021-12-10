@@ -2,7 +2,7 @@ package com.fullstackboy.register.server.web;
 
 import com.fullstackboy.register.server.cluster.PeersReplicateBatch;
 import com.fullstackboy.register.server.cluster.PeersReplicator;
-import com.fullstackboy.mybatis.register.server.core.*;
+import com.fullstackboy.register.server.core.*;
 import com.fullstackboy.register.server.core.*;
 
 /**
