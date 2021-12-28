@@ -32,7 +32,6 @@ public class Demo2 {
         * 4.转换的时候可能存在内存溢出或者精度问题
         */
 
-
         System.out.println((int)23.7); // 23 精度丢失了
         System.out.println((int)-45.89f); // -45  精度丢失了
 
