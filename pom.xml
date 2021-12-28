@@ -17,7 +17,7 @@
     <description>使用Spring框架的多个案例</description>
 
     <modules>
-        <module>rabbitmq-demo</module>
+<!--        <module>rabbitmq-demo</module>-->
         <module>canal-kafka2hbase-demo</module>
         <module>thread-demo</module>
         <module>design-patterns-demo</module>
@@ -33,7 +33,7 @@
         <module>springmvc-02-demo</module>
         <module>springmvc-03-demo</module>
         <module>ssmbuild-demo</module>
-        <module>springboot-01-demo</module>
+        <module>log4j2-vulnerable-demo</module>
     </modules>
 
     <properties>

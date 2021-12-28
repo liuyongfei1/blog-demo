@@ -19,4 +19,13 @@
         <module>rabbitmq-demo-model</module>
     </modules>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.47</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
