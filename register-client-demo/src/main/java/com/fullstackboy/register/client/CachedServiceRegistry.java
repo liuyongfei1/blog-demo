@@ -145,7 +145,7 @@ public class CachedServiceRegistry {
 					// 一类是注册，一类是删除
 					// 这里其实是要大量的修改本地缓存的注册表，所以这里使用了synchronized加锁。
 //					synchronized (registry) {
-						mergeDeltaRegistry(deltaRegistry);
+//						mergeDeltaRegistry(deltaRegistry);
 //					}
 
 					// 再检查一下服务端的注册表数量与客户端的是否一致
