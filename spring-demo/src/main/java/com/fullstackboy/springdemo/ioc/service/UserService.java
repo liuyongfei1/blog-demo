@@ -1,6 +1,8 @@
 package com.fullstackboy.springdemo.ioc.service;
 
 import com.fullstackboy.springdemo.ioc.dao.UserDAO;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 /**
  * TODO Liuyongfei
@@ -8,6 +10,7 @@ import com.fullstackboy.springdemo.ioc.dao.UserDAO;
  * @author Liuyongfei
  * @date 2021/11/1 13:00
  */
+@Qualifier
 public class UserService {
 
     private UserDAO userDAO;
