@@ -1,7 +1,9 @@
 package com.fullstackboy.springdemo.ioc;
 
 import com.fullstackboy.springdemo.ioc.config.DataSourceConfig;
+import org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import javax.sql.DataSource;
 
@@ -11,6 +13,7 @@ import javax.sql.DataSource;
  * @author Liuyongfei
  * @date 2022/1/13 14:05
  */
+@EnableAspectJAutoProxy
 public class DataSourceTest {
 
     public static void main(String[] args) {
@@ -35,5 +38,6 @@ public class DataSourceTest {
         for (String bean : beanNamesForType) {
             System.out.println(bean);
         }
+
     }
 }
