@@ -1,8 +1,7 @@
-package com.fullstackboy.springdemo.ioc.config;
+package com.fullstackboy.springdemo.aop.config;
 
-import com.fullstackboy.springdemo.ioc.bean.Calculation;
-import com.fullstackboy.springdemo.ioc.bean.LogAspect;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.fullstackboy.springdemo.aop.bean.Calculation;
+import com.fullstackboy.springdemo.aop.bean.LogAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;

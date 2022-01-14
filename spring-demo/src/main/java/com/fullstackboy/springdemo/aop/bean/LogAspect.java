@@ -1,4 +1,4 @@
-package com.fullstackboy.springdemo.ioc.bean;
+package com.fullstackboy.springdemo.aop.bean;
 
 import org.aspectj.lang.annotation.*;
 
@@ -11,7 +11,7 @@ import org.aspectj.lang.annotation.*;
 @Aspect
 public class LogAspect {
 
-    @Pointcut("execution(public int com.fullstackboy.springdemo.ioc.bean.Calculation.*(..))")
+    @Pointcut("execution(public int com.fullstackboy.springdemo.aop.bean.Calculation.*(..))")
     public void pointCut() {};
 
     @Before("pointCut()")

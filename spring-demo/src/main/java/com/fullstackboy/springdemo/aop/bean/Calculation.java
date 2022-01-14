@@ -1,4 +1,4 @@
-package com.fullstackboy.springdemo.ioc.bean;
+package com.fullstackboy.springdemo.aop.bean;
 
 import org.springframework.stereotype.Component;
 

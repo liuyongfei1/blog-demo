@@ -1,7 +1,7 @@
-package com.fullstackboy.springdemo.ioc;
+package com.fullstackboy.springdemo.bean;
 
-import com.fullstackboy.springdemo.ioc.bean.Calculation;
-import com.fullstackboy.springdemo.ioc.config.MainConfigOfAop;
+import com.fullstackboy.springdemo.aop.bean.Calculation;
+import com.fullstackboy.springdemo.aop.config.MainConfigOfAop;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
