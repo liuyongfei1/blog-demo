@@ -16,4 +16,12 @@
     <bean id="userMapper3" class="com.fullstackboy.springdemo.transaction.dao.User3MapperImpl">
         <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
     </bean>
+
+
+    <bean id="person" class="com.fullstackboy.springdemo.ioc.bean.Person" init-method="start">
+        <property name="name" value="张三丰"></property>
+    </bean>
+
+    <!--注册处理器-->
+    <bean class="com.fullstackboy.springdemo.ioc.config.MyBeanPostProcessor"></bean>
 </beans>
