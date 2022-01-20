@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 /**
+ * 字节输入流和字节输出流：
+ *
  * 使用最简单的字节输入流和字节输出流
  * FileInputStream和FileOutStream
  * 来进行测试
@@ -11,6 +13,9 @@ import java.io.FileOutputStream;
  * 总结：FileInputStream和FileOutStream 这两个管道比较细，read()和write()方法也是一个一个的读、一个一个的写。
  * 当遇到大文件时，耗时会比较长。（比如一个64.9M的.mp4文件，从C盘读，然后再写到D盘，需要耗费将近7分钟的时间。）
  * 所以可以考虑用粗管道: BufferedInputStream和BufferedOutStream。
+ *
+ * 1、字节流可以读取一切文件；
+ * 2、只不过不擅长读取带中文的，容易有乱码
  * @author Liuyongfei
  * @date 2022/1/20 07:20
  */

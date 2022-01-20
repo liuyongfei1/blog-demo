@@ -3,10 +3,16 @@ package com.fullstackboy.io;
 import java.io.*;
 
 /**
- * 使用粗管道 BufferedInputStream和BufferedOutStream
+ * 字节输入流和字节输出流：
+ * 使用粗管道 BufferedInputStream和BufferedOutputStream
  * 叫 字节缓冲输入流 和字节缓冲输出流
  *
  * 在遇到大文件的情况下，速度还是比较快的
+ *
+ * 字节流可以读取文本文件、音频、视频，可以读取一些文件
+ *
+ * 1、字节流可以读取一切文件；
+ * 2、只不过不擅长读取带中文的，容易有乱码
  * @author Liuyongfei
  * @date 2022/1/20 07:50
  */
