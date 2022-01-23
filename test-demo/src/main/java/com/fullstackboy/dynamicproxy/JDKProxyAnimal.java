@@ -8,7 +8,7 @@ import java.lang.reflect.Proxy;
  * @author Liuyongfei
  * @date 2022/1/23 17:30
  */
-public class DynamicProxyAnimal {
+public class JDKProxyAnimal {
     public static Object getProxy(Object target) {
         Object proxy = Proxy.newProxyInstance(
                 // 指定目标类的类加载

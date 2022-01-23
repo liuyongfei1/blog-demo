@@ -2,6 +2,7 @@ package com.fullstackboy.dynamicproxy;
 
 
 import org.junit.Test;
+import org.springframework.cglib.core.DebuggingClassWriter;
 
 /**
  * 动态代理相关测试
@@ -37,7 +38,19 @@ public class Test1 {
     @Test
     public void testJdkDynamicProxy() {
         Cat cat = new Cat();
-        Animal proxy = (Animal) DynamicProxyAnimal.getProxy(cat);
+        Animal proxy = (Animal) JDKProxyAnimal.getProxy(cat);
         proxy.call();
+    }
+
+
+    /**
+     * 3、CGLIB动态代理
+     */
+    @Test
+    public void testCglibDynamicProxy() {
+        // 可以将保存生成的字节码文件到 /Users/lyf/Downloads 文件夹中
+        System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "/Users/lyf/Downloads");
+        Animal cat = (Animal) CglibProxy.getProxy(Cat.class);
+        cat.call();
     }
 }
