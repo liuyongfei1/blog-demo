@@ -29,4 +29,15 @@ public class Test1 {
         StaticProxyAnimal proxy = new StaticProxyAnimal(cat);
         proxy.call();
     }
+
+
+    /**
+     * 2、JDK动态代理
+     */
+    @Test
+    public void testJdkDynamicProxy() {
+        Cat cat = new Cat();
+        Animal proxy = (Animal) DynamicProxyAnimal.getProxy(cat);
+        proxy.call();
+    }
 }
