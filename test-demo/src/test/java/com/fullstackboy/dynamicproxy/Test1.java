@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.springframework.cglib.core.DebuggingClassWriter;
 
 /**
+ * 动态代理机制：https://zhuanlan.zhihu.com/p/126503023
  * 动态代理相关测试
  * 1、静态代理
  * 2、JDK动态代理
