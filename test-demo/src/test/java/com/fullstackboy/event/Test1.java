@@ -26,7 +26,7 @@ public class Test1 {
             }
         });
 
-        // 触发事件
+        // 名字发生了变化，触发事件
         eventSource.setName("张三");
     }
 }

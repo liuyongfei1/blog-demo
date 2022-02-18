@@ -32,6 +32,21 @@
           <version>5.3.15</version>
           <scope>compile</scope>
       </dependency>
+
+      <!--织入的依赖-->
+      <dependency>
+          <groupId>org.aspectj</groupId>
+          <artifactId>aspectjweaver</artifactId>
+          <version>1.8.9</version>
+      </dependency>
+
+      <!--运行织入时需要的依赖-->
+      <dependency>
+          <groupId>org.aspectj</groupId>
+          <artifactId>aspectjrt</artifactId>
+          <version>1.8.9</version>
+      </dependency>
+
   </dependencies>
 
   <name>test-demo</name>
@@ -43,4 +58,34 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+
+  <build>
+      <plugins>
+          <!-- 编译时织入的 maven 插件 -->
+          <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>aspectj-maven-plugin</artifactId>
+              <version>1.7</version>
+              <configuration>
+                  <complianceLevel>1.8</complianceLevel>
+                  <source>1.8</source>
+                  <target>1.8</target>
+                  <showWeaveInfo>true</showWeaveInfo>
+                  <verbose>true</verbose>
+                  <Xlint>ignore</Xlint>
+                  <encoding>UTF-8</encoding>
+              </configuration>
+              <executions>
+                  <execution>
+                      <goals>
+                          <!-- use this goal to weave all your main classes -->
+                          <goal>compile</goal>
+                          <!-- use this goal to weave all your test classes -->
+                          <goal>test-compile</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>
+      </plugins>
+  </build>
 </project>

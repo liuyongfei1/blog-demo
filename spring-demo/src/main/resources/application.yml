@@ -1,0 +1,4 @@
+server:
+  port: 12225
+  check-permission: true
+  check-sign: true
