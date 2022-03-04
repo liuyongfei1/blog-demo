@@ -15,9 +15,15 @@ public class StaticProxyAnimal implements Animal{
     }
 
     @Override
-    public void call() {
+    public String call() {
         System.out.println("StaticProxyAnimal静态代理类执行call()方法之前...");
         impl.call();
         System.out.println("StaticProxyAnimal静态代理类执行call()方法之前...");
+        return "test";
+    }
+
+    @Override
+    public String sleep() {
+        return null;
     }
 }

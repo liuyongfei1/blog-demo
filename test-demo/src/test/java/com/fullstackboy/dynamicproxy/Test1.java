@@ -40,7 +40,10 @@ public class Test1 {
     public void testJdkDynamicProxy() {
         Cat cat = new Cat();
         Animal proxy = (Animal) JDKProxyAnimal.getProxy(cat);
-        proxy.call();
+
+        String test = proxy.call();
+        System.out.println("测试：" + test);
+        System.out.println("测试2：" + proxy.sleep());
     }
 
 

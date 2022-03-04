@@ -35,7 +35,7 @@ public class EventSourceObject {
     }
 
     /**
-     * 事件发生时，通知注册在该事件源上的所有监听器做出相应的返佣（调用回调方法）
+     * 事件发生时，通知注册在该事件源上的所有监听器做出相应的反应（调用回调方法）
      */
     protected void notifies() {
         CusEventListener cel = null;
