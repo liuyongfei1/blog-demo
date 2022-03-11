@@ -22,6 +22,13 @@
         <property name="name" value="张三丰"></property>
     </bean>
 
+<!--    <bean id="user" class="com.fullstackboy.springdemo.aop.bean.User">-->
+<!--    </bean>-->
+
+    <bean id="user2" class="com.fullstackboy.springdemo.aop.bean.User2">
+        <property name="beanName" value="张三丰"></property>
+    </bean>
+
     <!--注册处理器-->
     <bean class="com.fullstackboy.springdemo.ioc.config.MyBeanPostProcessor"></bean>
 </beans>

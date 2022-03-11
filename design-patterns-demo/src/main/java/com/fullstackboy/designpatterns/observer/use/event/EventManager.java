@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 时间处理类
+ * 事件处理类
  *
  * @author Liuyongfei
  * @date 2022/3/4 18:11
@@ -50,6 +50,7 @@ public class EventManager {
 
     /**
      * 通知
+     * 会执行对应监听器里 事件的具体实现方法。
      * @param eventType 事件类型
      * @param result 结果
      */

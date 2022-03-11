@@ -1,7 +1,6 @@
 package com.fullstackboy.designpatterns.observer.use;
 
 import com.alibaba.fastjson.JSON;
-import com.fullstackboy.designpatterns.observer.use.event.LotteryServiceImpl;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

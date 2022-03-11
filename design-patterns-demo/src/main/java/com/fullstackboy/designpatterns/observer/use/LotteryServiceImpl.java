@@ -1,4 +1,4 @@
-package com.fullstackboy.designpatterns.observer.use.event;
+package com.fullstackboy.designpatterns.observer.use;
 
 import com.fullstackboy.designpatterns.observer.use.LotteryResult;
 import com.fullstackboy.designpatterns.observer.use.LotteryService;

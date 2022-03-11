@@ -15,7 +15,7 @@ public class Person {
     private String beanName;
 
     public Person() {
-        System.out.println("Person 被实例化......");
+//        System.out.println("Person 被实例化......");
     }
 
     public int getId() {
@@ -31,7 +31,7 @@ public class Person {
     }
 
     public void setName(String name) {
-        System.out.println("设置：" + name);
+//        System.out.println("设置：" + name);
         this.name = name;
     }
 
@@ -47,7 +47,7 @@ public class Person {
      * 自定义的初始化方法
      */
     public void start() {
-        System.out.println("Person中自定义的初始化方法......");
+//        System.out.println("Person中自定义的初始化方法......");
     }
 
 }
