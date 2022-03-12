@@ -60,11 +60,4 @@ public class DomUtil {
         }
         return students;
     }
-
-    public static void main(String[] args) throws Exception {
-        // 使用DOM 读取xml 文件信息
-        String xmlPath = "/Users/lyf/Workspace/www/blog-demo/test-demo/src/main/resources/student.xml";
-        List<Student> students = getStudents(xmlPath);
-        System.out.println(students);
-    }
 }
