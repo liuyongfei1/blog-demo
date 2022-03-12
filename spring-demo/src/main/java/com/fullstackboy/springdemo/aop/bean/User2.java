@@ -13,13 +13,13 @@ import org.springframework.beans.factory.BeanNameAware;
  */
 public class User2 implements BeanNameAware {
 
-    private String beanName;
+    private String beanName = "zhangsan";
 
     @Override
     public void setBeanName(String beanName) {
 //        System.out.println("User2 这个bean在spring容器中的 bean id是：" + beanName);
 
-        this.beanName = beanName;
+//        this.beanName = beanName;
     }
 
     public String getBeanName() {
