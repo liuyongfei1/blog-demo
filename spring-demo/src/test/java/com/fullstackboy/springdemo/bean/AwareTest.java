@@ -30,15 +30,6 @@ public class AwareTest {
 //        User2 user2 = (User2) beanFactory.getBean("user2");
 //        System.out.println(user2.getBeanName());
 
-        // 测试自定义的空实现工厂后处理方法：修改 user2 这个bean为非单例的
-        // 因为前后两次创建的实例，指向的是两个地址
-        MyClassPathXmlApplicationContext context = new MyClassPathXmlApplicationContext(
-                "applicationContext.xml");
-        User2 user2 = (User2) context.getBean("user2");
-        System.out.println(user2);
-        User2 user3 = (User2) context.getBean("user2");
-        System.out.println(user3);
-        System.out.println(user2.getBeanName());
 
     }
 }

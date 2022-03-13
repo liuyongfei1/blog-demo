@@ -3,24 +3,24 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="spring-dao.xml"></import>
+<!--    <import resource="spring-dao.xml"></import>-->
 
-    <bean id="userMapper" class="com.fullstackboy.springdemo.transaction.dao.UserMapperImpl">
-        <property name="sqlSession" ref="sqlSession"></property>
-    </bean>
+<!--    <bean id="userMapper" class="com.fullstackboy.springdemo.transaction.dao.UserMapperImpl">-->
+<!--        <property name="sqlSession" ref="sqlSession"></property>-->
+<!--    </bean>-->
 
-    <bean id="userMapper2" class="com.fullstackboy.springdemo.transaction.dao.User2MapperImpl">
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
-    </bean>
+<!--    <bean id="userMapper2" class="com.fullstackboy.springdemo.transaction.dao.User2MapperImpl">-->
+<!--        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>-->
+<!--    </bean>-->
 
-    <bean id="userMapper3" class="com.fullstackboy.springdemo.transaction.dao.User3MapperImpl">
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
-    </bean>
+<!--    <bean id="userMapper3" class="com.fullstackboy.springdemo.transaction.dao.User3MapperImpl">-->
+<!--        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>-->
+<!--    </bean>-->
 
 
-    <bean id="person" class="com.fullstackboy.springdemo.ioc.bean.Person" init-method="start">
-        <property name="name" value="张三丰"></property>
-    </bean>
+<!--    <bean id="person" class="com.fullstackboy.springdemo.ioc.bean.Person" init-method="start">-->
+<!--        <property name="name" value="张三丰"></property>-->
+<!--    </bean>-->
 
 <!--    <bean id="user" class="com.fullstackboy.springdemo.aop.bean.User">-->
 <!--    </bean>-->
@@ -29,6 +29,10 @@
         <property name="beanName" value="张三丰"></property>
     </bean>
 
+<!--    <bean id="myBeanFactoryPostProcessor"-->
+<!--          class="com.fullstackboy.springdemo.MyBeanFactoryPostProcessor">-->
+<!--    </bean>-->
+
     <!--注册处理器-->
-    <bean class="com.fullstackboy.springdemo.ioc.config.MyBeanPostProcessor"></bean>
+<!--    <bean class="com.fullstackboy.springdemo.ioc.config.MyBeanPostProcessor"></bean>-->
 </beans>
