@@ -4,10 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-    <bean id="student1" class="com.fullstackboy.springdemo.circulardependencies.Student1">
+    <bean id="student1" class="com.fullstackboy.springdemo.circulardependencies.setter.Student1">
         <property name="student2" ref="student2"></property>
     </bean>
-    <bean id="student2" class="com.fullstackboy.springdemo.circulardependencies.Student2">
+    <bean id="student2" class="com.fullstackboy.springdemo.circulardependencies.setter.Student2">
         <property name="student1" ref="student1"></property>
     </bean>
 

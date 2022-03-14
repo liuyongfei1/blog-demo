@@ -1,4 +1,4 @@
-package com.fullstackboy.springdemo.circulardependencies;
+package com.fullstackboy.springdemo.circulardependencies.setter;
 
 /**
  * 认识一下setter注入循环依赖
