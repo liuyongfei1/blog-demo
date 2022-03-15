@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+<!--    当我们从Spring中获取名称为student的bean时，Spring会首先找到factory-bean属性指定的bean，先实例化这个bean，-->
+<!--    然后再调用factory-bean属性指定的bean的getStudentObject方法来创建bean-->
+    <bean id="studentFactory" class="com.fullstackboy.springdemo.factorymethod.Student2Factory"></bean>
+    <bean id="student" factory-bean="studentFactory" factory-method="getStudentObject"></bean>
+</beans>
