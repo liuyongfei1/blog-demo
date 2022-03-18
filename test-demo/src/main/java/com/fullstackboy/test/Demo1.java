@@ -1,11 +1,14 @@
 package com.fullstackboy.test;
 
+import com.fullstackboy.myannotations.MyComponent;
+
 /**
  * 基础数据类型扩展及面试题
  *
  * @author Liuyongfei
  * @date 2021/12/28 09:25
  */
+@MyComponent
 public class Demo1 {
     public static void main(String[] args) {
         // 整数型拓展
