@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * 在这里为自定义注解添加逻辑功能
@@ -22,6 +21,31 @@ public class ApplicationContext {
     public ApplicationContext(String packagePath) {
         // 扫描指定的包路径
         scanPackage(packagePath);
+    }
+
+    /**
+     * 扫描指定的包路径
+     * @param packagePath 包路径
+     */
+    private void scanPackage(String packagePath) {
+        // 1、获取这个路径下的所有.class文件
+        File[] classFiles = getClassFiles(packagePath);
+
+        // 2、处理所有的.class文件，为加了 @MyComponent 注解的类创建实例，并放入 ioc 容器中
+        processClassFiles(packagePath, classFiles);
+    }
+
+    /**
+     * 获取执行包下面的所有.class文件
+     * @param packagePath 包路径
+     * @return .class文件
+     */
+    private File[] getClassFiles(String packagePath) {
+        // 1、通过packagePath 获取所有的 File 对象
+        File file = getFile(packagePath);
+
+        // 2、过滤出所有的.class文件
+        return filterClassFiles(packagePath, file);
     }
 
     /**
@@ -81,20 +105,11 @@ public class ApplicationContext {
     }
 
     /**
-     * 获取执行包下面的所有.class文件
-     * @param packagePath 包路径
-     * @return .class文件
-     */
-    private File[] getClassFiles(String packagePath) {
-        // 1、通过packagePath 获取所有的 File 对象
-        File file = getFile(packagePath);
-
-        // 2、过滤出所有的.class文件
-        return filterClassFiles(packagePath, file);
-    }
-
-    /**
      * 通过包路径获取对应File对象
+     * 例如：
+     * 0 =》 /Users/lyf/Workspace/www/blog-demo/test-demo/target/classes/com/fullstackboy/myannotations/bean/Student.class
+     * 1 =》 /Users/lyf/Workspace/www/blog-demo/test-demo/target/classes/com/fullstackboy/myannotations/bean/Teacher.class
+     *
      * @param packagePath 包路径
      * @return File对象
      */
@@ -106,19 +121,8 @@ public class ApplicationContext {
         URL resource = getClass().getClassLoader().getResource(packageDir);
 
         // 3、通过目录获取文件对象
+        // 获取的就是项目打包后在target中的路径
         return new File(resource.getFile());
-    }
-
-    /**
-     * 扫描指定的包路径
-     * @param packagePath 包路径
-     */
-    private void scanPackage(String packagePath) {
-        // 1、获取这个路径下的所有.class文件
-        File[] classFiles = getClassFiles(packagePath);
-
-        // 2、处理所有的.class文件，为加了 @MyComponent 注解的类创建实例，并放入 ioc 容器中
-        processClassFiles(packagePath, classFiles);
     }
 
     /**
