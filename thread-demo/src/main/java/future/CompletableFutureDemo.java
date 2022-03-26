@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * @author Liuyongfei
  * @date 2021/11/20 19:58
  */
-public class Demo {
+public class CompletableFutureDemo {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         // 没有返回值的异步回调
 //        CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(() -> {
