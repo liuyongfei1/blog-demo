@@ -35,6 +35,9 @@ public class Test1 {
 
     /**
      * 2、JDK动态代理
+     * 可以设置JVM启动参数为：-Dsun.misc.ProxyGenerator.saveGeneratedFiles=true
+     * 或者
+     * System.setProperty("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
      */
     @Test
     public void testJdkDynamicProxy() {
@@ -46,14 +49,16 @@ public class Test1 {
         System.out.println("测试2：" + proxy.sleep());
     }
 
-
     /**
      * 3、CGLIB动态代理
      */
     @Test
     public void testCglibDynamicProxy() {
-        // 可以将保存生成的字节码文件到 /Users/lyf/Downloads 文件夹中
-        System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "/Users/lyf/Downloads");
+
+        // 获取当前项目的根目录
+        String userDir = System.getProperty("user.dir");
+        // 可以将保存生成的字节码文件到 当前项目根目录下： test-demo/mycglib
+        System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, userDir + "/mycglib");
         Animal cat = (Animal) CglibProxy.getProxy(Cat.class);
         cat.call();
     }

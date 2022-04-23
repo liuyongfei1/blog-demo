@@ -11,11 +11,11 @@ package synchronizeddemo;
 public class Demo1 {
     public static void main(String[] args) {
         MyRunnable r1 = new MyRunnable();
-//        new Thread(r1, "线程1").start();
-//        new Thread(r1, "线程2").start();
-        MyThread thread = new MyThread();
-        new Thread(thread, "线程1").start();
-        new Thread(thread, "线程2").start();
+        new Thread(r1, "线程1").start();
+        new Thread(r1, "线程2").start();
+//        MyThread thread = new MyThread();
+//        new Thread(thread, "线程1").start();
+//        new Thread(thread, "线程2").start();
     }
 
     public static class MyRunnable implements Runnable {

@@ -18,7 +18,7 @@ public class SocketServer {
         OutputStream out = socket.getOutputStream();
 
         // Socket的输入流，相当于就是不停的读取人家通过TCP协议发送过来的一个一个的TCP包
-        // 把TCP包的数据通过IC输入流的方式提供给你
+        // 把TCP包的数据通过IO输入流的方式提供给你
         // 你就可以通过IO输入流读取的方式把TCP包的数据读出来放入JVM内存的一个缓冲数组中
         char[] buf = new char[1024 * 1024];
         int len = in.read(buf);

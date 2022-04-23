@@ -8,6 +8,8 @@ import java.util.concurrent.TimeUnit;
  * 异步回调：CompletableFuture
  *
  * 类似于 Ajax
+ *
+ * Java8新增的类，简化了异步编程，封装了Future，有回调功能
  * @author Liuyongfei
  * @date 2021/11/20 19:58
  */

@@ -32,6 +32,11 @@ public class Demo2 {
         Demo2 demo = Demo2.class.getConstructor(classes).newInstance("hello", 30);
         System.out.println(demo.str);
 
+        Demo2 demo21 = Demo2.class.newInstance();
+        Demo2 demo22 = Demo2.class.getDeclaredConstructor().newInstance();
+        System.out.println(demo21);
+        System.out.println(demo22);
+
         Demo2 demo2 = Demo2.class.getDeclaredConstructor(String.class).newInstance("hello2");
         System.out.println(demo2.str);
 

@@ -1,4 +1,5 @@
 import java.lang.reflect.Method;
+import java.util.HashMap;
 
 /**
  * 自定义注解测试
@@ -15,6 +16,10 @@ public class MyTargetTest {
 
     public static void main(String[] args) {
         try {
+
+            HashMap<String, String> map = new HashMap<String, String>(3);
+            map.put("张三","测试数据");
+
             Method method = MyTargetTest.class.getMethod("doSomething", null);
             // 如果doSomething方法上存在注解@MyTarget
             if (method.isAnnotationPresent(MyTarget.class)) {
