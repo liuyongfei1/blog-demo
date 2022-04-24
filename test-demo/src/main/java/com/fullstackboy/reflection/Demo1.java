@@ -2,6 +2,9 @@ package com.fullstackboy.reflection;
 
 /**
  * 如何通过反射来创建对象
+ * 1、通过类对象调用newInstance()方法  =》 适用于无参构造方法
+ *
+ *
  * 顺便思考： new关键字 和 newInstance()方法 的区别
  * https://blog.csdn.net/shipfei_csdn/article/details/81939616
  *
@@ -30,7 +33,7 @@ package com.fullstackboy.reflection;
  *
  *       4.2 上面这段代码，就消灭了 WoodenDoor 类，AutoDoor类，无论 这些类怎么变化，上述代码不变，只要他们继承 Door接口即可。
  *
- * 1、通过类对象调用newInstance()方法  =》 适用于无参构造方法
+ *
  * @author Liuyongfei
  * @date 2022/1/8 21:25
  */

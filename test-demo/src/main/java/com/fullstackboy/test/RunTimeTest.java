@@ -21,6 +21,7 @@ public class RunTimeTest {
             System.out.println("shutdown thread ....");
         },"c");
 
+        // 钩子方法，会在JVM关闭之前执行
         Runtime.getRuntime().addShutdownHook(threadShutdown);
 
         threada.start();
