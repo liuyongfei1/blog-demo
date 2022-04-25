@@ -43,7 +43,7 @@ class MyCache {
     private volatile HashMap<String, Object> cacheMap = new HashMap<>();
 
     /**
-     * 存，写入的时候，只写同时只有一个线程写
+     * 存，写入的时候，同时只有一个线程写
      * @param key
      * @param value
      */

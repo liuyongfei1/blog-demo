@@ -1,6 +1,7 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 模拟耗时任务异步执行
@@ -17,6 +18,9 @@ public class Test1 {
                 System.out.println("print message: " + msg);
             }
         }));
+
+
+        ReentrantLock lock = new ReentrantLock();
     }
 }
 

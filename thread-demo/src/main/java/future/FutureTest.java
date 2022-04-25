@@ -15,6 +15,8 @@ import java.util.concurrent.FutureTask;
  *
  * FutureTask的特色：可以取消任务、获得返回值
  * FutureTask的底层还是托管给Thread来处理，相对于Thread检查结果值更加的方便
+ *
+ * FutureTask Callable
  * @author Liuyongfei
  * @date 2021/8/11 17:36
  */
