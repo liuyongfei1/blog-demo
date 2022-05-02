@@ -1,7 +1,5 @@
 package volatiledemo;
 
-import com.sun.tools.javac.code.Attribute;
-
 /**
  * volatile 不保证原子性demo
  *
@@ -18,6 +16,9 @@ public class YuanZiXing {
             new Thread(() -> {
                 for (int j = 0; j < 1000; j++) {
                     data.add2();
+
+                    // 解决 volidate 不能保证原子性的问题
+                    data.addMyInteger();
                 }
             }).start();
         }
@@ -32,6 +33,8 @@ public class YuanZiXing {
         }
 
         // 会发现，最终的输出结果，并不是我们期望的 20000。=》所以，volatile 不保证原子性
-        System.out.println(Thread.currentThread().getName() + "finally num value:" + data.num);
+        System.out.println(Thread.currentThread().getName() + "int type，finally num value:" + data.num);
+        // 这个输出结果是我们预期的 20000
+        System.out.println(Thread.currentThread().getName() + "AtomicInteger type finally num value:" + data.myInteger);
     }
 }
