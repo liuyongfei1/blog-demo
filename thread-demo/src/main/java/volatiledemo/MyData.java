@@ -14,4 +14,9 @@ public class MyData {
     public void add1() {
         this.num = 60;
     }
+
+
+    public void add2() {
+        this.num++;
+    }
 }
