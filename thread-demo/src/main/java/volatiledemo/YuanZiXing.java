@@ -3,6 +3,8 @@ package volatiledemo;
 /**
  * volatile 不保证原子性demo
  *
+ * volatile 还有一个重要的使用场景：单例模式 DCL里的  instance 要加 volatile，来禁止指令重排
+ *
  * @author Liuyongfei
  * @date 2022/5/2 22:44
  */
